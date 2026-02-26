@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - المرشد الأكاديمي</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Cairo', 'sans-serif'],
+                    },
+                    colors: {
+                        kku: {
+                            dark: '#004d25',
+                            primary: '#006837',
+                            light: '#43a047',
+                            accent: '#c5a017',
+                            bg: '#f3f4f6'
+                        }
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.5s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* إخفاء شريط التمرير للجمالية */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800">
+
+    <nav class="sticky top-0 z-50 bg-kku-primary text-white shadow-lg backdrop-blur-sm bg-opacity-95">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <img src="https://upload.wikimedia.org/wikipedia/ar/b/bb/King_Khalid_University_logo.png" alt="Logo" class="w-10 h-10 bg-white rounded-full p-1">
+                <div>
+                    <h1 class="font-bold text-lg leading-tight">نظام الإرشاد الأكاديمي</h1>
+                    <span class="text-xs text-green-100 opacity-80">جامعة الملك خالد</span>
+                </div>
+            </div>
+
+            <div class="hidden md:flex gap-6 text-sm font-semibold">
+                <a href="#" class="border-b-2 border-white pb-1">لوحة التحكم</a>
+                <a href="#" class="hover:text-kku-accent transition-colors opacity-90 hover:opacity-100">بحث متقدم</a>
+                <a href="#" class="hover:text-kku-accent transition-colors opacity-90 hover:opacity-100">التقارير</a>
+                <a href="#" class="hover:text-kku-accent transition-colors opacity-90 hover:opacity-100">الإعدادات</a>
+            </div>
+
+            <div class="flex items-center gap-3 cursor-pointer hover:bg-white/10 p-2 rounded-lg transition">
+                <div class="text-left hidden sm:block">
+                    <p class="text-sm font-bold">د. محمد القحطاني</p>
+                    <p class="text-[10px] text-green-200">قسم علوم الحاسب</p>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-white text-kku-primary flex items-center justify-center font-bold border-2 border-kku-accent">
+                    م
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8 space-y-8">
+
+        <section class="text-center max-w-2xl mx-auto animate-fade-in-up">
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">مرحباً دكتور محمد،</h2>
+            <p class="text-gray-500 mb-6">ابحث عن طالب للوصول السريع لملفه الأكاديمي</p>
+            
+            <div class="relative group z-30">
+                <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                    <i class="fas fa-search text-gray-400 group-focus-within:text-kku-primary transition-colors"></i>
+                </div>
+                <input type="text" 
+                       id="studentSearch"
+                       class="w-full pr-12 pl-4 py-4 rounded-full shadow-md border-2 border-transparent focus:border-kku-primary focus:ring-4 focus:ring-green-100 outline-none transition-all text-lg placeholder-gray-400" 
+                       placeholder="ادخل اسم الطالب أو الرقم الجامعي..." 
+                       autocomplete="off">
+                
+                <div id="searchResults" class="hidden absolute w-full bg-white mt-2 rounded-xl shadow-xl border border-gray-100 text-right overflow-hidden">
+                    <div class="p-2 text-xs text-gray-400 font-bold bg-gray-50">نتائج مقترحة</div>
+                    <a href="#" class="flex items-center justify-between p-3 hover:bg-green-50 transition cursor-pointer border-b border-gray-50">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-xs">SA</div>
+                            <div>
+                                <p class="text-sm font-bold text-gray-800">سعيد القحطاني</p>
+                                <p class="text-xs text-gray-500">44110230</p>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded-full">متعثر</span>
+                    </a>
+                    <a href="#" class="flex items-center justify-between p-3 hover:bg-green-50 transition cursor-pointer">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-xs">KA</div>
+                            <div>
+                                <p class="text-sm font-bold text-gray-800">خالد العمري</p>
+                                <p class="text-xs text-gray-500">44110550</p>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">منتظم</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in-up" style="animation-delay: 0.1s;">
+            
+            <div class="bg-white p-6 rounded-2xl shadow-sm border-r-4 border-red-500 hover:shadow-md transition-shadow cursor-pointer group relative overflow-hidden">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-gray-500 text-sm font-semibold mb-1">انخفاض المعدل التراكمي</p>
+                        <h3 class="text-4xl font-bold text-gray-800">12</h3>
+                        <p class="text-xs text-red-500 mt-2 font-medium flex items-center gap-1">
+                            <i class="fas fa-arrow-up"></i> +3 طلاب هذا الأسبوع
+                        </p>
+                    </div>
+                    <div class="p-3 bg-red-50 rounded-lg text-red-500 group-hover:bg-red-500 group-hover:text-white transition-colors">
+                        <i class="fas fa-chart-line text-xl transform rotate-180"></i>
+                    </div>
+                </div>
+                <div class="absolute inset-0 bg-red-600 bg-opacity-90 text-white p-6 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-center items-center text-center backdrop-blur-sm">
+                    <p class="font-bold">إجراء مطلوب</p>
+                    <p class="text-sm mt-1">عرض قائمة الطلاب الذين انخفض معدلهم عن 2.0</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-sm border-r-4 border-amber-400 hover:shadow-md transition-shadow cursor-pointer group">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-gray-500 text-sm font-semibold mb-1">تجاوز نسبة الغياب</p>
+                        <h3 class="text-4xl font-bold text-gray-800">28</h3>
+                        <p class="text-xs text-amber-600 mt-2 font-medium">مرحلة الإنذار الأول</p>
+                    </div>
+                    <div class="p-3 bg-amber-50 rounded-lg text-amber-500 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                        <i class="fas fa-user-clock text-xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-sm border-r-4 border-blue-500 hover:shadow-md transition-shadow cursor-pointer group">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-gray-500 text-sm font-semibold mb-1">مؤشرات تعثر مبكر</p>
+                        <h3 class="text-4xl font-bold text-gray-800">5</h3>
+                        <p class="text-xs text-blue-600 mt-2 font-medium">بناءً على نتائج الاختبار الفصلي</p>
+                    </div>
+                    <div class="p-3 bg-blue-50 rounded-lg text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-colors">
+                        <i class="fas fa-exclamation-circle text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-fade-in-up" style="animation-delay: 0.2s;">
+            
+            <section class="lg:col-span-2">
+                <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                    <i class="fas fa-bolt text-kku-accent"></i> إجراءات سريعة
+                </h3>
+                <div class="bg-white rounded-2xl shadow-sm p-6">
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        
+                        <button class="flex flex-col items-center justify-center p-4 rounded-xl border border-gray-100 hover:border-kku-primary hover:bg-green-50 transition-all group">
+                            <div class="w-12 h-12 rounded-full bg-green-100 text-kku-primary flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                <i class="fas fa-id-card text-lg"></i>
+                            </div>
+                            <span class="text-sm font-semibold text-gray-700">ملف الطالب الشامل</span>
+                        </button>
+
+                        <button class="flex flex-col items-center justify-center p-4 rounded-xl border border-gray-100 hover:border-kku-primary hover:bg-green-50 transition-all group">
+                            <div class="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                <i class="fas fa-sticky-note text-lg"></i>
+                            </div>
+                            <span class="text-sm font-semibold text-gray-700">إضافة ملاحظة إرشادية</span>
+                        </button>
+
+                        <button class="flex flex-col items-center justify-center p-4 rounded-xl border border-gray-100 hover:border-kku-primary hover:bg-green-50 transition-all group">
+                            <div class="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                <i class="fas fa-user-slash text-lg"></i>
+                            </div>
+                            <span class="text-sm font-semibold text-gray-700">التحقق من الحرمان</span>
+                        </button>
+
+                         <button class="flex flex-col items-center justify-center p-4 rounded-xl border border-gray-100 hover:border-kku-primary hover:bg-green-50 transition-all group">
+                            <div class="w-12 h-12 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                <i class="fas fa-calendar-check text-lg"></i>
+                            </div>
+                            <span class="text-sm font-semibold text-gray-700">حجز موعد للطالب</span>
+                        </button>
+
+                        <button class="flex flex-col items-center justify-center p-4 rounded-xl border border-gray-100 hover:border-kku-primary hover:bg-green-50 transition-all group">
+                            <div class="w-12 h-12 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                <i class="fas fa-graduation-cap text-lg"></i>
+                            </div>
+                            <span class="text-sm font-semibold text-gray-700">مراجعة الخطة</span>
+                        </button>
+
+                         <button class="flex flex-col items-center justify-center p-4 rounded-xl border border-gray-100 hover:border-kku-primary hover:bg-green-50 transition-all group">
+                            <div class="w-12 h-12 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                <i class="fas fa-envelope text-lg"></i>
+                            </div>
+                            <span class="text-sm font-semibold text-gray-700">مراسلة الطلاب</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="lg:col-span-1">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold text-gray-800">المهام المعلقة</h3>
+                    <a href="#" class="text-xs text-kku-primary font-semibold hover:underline">عرض الكل</a>
+                </div>
+                
+                <div class="bg-white rounded-2xl shadow-sm p-4 h-full max-h-[400px] overflow-y-auto no-scrollbar">
+                    <ul class="space-y-3">
+                        
+                        <li class="flex items-start gap-3 pb-3 border-b border-gray-50 last:border-0 hover:bg-gray-50 p-2 rounded-lg transition cursor-pointer">
+                            <div class="mt-1 w-2 h-2 rounded-full bg-red-500 shrink-0"></div>
+                            <div>
+                                <p class="text-sm font-bold text-gray-800">اعتماد طلب حذف مقرر</p>
+                                <p class="text-xs text-gray-500 mb-1">الطالب: فيصل الشهري</p>
+                                <span class="text-[10px] bg-red-50 text-red-600 px-2 py-0.5 rounded">عاجل جداً</span>
+                            </div>
+                        </li>
+
+                        <li class="flex items-start gap-3 pb-3 border-b border-gray-50 last:border-0 hover:bg-gray-50 p-2 rounded-lg transition cursor-pointer">
+                            <div class="mt-1 w-2 h-2 rounded-full bg-amber-500 shrink-0"></div>
+                            <div>
+                                <p class="text-sm font-bold text-gray-800">متابعة غياب متكرر</p>
+                                <p class="text-xs text-gray-500 mb-1">الطالب: علي عسيري</p>
+                                <span class="text-[10px] bg-amber-50 text-amber-600 px-2 py-0.5 rounded">تحتاج مراجعة</span>
+                            </div>
+                        </li>
+
+                        <li class="flex items-start gap-3 pb-3 border-b border-gray-50 last:border-0 hover:bg-gray-50 p-2 rounded-lg transition cursor-pointer">
+                            <div class="mt-1 w-2 h-2 rounded-full bg-blue-500 shrink-0"></div>
+                            <div>
+                                <p class="text-sm font-bold text-gray-800">تحديث الخطة الدراسية</p>
+                                <p class="text-xs text-gray-500">الطالب: محمد القحطاني</p>
+                            </div>
+                        </li>
+
+                        <li class="flex items-start gap-3 pb-3 border-b border-gray-50 last:border-0 hover:bg-gray-50 p-2 rounded-lg transition cursor-pointer">
+                            <div class="mt-1 w-2 h-2 rounded-full bg-gray-300 shrink-0"></div>
+                            <div>
+                                <p class="text-sm font-bold text-gray-800">مراجعة تقرير الأداء الشهري</p>
+                                <p class="text-xs text-gray-500">إداري</p>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <script>
+        const searchInput = document.getElementById('studentSearch');
+        const searchResults = document.getElementById('searchResults');
+
+        // محاكاة البحث التلقائي (Auto-complete Simulation)
+        searchInput.addEventListener('input', (e) => {
+            if (e.target.value.length > 0) {
+                searchResults.classList.remove('hidden');
+            } else {
+                searchResults.classList.add('hidden');
+            }
+        });
+
+        // إخفاء النتائج عند النقر خارج الصندوق
+        document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                searchResults.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
