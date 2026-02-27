@@ -7,12 +7,15 @@
         </div>
 
         <nav class="flex-1 mt-6 px-3 space-y-2">
-            <a href="#"
-                class="sidebar-item flex items-center gap-3 p-3 rounded-lg bg-white/10 border-right-4 border-kku-accent">
-                <i class="fas fa-th-large w-6"></i> <span>الرئيسية</span>
+            <a href="{{ route('home') }}"
+                class="sidebar-item flex items-center gap-3 p-3 rounded-lg transition-all
+                         {{ request()->routeIs('home') ? 'bg-white/20 border-r-4 border-kku-accent font-bold' : 'hover:bg-white/10 opacity-80' }}">
+                <i class="fas fa-th-large w-6"></i>
+                <span>{{ __('الرئيسية') }}</span>
             </a>
-            <a href="#" class="sidebar-item flex items-center gap-3 p-3 rounded-lg transition-all">
-                <i class="fas fa-users w-6"></i> <span>قائمة الطلاب</span>
+            <a href="{{ route('students.index') }}"
+                class="sidebar-item flex items-center gap-3 p-3 rounded-lg transition-all {{ request()->routeIs('students.*') ? 'bg-white/20 border-r-4 border-kku-accent font-bold' : 'hover:bg-white/10 opacity-80' }}">
+                <i class="fas fa-users w-6"></i> <span>{{ __('قائمة الطلاب') }}</span>
             </a>
             <a href="#" class="sidebar-item flex items-center gap-3 p-3 rounded-lg transition-all">
                 <i class="fas fa-file-signature w-6"></i> <span>الطلبات الأكاديمية</span>

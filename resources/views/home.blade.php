@@ -11,7 +11,7 @@
         </div>
         <button onclick="toggleModal()"
             class="bg-kku-primary text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-green-900/20 hover:bg-kku-dark transition-all flex items-center gap-2">
-            <i class="fas fa-plus"></i> إضافة تقرير إرشادي
+            <i class="fas fa-plus"></i> {{ __('إضافة تقرير إرشادي') }}
         </button>
     </div>
 
@@ -23,8 +23,8 @@
                 <i class="fas fa-user-graduate text-2xl"></i>
             </div>
             <div>
-                <p class="text-gray-400 text-sm font-bold">إجمالي الطلاب</p>
-                <h3 class="text-2xl font-black">45</h3>
+                <p class="text-gray-400 text-sm font-bold">{{ __('إجمالي الطلاب') }}</p>
+                <h3 class="text-2xl font-black">{{ $students }}</h3>
             </div>
         </div>
 
@@ -159,4 +159,5 @@
             </div>
         </section>
     </div>
+
 @endsection
