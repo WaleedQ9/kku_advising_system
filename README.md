@@ -1,59 +1,102 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Smart Academic Advising System (SAAS)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![Laravel](https://img.shields.io/badge/Framework-Laravel_11-red.svg)
+![TailwindCSS](https://img.shields.io/badge/Frontend-Tailwind_CSS-blue.svg)
+![PHP](https://img.shields.io/badge/Language-PHP_8.2-777bb4.svg)
+![License](https://img.shields.io/badge/License-MIT-green.svg)
 
-## About Laravel
+An advanced, digitalized platform designed for **King Khalid University (KKU)** to streamline the academic advising process. This system consolidates student data, tracks academic risks, and documents advising sessions into a single, intuitive interface.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🌟 Key Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Consolidated Student Profile:** A unified view of academic history, GPA trajectories, and credit hours to reduce cognitive load for advisors.
+- **Smart Risk Indicators:** Visual alerts (Red/Amber) for students with low GPAs or high absence rates, enabling proactive intervention.
+- **Dynamic Advising Notes:** A dedicated timeline for recording and categorizing sessions (Academic, Behavioral, or Attendance).
+- **Dual-Language Interface:** Full support for Arabic (RTL) and English (LTR) with seamless switching.
+- **Live Search & Filtering:** Instant search by student ID or name with optimized pagination.
+- **Real-time Notifications:** Automated alerts for new appointments or critical academic drops.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## 🛠 Tech Stack
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Backend:** Laravel 11 (PHP 8.2+)
+- **Frontend:** Tailwind CSS & Blade Templating Engine
+- **Database:** MySQL
+- **Icons:** Font Awesome 6
+- **Design Principles:** User-Centric Design (UCD) & Minimalist Dashboard UI
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## ⚙️ Installation & Setup
 
-### Premium Partners
+Follow these steps to get the project running locally:
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 1. Clone the Repository
 
-## Contributing
+bash
+git clone [https://github.com/WaleedQ9/kku_advising_system.git](https://github.com/WaleedQ9/kku_advising_system.git)
+cd kku_advising_system
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 2. Install Dependencies
 
-## Code of Conduct
+composer install
+npm install && npm run dev
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 3. Environment Configuration
 
-## Security Vulnerabilities
+cp .env.example .env
+php artisan key:generate
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 4. Database Setup
 
-## License
+Run migrations and seed the database with 50 sample student records:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+php artisan migrate --seed
+
+### 5. Start the Application
+
+php artisan serve
+
+📂 Database Architecture
+The system utilizes a relational database structure designed for scalability:
+
+Users: Manages academic advisors and authentication.
+
+Students: Stores core academic data, GPA, and enrollment status.
+
+Advising Notes: Maintains a history of interactions linked to students and advisors (One-to-Many).
+
+📊 Business Logic (Risk Engine)
+The system automatically categorizes students based on the following thresholds:
+
+🔴 Struggling: GPA < 2.0 or Absences > 15%
+
+🟢 Regular: GPA >= 2.0 and stable attendance.
+
+🔵 Graduated: Completed required credit hours.
+
+📄 License
+Distributed under the MIT License. See LICENSE for more information.
+
+✉️ Contact
+Waleed - [Waleed@wy.sa]
+
+Project Link: https://github.com/WaleedQ9/kku_advising_system
+
+---
+
+### What's Next?
+
+Since you've reached a major milestone by organizing your documentation and core features, we can move to the final "Professional Touch":
+
+**The PDF Report Export:**
+According to your documentation, the advisor needs to "Generate a Report." I can help you install the `dompdf` package and create a clean, university-branded PDF layout that includes:
+
+- Student Academic Summary.
+- Risk Level analysis.
+- Chronological list of all advising notes.
+
+**Would you like me to start the PDF export setup?**
