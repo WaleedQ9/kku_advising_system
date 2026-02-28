@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Department;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,18 +18,22 @@ class StudentFactory extends Factory
      */
     public function definition(): array
     {
+        // جلب قسم عشوائي
+        $department = Department::inRandomOrder()->first();
+
+        // جلب مرشد عشوائي ينتمي لنفس القسم (لضمان منطقية البيانات)
+        $advisor = User::where('department_id', $department->id)->inRandomOrder()->first()
+            ?? User::inRandomOrder()->first();
+
         return [
-            //
-            'student_id' => '44' . $this->faker->unique()->numberBetween(1000000, 9999999),
-            'name_ar' => $this->faker->name(),
-            'name_en' => $this->faker->name(),
-            'major' => $this->faker->randomElement(['نظم معلومات', 'علوم حاسب', 'هندسة برمجيات', 'ذكاء اصطناعي']),
-            'gpa' => $this->faker->randomFloat(2, 1.5, 5.0),
-            'total_credits' => $this->faker->numberBetween(12, 140),
-            'status' => $this->faker->randomElement(['منتظم', 'متعثر', 'خريج']),
-            'advisor_id' => 1,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'student_id'    => $this->faker->unique()->numberBetween(441000000, 445000000), // أرقام جامعية تشبه KKU
+            'name_ar'       => $this->faker->name(), // سيولد اسم عربي ثلاثي أو رباعي
+            'name_en'       => $this->faker->name(), // اختياري بالإنجليزية
+            'department_id' => $department->id,
+            'advisor_id'    => $advisor->id,
+            'gpa'           => $this->faker->randomFloat(2, 2.0, 5.0), // معدل بين 2 و 5
+            'total_credits' => $this->faker->numberBetween(12, 134),
+            'status'        => $this->faker->randomElement(['منتظم', 'متعثر', 'خريج']),
         ];
     }
 }

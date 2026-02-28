@@ -28,7 +28,7 @@
     "أكاديمية": "Academic",
     "استشارة": "Consultation",
     "الساعات المجتازة": "Completed Credits",
-    "ساعة": "Credit",
+    "ساعة": "Hour",
     "مؤشرات الخطر": "Risk Indicators",
     "المعدل التراكمي": "Cumulative GPA",
     "إجمالي الغيابات": "Total Absences",
@@ -48,6 +48,12 @@
     "خريج": "Graduated",
     "معلومات الطالب": "Student Information",
     "التخصص": "Major",
-    "الإجراءات": "Actions"
+    "الإجراءات": "Actions",
+    "السجل الإرشادي التاريخي": "Historical Advising Record",
+    "لا توجد سجلات إرشادية سابقة لهذا الطالب": "No previous advising records for this student",
+    "معدل مواد التخصص": "Major GPA",
+    "إجمالي الساعات الغائبة": "Total Absent Hours",
+    "الفصل الدراسي الحالي": "Current Semester",
+    "مؤشرات الأداء والخطر": "Performance and Risk Indicators"
 
 }

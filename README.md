@@ -22,7 +22,7 @@ An advanced, digitalized platform designed for **King Khalid University (KKU)** 
 
 ## 🛠 Tech Stack
 
-- **Backend:** Laravel 11 (PHP 8.2+)
+- **Backend:** Laravel 12 (PHP 8.2+)
 - **Frontend:** Tailwind CSS & Blade Templating Engine
 - **Database:** MySQL
 - **Icons:** Font Awesome 6

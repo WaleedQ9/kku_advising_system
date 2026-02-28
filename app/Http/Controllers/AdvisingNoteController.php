@@ -8,8 +8,10 @@ use Illuminate\Http\Request;
 class AdvisingNoteController extends Controller
 {
     //
-    // app/Http/Controllers/AdvisingNoteController.php
-
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function store(Request $request)
     {
         $request->validate([

@@ -21,8 +21,34 @@ class Student extends Model
     ];
 
 
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'course_student') // تأكد من وجود اسم الجدول هنا
+            ->withPivot('current_grade', 'absences_count')
+            ->withTimestamps();
+    }
 
-    public function notes()
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
+
+
+    public function advisor()
+    {
+        return $this->belongsTo(User::class, 'advisor_id');
+    }
+
+
+    //يصصي
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
+
+
+    public function advisingNotes()
     {
         return $this->hasMany(AdvisingNote::class);
     }

@@ -69,6 +69,11 @@
 </head>
 
 <body class="bg-kku-bg font-sans text-gray-800 flex">
+    {{-- @include('partials.alerts') --}}
+    @include('partials.alerts')
+    {{-- @include('partials.alerts') --}}
+
+
 
 
     {{-- @include('partials.sidebar') --}}

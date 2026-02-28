@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('student_id')->unique();
             $table->string('name_ar');
             $table->string('name_en')->nullable();
-            $table->string('major');
+            $table->foreignId('department_id')->constrained();
             $table->decimal('gpa', 3, 2);
             $table->integer('total_credits');
             $table->enum('status', ['منتظم', 'متعثر', 'خريج']);

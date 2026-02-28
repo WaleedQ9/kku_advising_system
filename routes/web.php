@@ -2,6 +2,7 @@
 <?php
 
 use App\Http\Controllers\AdvisingNoteController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Students;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -23,8 +24,10 @@ Route::get('lang/{locale}', function ($locale) {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+route::controller(HomeController::class)->group(function () {
+    Route::get('/home', 'index')->name('home');
+});
 route::controller(Students::class)->group(function () {
     Route::get('/students', 'index')->name('students.index');
     Route::get('/students/{student}', 'show')->name('students.show');
