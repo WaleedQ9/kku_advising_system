@@ -33,8 +33,8 @@ class StudentCourseSeeder extends Seeder
 
             foreach ($selectedCourses as $course) {
                 $student->courses()->attach($course->id, [
-                    'current_grade' => rand(60, 100), // درجة من 100
-                    'absences_count' => rand(0, 20),  // غيابات لاختبار الحرمان (DN)
+                    'current_grade' => rand(60, 100),
+                    'absences_count' => rand(0, 20),
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);

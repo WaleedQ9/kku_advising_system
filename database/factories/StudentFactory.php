@@ -18,22 +18,25 @@ class StudentFactory extends Factory
      */
     public function definition(): array
     {
-        // جلب قسم عشوائي
         $department = Department::inRandomOrder()->first();
 
-        // جلب مرشد عشوائي ينتمي لنفس القسم (لضمان منطقية البيانات)
-        $advisor = User::where('department_id', $department->id)->inRandomOrder()->first()
-            ?? User::inRandomOrder()->first();
+        // 2. جلب مرشد عشوائي ينتمي لنفس القسم ويملك دور 'advisor'
+        // استخدمنا شرط الـ role لضمان عدم تعيين طالب لمسجل الطلاب (Registrar)
+        $advisor = User::role('advisor')
+            ->where('department_id', $department->id)
+            ->inRandomOrder()
+            ->first()
+            ?? User::role('advisor')->inRandomOrder()->first();
 
         return [
-            'student_id'    => $this->faker->unique()->numberBetween(441000000, 445000000), // أرقام جامعية تشبه KKU
-            'name_ar'       => $this->faker->name(), // سيولد اسم عربي ثلاثي أو رباعي
-            'name_en'       => $this->faker->name(), // اختياري بالإنجليزية
+            'student_id'    => $this->faker->unique()->numberBetween(441000000, 445000000),
+            'name_ar'       => $this->faker->name(),
+            'name_en'       => $this->faker->name(),
             'department_id' => $department->id,
-            'advisor_id'    => $advisor->id,
-            'gpa'           => $this->faker->randomFloat(2, 2.0, 5.0), // معدل بين 2 و 5
-            'total_credits' => $this->faker->numberBetween(12, 134),
-            'status'        => $this->faker->randomElement(['منتظم', 'متعثر', 'خريج']),
+            'advisor_id'    => $advisor ? $advisor->id : 1, // حماية في حال لم يجد مرشد
+            'gpa'           => 0.00,       // المعدل يبدأ من صفر
+            'total_credits' => 0,          // الساعات المجتازة تبدأ من صفر
+            'status'        => 'منتظم',    // الحالة الافتراضية لأي طالب جديد
         ];
     }
 }

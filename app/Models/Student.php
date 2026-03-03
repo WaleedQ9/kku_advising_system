@@ -23,7 +23,7 @@ class Student extends Model
 
     public function courses()
     {
-        return $this->belongsToMany(Course::class, 'course_student') // تأكد من وجود اسم الجدول هنا
+        return $this->belongsToMany(Course::class, 'course_student')
             ->withPivot('current_grade', 'absences_count')
             ->withTimestamps();
     }
@@ -41,7 +41,7 @@ class Student extends Model
     }
 
 
-    //يصصي
+
     public function department()
     {
         return $this->belongsTo(Department::class);

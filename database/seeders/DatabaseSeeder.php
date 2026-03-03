@@ -22,8 +22,5 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
         ]);
         Student::factory(50)->create();
-        $this->call([
-            StudentCourseSeeder::class,
-        ]);
     }
 }

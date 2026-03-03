@@ -16,6 +16,11 @@ class DepartmentSeeder extends Seeder
         //
         $departments = [
             [
+                'name_ar' => 'عمادة القبول والتسجيل',
+                'name_en' => 'Admissions and Registration Office',
+                'code'    => 'AR'
+            ],
+            [
                 'name_ar' => 'قسم علوم الحاسب',
                 'name_en' => 'Computer Science Department',
                 'code'    => 'CS'

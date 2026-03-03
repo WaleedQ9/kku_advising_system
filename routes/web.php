@@ -1,9 +1,10 @@
 
 <?php
 
-use App\Http\Controllers\AdvisingNoteController;
+use App\Http\Controllers\Advisor\AdvisingNoteController;
+use App\Http\Controllers\Advisor\StudentsController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\Students;
+use App\Http\Controllers\Registrar\StudentManagementController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -28,7 +29,7 @@ Auth::routes();
 route::controller(HomeController::class)->group(function () {
     Route::get('/home', 'index')->name('home');
 });
-route::controller(Students::class)->group(function () {
+route::controller(StudentsController::class)->group(function () {
     Route::get('/students', 'index')->name('students.index');
     Route::get('/students/{student}', 'show')->name('students.show');
 });
@@ -37,3 +38,23 @@ route::controller(Students::class)->group(function () {
 route::controller(AdvisingNoteController::class)->group(function () {
     Route::post('/notes', 'store')->name('notes.store');
 });
+
+
+
+//
+
+
+
+Route::middleware(['auth', 'role:registrar'])
+    ->prefix('registrar')
+    ->name('registrar.')
+    ->controller(StudentManagementController::class)
+    ->group(function () {
+
+        // إدارة الطلاب
+        Route::get('/students', [StudentManagementController::class, 'index'])->name('students.index');
+
+        // تسجيل المواد
+        Route::get('/students/{student}/enroll', [StudentManagementController::class, 'createEnrollment'])->name('students.enroll');
+        Route::post('/students/{student}/enroll', [StudentManagementController::class, 'storeEnrollment'])->name('students.store_enroll');
+    });

@@ -224,7 +224,7 @@
                         <div class="relative">
                             <select name="type"
                                 class="w-full p-3.5 bg-gray-50 border border-gray-100 rounded-2xl text-sm focus:ring-2 focus:ring-kku-primary focus:bg-white outline-none appearance-none transition-all">
-                                <option value="أكاديمية">جلسة أكاديمية</option>
+                                <option value="أكاديمية">{{ __('جلسة أكاديمية') }}</option>
                                 <option value="سلوكية">جلسة سلوكية</option>
                                 <option value="متابعة غياب">متابعة غياب</option>
                                 <option value="أخرى">أخرى</option>
