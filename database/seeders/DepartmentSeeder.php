@@ -15,11 +15,14 @@ class DepartmentSeeder extends Seeder
     {
         //
         $departments = [
+            // --- جهة إدارية (لا يسجل فيها طلاب) ---
             [
                 'name_ar' => 'عمادة القبول والتسجيل',
                 'name_en' => 'Admissions and Registration Office',
                 'code'    => 'AR'
             ],
+
+            // --- الأقسام الأكاديمية (التي يسجل فيها الطلاب) ---
             [
                 'name_ar' => 'قسم علوم الحاسب',
                 'name_en' => 'Computer Science Department',
@@ -50,6 +53,28 @@ class DepartmentSeeder extends Seeder
                 'name_en' => 'Curriculum and Instruction Department',
                 'code'    => 'EDU'
             ],
+
+            // --- الأقسام المساندة (توفر مواد عامة فقط) ---
+            [
+                'name_ar' => 'قسم الدراسات الإسلامية',
+                'name_en' => 'Islamic Studies Department',
+                'code'    => 'ISL' // المالك لمواد IC
+            ],
+            [
+                'name_ar' => 'قسم اللغة العربية',
+                'name_en' => 'Arabic Language Department',
+                'code'    => 'ARB' // المالك لمواد ARAB
+            ],
+            [
+                'name_ar' => 'قسم الرياضيات',
+                'name_en' => 'Mathematics Department',
+                'code'    => 'MATH' // المالك لمواد MATH
+            ],
+            [
+                'name_ar' => 'قسم اللغة الإنجليزية',
+                'name_en' => 'English Language Center',
+                'code'    => 'ENG' // المالك لمواد ENG
+            ]
         ];
 
         foreach ($departments as $dept) {

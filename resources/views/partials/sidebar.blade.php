@@ -20,13 +20,19 @@
                 </a>
             @endrole
             @role('registrar')
+                <a href="{{ route('registrar.dashboard') }}"
+                    class="sidebar-item flex items-center gap-3 p-3 rounded-lg transition-all
+                         {{ request()->routeIs('registrar.dashboard') ? 'bg-white/20 border-r-4 border-kku-accent font-bold' : 'hover:bg-white/10 opacity-80' }}">
+                    <i class="fas fa-th-large w-6"></i>
+                    <span>{{ __('احصائيات') }}</span>
+                </a>
                 <a href="{{ route('registrar.students.index') }}"
                     class="sidebar-item flex items-center gap-3 p-3 rounded-lg transition-all {{ request()->routeIs('registrar.students.*') ? 'bg-white/20 border-r-4 border-kku-accent font-bold' : 'hover:bg-white/10 opacity-80' }}">
                     <i class="fas fa-users w-6"></i> <span>{{ __('قائمة الطلاب') }}</span>
                 </a>
             @endrole
 
-            <a href="#" class="sidebar-item flex items-center gap-3 p-3 rounded-lg transition-all">
+            {{-- <a href="#" class="sidebar-item flex items-center gap-3 p-3 rounded-lg transition-all">
                 <i class="fas fa-file-signature w-6"></i> <span>الطلبات الأكاديمية</span>
                 <span class="mr-auto bg-red-500 text-[10px] px-2 py-0.5 rounded-full">5</span>
             </a>
@@ -35,7 +41,7 @@
             </a>
             <a href="#" class="sidebar-item flex items-center gap-3 p-3 rounded-lg transition-all text-gray-300">
                 <i class="fas fa-calendar-alt w-6"></i> <span>جدول المواعيد</span>
-            </a>
+            </a> --}}
         </nav>
 
         <div class="p-4 bg-white/5 m-4 rounded-xl border border-white/10">
@@ -45,7 +51,7 @@
                     م</div>
                 <div class="overflow-hidden">
                     <p class="text-[15px] font-bold truncate  ">{{ Auth::user()->name }}</p>
-                    <p class="text-[10px] text-green-300">كلية علوم الحاسب</p>
+                    <p class="text-[10px] text-green-300">{{ Auth::user()->department->name_ar }}</p>
                 </div>
                 <a href="{{ route('logout') }}"
                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();"

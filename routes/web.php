@@ -4,6 +4,7 @@
 use App\Http\Controllers\Advisor\AdvisingNoteController;
 use App\Http\Controllers\Advisor\StudentsController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Registrar\DashboardController;
 use App\Http\Controllers\Registrar\StudentManagementController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -48,7 +49,6 @@ route::controller(AdvisingNoteController::class)->group(function () {
 Route::middleware(['auth', 'role:registrar'])
     ->prefix('registrar')
     ->name('registrar.')
-    ->controller(StudentManagementController::class)
     ->group(function () {
 
         // إدارة الطلاب
@@ -57,4 +57,6 @@ Route::middleware(['auth', 'role:registrar'])
         // تسجيل المواد
         Route::get('/students/{student}/enroll', [StudentManagementController::class, 'createEnrollment'])->name('students.enroll');
         Route::post('/students/{student}/enroll', [StudentManagementController::class, 'storeEnrollment'])->name('students.store_enroll');
+
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     });

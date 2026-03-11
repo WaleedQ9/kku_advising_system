@@ -19,16 +19,61 @@ class StudentManagementController extends Controller
 
     public function index(Request $request)
     {
-        $query = Student::query();
+        // 1. إحصائيات عامة للنظام
+        $stats = [
+            'total_students' => \App\Models\Student::count(),
+            'new_students'   => \App\Models\Student::where('total_credits', 0)->count(),
+            'at_risk'        => \App\Models\Student::where('gpa', '<', 2.0)->where('total_credits', '>', 0)->count(),
+        ];
 
-        // البحث بالرقم الجامعي أو الاسم
-        if ($request->has('search')) {
-            $query->where('student_id', 'like', '%' . $request->search . '%')
-                ->orWhere('name_ar', 'like', '%' . $request->search . '%');
+        // 2. إحصائيات تفصيلية لكل قسم
+        $departmentsStats = \App\Models\Department::withCount('students')
+            ->get()
+            ->map(function ($dept) {
+                return [
+                    'name' => $dept->name_ar,
+                    'code' => $dept->code,
+                    'count' => $dept->students_count,
+                    // حساب الطلاب الجدد في هذا القسم
+                    'new' => \App\Models\Student::where('department_id', $dept->id)->where('total_credits', 0)->count(),
+                    // حساب متوسط المعدل في القسم
+                    'avg_gpa' => number_format(\App\Models\Student::where('department_id', $dept->id)->avg('gpa'), 2),
+                ];
+            });
+
+        // 3. الاستعلام الأساسي للجدول (مع الفلاتر الحالية)
+        $query = \App\Models\Student::query();
+        $query = Student::query();
+        // 1. البحث بالنص (اسم أو رقم)
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('student_id', 'like', '%' . $request->search . '%')
+                    ->orWhere('name_ar', 'like', '%' . $request->search . '%');
+            });
         }
 
-        $students = $query->with('department')->paginate(10);
-        return view('registrar.students.index', compact('students'));
+        // 2. الفلترة حسب القسم
+        if ($request->filled('department_id')) {
+            $query->where('department_id', $request->department_id);
+        }
+
+        // 3. الفلترة حسب الحالة (منتظم، خريج، متعثر)
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // فلترة الطلاب الجدد (الذين ساعاتهم تساوي 0)
+        if ($request->boolean('new_students')) {
+            $query->where('total_credits', 0);
+        }
+        $students = $query->with('department')
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+
+        $departments = \App\Models\Department::all();
+        return view('registrar.students.index', compact('students', 'departments', 'stats', 'departmentsStats'));
     }
 
 

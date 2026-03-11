@@ -18,10 +18,8 @@ class StudentFactory extends Factory
      */
     public function definition(): array
     {
-        $department = Department::inRandomOrder()->first();
+        $department = Department::where('code', '!=', 'AR')->inRandomOrder()->first();
 
-        // 2. جلب مرشد عشوائي ينتمي لنفس القسم ويملك دور 'advisor'
-        // استخدمنا شرط الـ role لضمان عدم تعيين طالب لمسجل الطلاب (Registrar)
         $advisor = User::role('advisor')
             ->where('department_id', $department->id)
             ->inRandomOrder()
@@ -33,10 +31,10 @@ class StudentFactory extends Factory
             'name_ar'       => $this->faker->name(),
             'name_en'       => $this->faker->name(),
             'department_id' => $department->id,
-            'advisor_id'    => $advisor ? $advisor->id : 1, // حماية في حال لم يجد مرشد
-            'gpa'           => 0.00,       // المعدل يبدأ من صفر
-            'total_credits' => 0,          // الساعات المجتازة تبدأ من صفر
-            'status'        => 'منتظم',    // الحالة الافتراضية لأي طالب جديد
+            'advisor_id'    => $advisor ? $advisor->id : 1,
+            'gpa'           => 0.00,
+            'total_credits' => 0,
+            'status'        => 'منتظم',
         ];
     }
 }

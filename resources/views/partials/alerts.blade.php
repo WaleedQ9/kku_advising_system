@@ -8,7 +8,7 @@
 
 @if (session('success'))
     <div id="alert-success"
-        class="fixed {{ $alignmentClasses }}  z-[200]  h-auto w-[450px] flex items-center p-4 mb-4 text-green-800 rounded-2xl bg-green-50 border border-green-100 shadow-xl {{ $animationClass }} duration-500"
+        class="fixed {{ $alignmentClasses }}  z-[200]  h-auto w-[450px] flex items-center p-4 mb-4 text-black-800 rounded-2xl bg-green-200 border border-green-300 shadow-xl {{ $animationClass }} duration-500"
         role="alert">
         <div
             class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-white rounded-lg shadow-sm">
@@ -46,16 +46,15 @@
 @endif
 
 <script>
-    // إخفاء التنبيه تلقائياً بعد 5 ثوانٍ مع تأثير اختفاء سلس
     setTimeout(() => {
         ['alert-success', 'alert-error'].forEach(id => {
             const el = document.getElementById(id);
             if (el) {
                 el.style.transition = "all 0.6s ease-in-out";
                 el.style.opacity = "0";
-                el.style.transform = "translateY(20px) scale(0.9)"; // ينزل للأسفل ويصغر قليلاً
+                el.style.transform = "translateY(20px) scale(0.9)";
                 setTimeout(() => el.remove(), 500);
             }
         });
-    }, 5000);
+    }, 40000);
 </script>

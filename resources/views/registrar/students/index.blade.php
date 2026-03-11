@@ -4,6 +4,7 @@
 
 @section('content')
     <div class="space-y-6">
+
         <div class="flex justify-between items-center">
             <div>
                 <h2 class="text-2xl font-bold text-gray-800">إدارة تسجيل الطلاب</h2>
@@ -16,21 +17,81 @@
             </div>
         </div>
 
-        <div class="bg-white p-4 rounded-3xl shadow-sm border border-gray-100">
-            <form action="{{ route('registrar.students.index') }}" method="GET" class="flex gap-4">
-                <div class="relative flex-1">
-                    <i class="fas fa-search absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                    <input type="text" name="search" value="{{ request('search') }}"
-                        placeholder="ابحث بالاسم أو الرقم الجامعي..."
-                        class="w-full pr-11 pl-4 py-3 bg-gray-50 border-none rounded-2xl text-sm focus:ring-2 focus:ring-kku-primary outline-none transition-all">
+
+
+
+
+
+        <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 mb-6">
+            <form action="{{ route('registrar.students.index') }}" method="GET" class="space-y-5">
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+                    <div class="md:col-span-5">
+                        <label class="block text-[10px] font-bold text-gray-400 mb-2 mr-1">البحث السريع</label>
+                        <div class="relative">
+                            <i class="fas fa-search absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            <input type="text" name="search" value="{{ request('search') }}"
+                                placeholder="الاسم أو الرقم الجامعي..."
+                                class="w-full pr-11 pl-4 py-3 bg-gray-50 border-transparent rounded-2xl text-sm focus:ring-2 focus:ring-kku-primary focus:bg-white transition-all outline-none">
+                        </div>
+                    </div>
+
+                    <div class="md:col-span-4">
+                        <label class="block text-[10px] font-bold text-gray-400 mb-2 mr-1">تصفية حسب القسم</label>
+                        <select name="department_id"
+                            class="w-full p-3 bg-gray-50 border-transparent rounded-2xl text-sm focus:ring-2 focus:ring-kku-primary outline-none appearance-none">
+                            <option value="">كل الأقسام</option>
+                            @foreach ($departments as $dept)
+                                <option value="{{ $dept->id }}"
+                                    {{ request('department_id') == $dept->id ? 'selected' : '' }}>
+                                    {{ $dept->name_ar }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-span-12 md:col-span-3">
+                        <label class="block text-[10px] font-bold text-gray-400 mb-2 mr-1">حالة الطالب</label>
+                        <select name="status"
+                            class="w-full p-3 bg-gray-50 border-none rounded-2xl text-sm focus:ring-2 focus:ring-kku-primary outline-none appearance-none">
+                            <option value="">كل الحالات</option>
+                            <option value="منتظم" {{ request('status') == 'منتظم' ? 'selected' : '' }}>منتظم</option>
+                            <option value="متعثر" {{ request('status') == 'متعثر' ? 'selected' : '' }}>متعثر</option>
+                            <option value="خريج" {{ request('status') == 'خريج' ? 'selected' : '' }}>خريج</option>
+                        </select>
+                    </div>
+
+                    <div class="md:col-span-3 flex items-end">
+                        <button type="submit"
+                            class="w-full py-3 bg-kku-primary text-white rounded-2xl font-bold shadow-lg shadow-kku-primary/20 hover:bg-kku-dark transition-all">
+                            تطبيق الفلاتر
+                        </button>
+                    </div>
                 </div>
-                <button type="submit"
-                    class="px-8 py-3 bg-kku-primary text-white rounded-2xl font-bold hover:bg-kku-dark transition-all">
-                    {{ __('بحث') }}
-                </button>
+
+                <div class="pt-4 border-t border-gray-50 flex flex-wrap items-center justify-between gap-4">
+                    <label
+                        class="flex items-center gap-3 cursor-pointer group bg-amber-50/50 px-5 py-3 rounded-2xl border border-amber-100/50 hover:bg-amber-50 transition-all">
+                        <div class="relative flex items-center">
+                            <input type="checkbox" name="new_students" value="1" onchange="this.form.submit()"
+                                {{ request('new_students') ? 'checked' : '' }}
+                                class="w-5 h-5 rounded-lg border-amber-300 text-amber-600 focus:ring-amber-500 transition-all">
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-xs font-bold text-amber-800">إظهار الطلاب الجدد فقط</span>
+                            <span class="text-[10px] text-amber-600/70">الطلاب الذين لم يتم تسجيل أي ساعات لهم بعد</span>
+                        </div>
+                    </label>
+
+                    @if (request()->anyFilled(['search', 'department_id', 'new_students', 'status']))
+                        <a href="{{ route('registrar.students.index') }}"
+                            class="text-xs font-bold text-red-400 hover:text-red-600 flex items-center gap-2 px-4 py-2 hover:bg-red-50 rounded-xl transition-all">
+                            <i class="fas fa-times-circle"></i>
+                            إلغاء كافة الفلاتر
+                        </a>
+                    @endif
+                </div>
             </form>
         </div>
-
         <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
             <table class="w-full text-right">
                 <thead class="bg-gray-50 border-b border-gray-100">
@@ -99,5 +160,6 @@
                 {{ $students->links() }}
             </div>
         </div>
+
     </div>
 @endsection
