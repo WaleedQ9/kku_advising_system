@@ -312,22 +312,24 @@
         </div>
         @endif
 
-        {{-- تنبيه النظام --}}
+        {{-- شرح آلية التنبيهات --}}
         <div class="bg-kku-dark text-white rounded-3xl p-6 shadow-lg relative overflow-hidden">
             <i class="fas fa-graduation-cap absolute -bottom-4 -left-4 text-white/10 text-6xl rotate-12"></i>
-            <div class="relative">
-                <h4 class="font-bold mb-2 flex items-center gap-2">
-                    <i class="fas fa-robot text-kku-accent"></i> النظام الذكي
+            <div class="relative space-y-3">
+                <h4 class="font-bold flex items-center gap-2">
+                    <i class="fas fa-robot text-kku-accent"></i> آلية التنبيهات
                 </h4>
-                <p class="text-xs opacity-80 leading-relaxed">
-                    اضغط "فحص التنبيهات" لتوليد تنبيهات تلقائية لطلابك بناءً على المعدل والغيابات.
-                </p>
-                <form method="POST" action="{{ route('flags.scan') }}" class="mt-4">
-                    @csrf
-                    <button class="w-full py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-xs font-bold transition-all">
-                        <i class="fas fa-search ml-1"></i> فحص الآن
-                    </button>
-                </form>
+                <div class="space-y-2 text-xs opacity-80">
+                    <div class="flex items-start gap-2">
+                        <i class="fas fa-chart-line mt-0.5 text-red-300 shrink-0"></i>
+                        <span>معدل أقل من 2.0 → تنبيه <strong>معدل منخفض</strong></span>
+                    </div>
+                    <div class="flex items-start gap-2">
+                        <i class="fas fa-calendar-times mt-0.5 text-amber-300 shrink-0"></i>
+                        <span>غيابات 4 أو أكثر → تنبيه <strong>غيابات عالية</strong></span>
+                    </div>
+                </div>
+                <p class="text-[10px] opacity-50">استخدم زر "فحص التنبيهات" في الأعلى لتشغيل الفحص.</p>
             </div>
         </div>
     </div>
