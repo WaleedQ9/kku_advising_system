@@ -406,14 +406,7 @@
 </div>
 
 
-{{-- Flash messages --}}
-@if(session('success'))
-<div id="flashMsg" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[200] bg-kku-primary text-white px-6 py-3 rounded-2xl shadow-xl text-sm font-bold flex items-center gap-3">
-    <i class="fas fa-check-circle"></i> {{ session('success') }}
-</div>
-@endif
 @if(session('error'))
-<div id="flashMsg" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[200] bg-red-500 text-white px-6 py-3 rounded-2xl shadow-xl text-sm font-bold flex items-center gap-3">
     <i class="fas fa-exclamation-circle"></i> {{ session('error') }}
 </div>
 @endif
@@ -487,9 +480,6 @@ document.addEventListener('click', e => {
     }
 });
 
-// ── Flash Auto-hide ───────────────────────────────
-const flash = document.getElementById('flashMsg');
-if (flash) setTimeout(() => flash.style.opacity = '0', 3000);
 
 // ── Init ──────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', loadColumnPrefs);
