@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class StudentsController extends Controller
 {
-    //
     public function __construct()
     {
         $this->middleware('auth');
@@ -16,29 +15,25 @@ class StudentsController extends Controller
 
     public function index(Request $request)
     {
-
-        $search = $request->input('search');
+        $search  = $request->input('search');
         $advisor = auth()->user();
+
         $students = Student::query()
-            ->where('department_id', $advisor->department_id)
-
             ->where('advisor_id', $advisor->id)
-
-            ->with('department')
-
-            ->when($search, function ($query) use ($search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('student_id', 'LIKE', "%{$search}%")
-                        ->orWhere('name_ar', 'LIKE', "%{$search}%")
-                        ->orWhere('name_en', 'LIKE', "%{$search}%");
-                });
-            })
-
+            ->with([
+                'department',
+                'advisingNotes' => fn($q) => $q->with('user')->latest(),
+                'riskFlags'     => fn($q) => $q->where('is_resolved', false)->latest(),
+                'courses',
+            ])
+            ->when($search, fn($q) => $q->where(function ($q2) use ($search) {
+                $q2->where('student_id', 'LIKE', "%{$search}%")
+                   ->orWhere('name_ar',   'LIKE', "%{$search}%")
+                   ->orWhere('name_en',   'LIKE', "%{$search}%");
+            }))
             ->latest()
-            ->paginate(10)
+            ->paginate(15)
             ->withQueryString();
-
-
 
         return view('Student.index', compact('students'));
     }
@@ -52,13 +47,14 @@ class StudentsController extends Controller
         $student->load([
             'department',
             'advisor',
-            'courses' => function ($query) {
-                $query->withPivot('current_grade', 'absences_count');
-            }
+            'courses'       => fn($q) => $q->withPivot('current_grade', 'absences_count'),
+            'advisingNotes' => fn($q) => $q->with('user')->latest(),
+            'riskFlags',
+            'dropActions'   => fn($q) => $q->with('course')->latest(),
         ]);
 
-        $notes = $student->advisingNotes()->with('user')->latest()->get();
+        $notes = $student->advisingNotes;
 
-        return view('student.show', compact('student', 'notes'));
+        return view('Student.show', compact('student', 'notes'));
     }
 }
