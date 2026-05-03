@@ -40,7 +40,8 @@ class StudentsController extends Controller
 
     public function show(Student $student)
     {
-        if (auth()->user()->department_id !== $student->department_id) {
+        // يسمح فقط للمرشد المسؤول عن هذا الطالب
+        if (auth()->id() !== $student->advisor_id) {
             abort(403, 'ليس لديك صلاحية الوصول لبيانات هذا الطالب');
         }
 
