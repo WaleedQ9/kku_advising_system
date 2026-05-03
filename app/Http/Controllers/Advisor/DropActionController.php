@@ -21,7 +21,7 @@ class DropActionController extends Controller
     public function check(Student $student, Course $course)
     {
         // تحقق أن المرشد مسؤول عن هذا الطالب
-        if (auth()->id() !== $student->advisor_id) {
+        if (auth()->user()->department_id !== $student->department_id) {
             abort(403);
         }
 
@@ -35,7 +35,7 @@ class DropActionController extends Controller
      */
     public function store(Request $request, Student $student)
     {
-        if (auth()->id() !== $student->advisor_id) {
+        if (auth()->user()->department_id !== $student->department_id) {
             abort(403);
         }
 

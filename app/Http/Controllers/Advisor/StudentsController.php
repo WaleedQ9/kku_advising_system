@@ -19,7 +19,7 @@ class StudentsController extends Controller
         $advisor = auth()->user();
 
         $students = Student::query()
-            ->where('advisor_id', $advisor->id)
+            ->where('department_id', $advisor->department_id)
             ->with([
                 'department',
                 'advisingNotes' => fn($q) => $q->with('user')->latest(),
@@ -40,8 +40,8 @@ class StudentsController extends Controller
 
     public function show(Student $student)
     {
-        // يسمح فقط للمرشد المسؤول عن هذا الطالب
-        if (auth()->id() !== $student->advisor_id) {
+        // يسمح لأي مرشد من نفس القسم
+        if (auth()->user()->department_id !== $student->department_id) {
             abort(403, 'ليس لديك صلاحية الوصول لبيانات هذا الطالب');
         }
 

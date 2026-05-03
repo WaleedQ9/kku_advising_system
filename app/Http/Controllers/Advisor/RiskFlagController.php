@@ -19,7 +19,7 @@ class RiskFlagController extends Controller
      */
     public function index(Student $student)
     {
-        if (auth()->id() !== $student->advisor_id) {
+        if (auth()->user()->department_id !== $student->department_id) {
             abort(403);
         }
 
@@ -35,7 +35,7 @@ class RiskFlagController extends Controller
     {
         // تحقق أن المرشد يملك صلاحية على طالب هذا الـ flag
         $student = $riskFlag->student;
-        if (auth()->id() !== $student->advisor_id) {
+        if (auth()->user()->department_id !== $student->department_id) {
             abort(403);
         }
 
