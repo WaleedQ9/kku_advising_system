@@ -38,6 +38,24 @@ class StudentsController extends Controller
         return view('Student.index', compact('students'));
     }
 
+    public function print(Student $student)
+    {
+        if (auth()->user()->department_id !== $student->department_id) {
+            abort(403);
+        }
+
+        $student->load([
+            'department',
+            'advisor',
+            'courses'       => fn($q) => $q->withPivot('current_grade', 'absences_count'),
+            'advisingNotes' => fn($q) => $q->with('user')->latest(),
+            'riskFlags',
+            'dropActions'   => fn($q) => $q->with('course')->latest(),
+        ]);
+
+        return view('Student.print', compact('student'));
+    }
+
     public function show(Student $student)
     {
         // يسمح لأي مرشد من نفس القسم

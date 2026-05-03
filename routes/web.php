@@ -35,6 +35,7 @@ Route::middleware(['auth', 'role:advisor'])->group(function () {
     Route::controller(StudentsController::class)->group(function () {
         Route::get('/students',          'index')->name('students.index');
         Route::get('/students/{student}','show')->name('students.show');
+        Route::get('/students/{student}/print','print')->name('students.print');
     });
 
     // Advising Notes

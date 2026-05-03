@@ -30,6 +30,10 @@
                 class="px-4 py-2 bg-kku-primary text-white rounded-xl text-sm font-bold hover:bg-kku-dark transition-all">
                 <i class="fas fa-plus ml-1"></i> ملاحظة إرشادية
             </button>
+            <a href="{{ route('students.print', $student->id) }}" target="_blank"
+                class="px-4 py-2 bg-gray-800 text-white rounded-xl text-sm font-bold hover:bg-black transition-all">
+                <i class="fas fa-print ml-1"></i> طباعة الملف
+            </a>
             <a href="{{ route('students.index') }}"
                 class="px-4 py-2 bg-gray-100 text-gray-600 rounded-xl text-sm font-bold hover:bg-gray-200 transition-all">
                 <i class="fas fa-arrow-right ml-1"></i> قائمة الطلاب

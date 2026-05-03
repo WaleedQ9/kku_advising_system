@@ -200,6 +200,11 @@
                                         title="الملف الكامل للطالب">
                                         <i class="fas fa-eye text-[10px]"></i> الملف
                                     </a>
+                                    <a href="{{ route('students.print', $student->id) }}" target="_blank"
+                                        class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-800 text-white rounded-lg text-[11px] font-bold hover:bg-black transition-all"
+                                        title="طباعة ملف الطالب">
+                                        <i class="fas fa-print text-[10px]"></i>
+                                    </a>
                                 </div>
                             </td>
                         </tr>
