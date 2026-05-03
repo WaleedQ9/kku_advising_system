@@ -26,7 +26,6 @@ class StudentsController extends Controller
 
             ->with('department')
 
-            // 4. البحث: البحث بالرقم الجامعي أو الاسم
             ->when($search, function ($query) use ($search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('student_id', 'LIKE', "%{$search}%")

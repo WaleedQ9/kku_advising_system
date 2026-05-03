@@ -17,14 +17,12 @@ class DashboardController extends Controller
 
     public function index()
     {
-        // 1. إحصائيات عامة
         $stats = [
             'total_students' => Student::count(),
             'new_students'   => Student::where('total_credits', 0)->count(),
             'at_risk'        => Student::where('gpa', '<', 2.0)->where('total_credits', '>', 0)->count(),
         ];
 
-        // 2. إحصائيات الأقسام مع الروابط الذكية
         $departmentsStats = Department::withCount('students')
             ->get()
             ->map(function ($dept) {

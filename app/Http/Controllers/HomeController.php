@@ -26,6 +26,7 @@ class HomeController extends Controller
     {
 
         $students = Student::where('advisor_id', auth()->id())->count();
+
         return view('home', compact('students'));
     }
 }

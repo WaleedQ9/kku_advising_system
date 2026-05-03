@@ -13,6 +13,7 @@ class AdvisingNoteController extends Controller
     {
         $this->middleware('auth');
     }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -25,7 +26,7 @@ class AdvisingNoteController extends Controller
             'student_id' => $request->student_id,
             'user_id' => auth()->id(),
             'type' => $request->type,
-            'content' => $request->content,
+            'content' => "$request->content",
         ]);
 
         return back()->with('success', 'تم حفظ الملاحظة الإرشادية بنجاح');

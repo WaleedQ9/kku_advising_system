@@ -19,6 +19,8 @@
                     <i class="fas fa-users w-6"></i> <span>{{ __('قائمة الطلاب') }}</span>
                 </a>
             @endrole
+
+
             @role('registrar')
                 <a href="{{ route('registrar.dashboard') }}"
                     class="sidebar-item flex items-center gap-3 p-3 rounded-lg transition-all
@@ -32,16 +34,7 @@
                 </a>
             @endrole
 
-            {{-- <a href="#" class="sidebar-item flex items-center gap-3 p-3 rounded-lg transition-all">
-                <i class="fas fa-file-signature w-6"></i> <span>الطلبات الأكاديمية</span>
-                <span class="mr-auto bg-red-500 text-[10px] px-2 py-0.5 rounded-full">5</span>
-            </a>
-            <a href="#" class="sidebar-item flex items-center gap-3 p-3 rounded-lg transition-all">
-                <i class="fas fa-chart-pie w-6"></i> <span>إحصائيات الدفعة</span>
-            </a>
-            <a href="#" class="sidebar-item flex items-center gap-3 p-3 rounded-lg transition-all text-gray-300">
-                <i class="fas fa-calendar-alt w-6"></i> <span>جدول المواعيد</span>
-            </a> --}}
+
         </nav>
 
         <div class="p-4 bg-white/5 m-4 rounded-xl border border-white/10">
