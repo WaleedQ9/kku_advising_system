@@ -39,6 +39,7 @@ Route::middleware(['auth', 'role:advisor'])->group(function () {
 
     // Advising Notes
     Route::post('/notes', [AdvisingNoteController::class, 'store'])->name('notes.store');
+    Route::post('/notes/{note}/follow-up-done', [AdvisingNoteController::class, 'markFollowUpDone'])->name('notes.followup.done');
 
     // Drop Actions
     Route::controller(DropActionController::class)->group(function () {

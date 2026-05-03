@@ -35,4 +35,18 @@ class AdvisingNoteController extends Controller
 
         return back()->with('success', 'تم حفظ الملاحظة الإرشادية بنجاح');
     }
+
+    public function markFollowUpDone(AdvisingNote $note)
+    {
+        if (auth()->user()->department_id !== $note->student->department_id) {
+            abort(403);
+        }
+
+        // نطفئ follow_up_required على جميع ملاحظات هذا الطالب التي تحتاج متابعة
+        AdvisingNote::where('student_id', $note->student_id)
+            ->where('follow_up_required', true)
+            ->update(['follow_up_required' => false]);
+
+        return back()->with('success', 'تم تحديد المتابعة كمكتملة');
+    }
 }

@@ -356,10 +356,20 @@
                             <p class="text-sm font-bold text-gray-800">{{ $fs->name_ar }}</p>
                             <p class="text-[10px] text-gray-400 font-mono">{{ $fs->student_id }}</p>
                         </div>
-                        <button onclick="toggleNotes({{ $fs->id }})"
-                            class="text-[10px] font-bold text-amber-600 hover:underline shrink-0">
-                            عرض
-                        </button>
+                        <div class="flex items-center gap-1.5 shrink-0">
+                            <button onclick="toggleNotes({{ $fs->id }})"
+                                class="text-[10px] font-bold text-amber-600 hover:underline">
+                                عرض
+                            </button>
+                            <form method="POST" action="{{ route('notes.followup.done', $lastNote->id) }}">
+                                @csrf
+                                <button type="submit"
+                                    class="text-[10px] font-bold px-2 py-0.5 bg-green-100 text-green-700 rounded-md hover:bg-green-500 hover:text-white transition-all"
+                                    title="تمت المتابعة">
+                                    <i class="fas fa-check text-[9px]"></i> تمت
+                                </button>
+                            </form>
+                        </div>
                     </div>
                     @if($lastNote?->title)
                         <p class="text-[11px] text-amber-700 mt-1 font-bold">{{ $lastNote->title }}</p>
