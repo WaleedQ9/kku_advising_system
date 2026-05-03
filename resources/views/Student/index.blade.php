@@ -6,23 +6,7 @@
 {{-- ───────────────────── Toolbar ───────────────────── --}}
 <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
 
-    {{-- بحث --}}
-    <form method="GET" action="{{ route('students.index') }}" class="flex items-center gap-3 flex-1 min-w-[260px]">
-        <div class="relative flex-1 max-w-sm">
-            <i class="fas fa-search absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
-            <input type="text" name="search" value="{{ request('search') }}"
-                placeholder="بحث بالاسم أو الرقم..."
-                class="w-full pr-9 pl-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-kku-primary outline-none">
-        </div>
-        <button type="submit" class="px-4 py-2.5 bg-kku-primary text-white rounded-xl text-sm font-bold hover:bg-kku-dark transition-all">بحث</button>
-        @if(request('search'))
-            <a href="{{ route('students.index') }}" class="px-3 py-2.5 bg-gray-100 text-gray-500 rounded-xl text-sm hover:bg-gray-200 transition-all">
-                <i class="fas fa-times"></i>
-            </a>
-        @endif
-    </form>
-
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-2 mr-auto">
         {{-- فحص التنبيهات --}}
         <form method="POST" action="{{ route('flags.scan') }}">
             @csrf
@@ -41,7 +25,7 @@
             </button>
             <div id="colPanel"
                 class="hidden absolute left-0 top-12 z-50 bg-white border border-gray-200 rounded-2xl shadow-xl p-4 w-52 space-y-2">
-                <p class="text-[10px] font-black text-gray-400 uppercase mb-3">إظهار / إخفاء</p>
+                <p class="text-[10px] font-black text-gray-400 uppercase mb-3">{{ __('إظهار / إخفاء') }}</p>
                 @foreach([
                     'col-major'   => 'التخصص',
                     'col-gpa'     => 'المعدل',
@@ -88,13 +72,13 @@
                     <thead class="bg-gray-50 text-[11px] font-bold text-gray-500 uppercase">
                         <tr>
                             <th class="px-5 py-3">الطالب</th>
-                            <th class="px-5 py-3 col-major">التخصص</th>
-                            <th class="px-5 py-3 col-gpa">المعدل</th>
-                            <th class="px-5 py-3 col-credits">الساعات</th>
-                            <th class="px-5 py-3 col-status">الحالة</th>
-                            <th class="px-5 py-3 col-flags">التنبيهات</th>
-                            <th class="px-5 py-3 col-notes text-center">الملاحظات</th>
-                            <th class="px-5 py-3 text-center">إجراء سريع</th>
+                            <th class="px-5 py-3 col-major">{{ __('التخصص') }}</th>
+                            <th class="px-5 py-3 col-gpa">{{ __('المعدل') }}</th>
+                            <th class="px-5 py-3 col-credits">{{ __('الساعات') }}</th>
+                            <th class="px-5 py-3 col-status">{{ __('الحالة') }}</th>
+                            <th class="px-5 py-3 col-flags">{{ __('التنبيهات') }}</th>
+                            <th class="px-5 py-3 col-notes text-center">{{ __('الملاحظات') }}</th>
+                            <th class="px-5 py-3 text-center">{{ __('إجراء سريع') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-50">
@@ -177,7 +161,7 @@
                             {{-- الملاحظات (preview + expand) --}}
                             <td class="px-5 py-4 col-notes text-center">
                                 @if($latestNotes->isEmpty())
-                                    <span class="text-[10px] text-gray-300">لا توجد ملاحظات</span>
+                                    <span class="text-[10px] text-gray-300">{{ __('{{ __('لا توجد ملاحظات') }}') }}</span>
                                 @else
                                     <button onclick="toggleNotes({{ $student->id }})"
                                         class="inline-flex items-center gap-1 text-[11px] font-bold text-kku-primary hover:underline">
@@ -192,17 +176,17 @@
                                 <div class="flex items-center justify-center gap-2">
                                     <button onclick="openQuickNote({{ $student->id }}, '{{ addslashes($student->name_ar) }}')"
                                         class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-kku-primary/10 text-kku-primary rounded-lg text-[11px] font-bold hover:bg-kku-primary hover:text-white transition-all"
-                                        title="إضافة ملاحظة سريعة">
+                                        title="{{ __('إضافة ملاحظة سريعة') }}">
                                         <i class="fas fa-plus text-[10px]"></i> ملاحظة
                                     </button>
                                     <a href="{{ route('students.show', $student->id) }}"
                                         class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 text-gray-600 rounded-lg text-[11px] font-bold hover:bg-gray-200 transition-all"
-                                        title="الملف الكامل للطالب">
+                                        title="{{ __('الملف الكامل للطالب') }}">
                                         <i class="fas fa-eye text-[10px]"></i> الملف
                                     </a>
                                     <a href="{{ route('students.print', $student->id) }}" target="_blank"
                                         class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-800 text-white rounded-lg text-[11px] font-bold hover:bg-black transition-all"
-                                        title="طباعة ملف الطالب">
+                                        title="{{ __('طباعة ملف الطالب') }}">
                                         <i class="fas fa-print text-[10px]"></i>
                                     </a>
                                 </div>
@@ -214,10 +198,10 @@
                             <td colspan="8" class="px-6 py-4">
                                 <div class="text-xs font-black text-gray-500 mb-3 flex items-center gap-2">
                                     <i class="fas fa-history text-kku-primary"></i>
-                                    السجل الإرشادي — {{ $student->name_ar }}
+                                    {{ __('السجل الإرشادي') }} — {{ $student->name_ar }}
                                 </div>
                                 @if($student->advisingNotes->isEmpty())
-                                    <p class="text-xs text-gray-400">لا توجد ملاحظات.</p>
+                                    <p class="text-xs text-gray-400">{{ __('لا توجد ملاحظات') }}.</p>
                                 @else
                                 <div class="space-y-2 max-h-56 overflow-y-auto pl-2">
                                     @foreach($student->advisingNotes->sortByDesc('created_at') as $note)
@@ -237,7 +221,7 @@
                                                 {{ $note->created_at->format('Y/m/d') }} —
                                                 {{ $note->user->name ?? 'المرشد' }}
                                                 @if($note->follow_up_required)
-                                                    <span class="mr-2 text-amber-600 font-bold"><i class="fas fa-flag text-[9px]"></i> متابعة مطلوبة</span>
+                                                    <span class="mr-2 text-amber-600 font-bold"><i class="fas fa-flag text-[9px]"></i> {{ __('متابعة مطلوبة') }}</span>
                                                 @endif
                                             </p>
                                         </div>
@@ -400,7 +384,7 @@
         {{-- Header --}}
         <div class="bg-kku-primary p-5 text-white flex justify-between items-center">
             <div>
-                <p class="text-xs opacity-70 mb-0.5">ملاحظة إرشادية سريعة</p>
+                <p class="text-xs opacity-70 mb-0.5">{{ __('ملاحظة إرشادية سريعة') }}</p>
                 <h3 class="font-bold text-lg" id="quickNoteStudentName">—</h3>
             </div>
             <button onclick="closeQuickNote()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition-colors">
@@ -416,33 +400,33 @@
             {{-- النوع والعنوان --}}
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 mb-1.5">نوع الملاحظة</label>
+                    <label class="block text-xs font-bold text-gray-500 mb-1.5">{{ __('نوع الملاحظة') }}</label>
                     <select name="note_type"
                         class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-kku-primary transition-all">
-                        <option value="Academic">أكاديمية</option>
-                        <option value="Behavioral">سلوكية</option>
+                        <option value="Academic">{{ __('أكاديمية') }}</option>
+                        <option value="Behavioral">{{ __('سلوكية') }}</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 mb-1.5">العنوان (اختياري)</label>
-                    <input type="text" name="title" placeholder="مثال: متابعة غياب"
+                    <label class="block text-xs font-bold text-gray-500 mb-1.5">{{ __('العنوان') }} ({{ __('اختياري') }})</label>
+                    <input type="text" name="title" placeholder="{{ __('متابعة غياب') }}"
                         class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-kku-primary transition-all">
                 </div>
             </div>
 
             {{-- المحتوى --}}
             <div>
-                <label class="block text-xs font-bold text-gray-500 mb-1.5">تفاصيل الملاحظة</label>
+                <label class="block text-xs font-bold text-gray-500 mb-1.5">{{ __('تفاصيل الملاحظة') }}</label>
                 <textarea name="content" rows="4" required minlength="10"
-                    placeholder="اكتب ما تم مناقشته مع الطالب..."
+                    placeholder="{{ __('اكتب تفاصيل الجلسة وما تم الاتفاق عليه مع الطالب...') }}"
                     class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-kku-primary transition-all resize-none"></textarea>
             </div>
 
-            {{-- متابعة مطلوبة --}}
+            {{-- {{ __('متابعة مطلوبة') }} --}}
             <label class="flex items-center gap-3 cursor-pointer p-3 rounded-xl hover:bg-gray-50 transition-colors">
                 <input type="checkbox" name="follow_up_required" value="1"
                     class="w-4 h-4 rounded accent-kku-primary">
-                <span class="text-sm text-gray-600">تحتاج متابعة لاحقة</span>
+                <span class="text-sm text-gray-600">{{ __('تحتاج متابعة لاحقة') }}</span>
                 <i class="fas fa-flag text-amber-500 text-xs mr-auto"></i>
             </label>
 
