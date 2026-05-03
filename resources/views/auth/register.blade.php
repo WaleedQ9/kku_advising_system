@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تسجيل الدخول - نظام الإرشاد الأكاديمي</title>
+    <title>{{ __('تسجيل الدخول - نظام الإرشاد الأكاديمي') }}</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -94,14 +94,14 @@
                     <img src="{{ asset('img/logo.svg') }}" alt="شعار جامعة الملك خالد" class="w-24 h-24 object-contain">
                 </div>
             </div>
-            <h1 class="text-3xl font-bold text-white mb-2">نظام الإرشاد الأكاديمي</h1>
-            <p class="text-white/80 text-sm">جامعة الملك خالد</p>
+            <h1 class="text-3xl font-bold text-white mb-2">{{ __('نظام الإرشاد الأكاديمي') }}</h1>
+            <p class="text-white/80 text-sm">{{ __('جامعة الملك خالد') }}</p>
         </div>
 
         <!-- Login Card -->
         <div class="bg-white rounded-3xl login-card p-8 animate-slide-up">
-            <h2 class="text-2xl font-bold text-gray-800 mb-2">تسجيل الدخول</h2>
-            <p class="text-gray-500 text-sm mb-8">أدخل بيانات حسابك للمتابعة</p>
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">{{ __('تسجيل الدخول') }}</h2>
+            <p class="text-gray-500 text-sm mb-8">{{ __('أدخل بيانات حسابك للمتابعة') }}</p>
 
             <form method="POST" action="{{ route('register') }}" class="space-y-6">
                 @csrf
@@ -109,7 +109,7 @@
                 <!-- Name Field -->
                 <div>
                     <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">
-                        <i class="fas fa-envelope ml-2 text-kku-primary"></i>الاسم الكامل
+                        <i class="fas fa-envelope ml-2 text-kku-primary"></i>{{ __('الاسم الكامل') }}
                     </label>
                     <input id="name" type="text" name="name" value="{{ old('name') }}" required
                         autocomplete="name" autofocus
@@ -125,7 +125,7 @@
                 <!-- Email Field -->
                 <div>
                     <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
-                        <i class="fas fa-envelope ml-2 text-kku-primary"></i>البريد الإلكتروني
+                        <i class="fas fa-envelope ml-2 text-kku-primary"></i>{{ __('البريد الإلكتروني') }}
                     </label>
                     <input id="email" type="email" name="email" value="{{ old('email') }}" required
                         autocomplete="email" autofocus
@@ -141,7 +141,7 @@
                 <!-- Password Field -->
                 <div>
                     <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">
-                        <i class="fas fa-lock ml-2 text-kku-primary"></i>كلمة المرور
+                        <i class="fas fa-lock ml-2 text-kku-primary"></i>{{ __('كلمة المرور') }}
                     </label>
                     <input id="password" type="password" name="password" required autocomplete="current-password"
                         class="input-focus w-full px-4 py-3 border-2 border-gray-200 rounded-lg bg-gray-50 focus:bg-white transition-all outline-none @error('password') border-red-500 bg-red-50 @enderror"
@@ -156,7 +156,7 @@
 
                 <div>
                     <label for="password-confirm" class="block text-sm font-semibold text-gray-700 mb-2">
-                        <i class="fas fa-lock ml-2 text-kku-primary"></i>تاكيد كلمة المرور
+                        <i class="fas fa-lock ml-2 text-kku-primary"></i>{{ __('تاكيد كلمة المرور') }}
                     </label>
                     <input id="password-confirm" type="password" name="password_confirmation" required
                         autocomplete="password_confirmation"
@@ -169,14 +169,14 @@
 
                     <a href="{{ route('login') }}"
                         class="text-sm text-kku-primary hover:text-kku-light font-semibold transition">
-                        هل لديك سحب حساب؟ قم بتسجيل الدخول
+                        {{ __('هل لديك سحب حساب؟ قم بتسجيل الدخول') }}
                     </a>
                 </div>
 
                 <!-- Login Button -->
                 <button type="submit"
                     class="btn-login w-full bg-gradient-to-r from-kku-primary to-kku-light text-white font-bold py-3 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-lg">
-                    تسجيل جديد
+                    {{ __('تسجيل جديد') }}
                 </button>
 
 

@@ -15,7 +15,7 @@
                     {{ $student->name_ar }}
                     @if($student->hasRiskFlags())
                         <span class="text-xs font-bold px-2 py-0.5 bg-red-100 text-red-600 rounded-full">
-                            <i class="fas fa-exclamation-circle"></i> يحتاج متابعة
+                            <i class="fas fa-exclamation-circle"></i> {{ __('يحتاج متابعة') }}
                         </span>
                     @endif
                 </h2>
@@ -28,15 +28,15 @@
         <div class="flex gap-2 flex-wrap">
             <button onclick="openNoteModal()"
                 class="px-4 py-2 bg-kku-primary text-white rounded-xl text-sm font-bold hover:bg-kku-dark transition-all">
-                <i class="fas fa-plus ml-1"></i> ملاحظة إرشادية
+                <i class="fas fa-plus ml-1"></i> {{ __('ملاحظة إرشادية') }}
             </button>
             <a href="{{ route('students.print', $student->id) }}" target="_blank"
                 class="px-4 py-2 bg-gray-800 text-white rounded-xl text-sm font-bold hover:bg-black transition-all">
-                <i class="fas fa-print ml-1"></i> طباعة الملف
+                <i class="fas fa-print ml-1"></i> {{ __('طباعة الملف') }}
             </a>
             <a href="{{ route('students.index') }}"
                 class="px-4 py-2 bg-gray-100 text-gray-600 rounded-xl text-sm font-bold hover:bg-gray-200 transition-all">
-                <i class="fas fa-arrow-right ml-1"></i> قائمة الطلاب
+                <i class="fas fa-arrow-right ml-1"></i> {{ __('قائمة الطلاب') }}
             </a>
         </div>
     </div>
@@ -48,26 +48,26 @@
 
             {{-- مؤشرات الأداء --}}
             <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
-                <h4 class="font-bold text-gray-800 mb-4">مؤشرات الأداء</h4>
+                <h4 class="font-bold text-gray-800 mb-4">{{ __('مؤشرات الأداء') }}</h4>
                 <div class="space-y-3">
                     <div class="flex justify-between items-center p-3 {{ $student->gpa < 2 ? 'bg-red-50' : 'bg-green-50' }} rounded-2xl">
-                        <span class="text-xs font-bold text-gray-600">المعدل التراكمي</span>
+                        <span class="text-xs font-bold text-gray-600">{{ __('المعدل التراكمي') }}</span>
                         <span class="text-lg font-black {{ $student->gpa < 2 ? 'text-red-600' : 'text-green-600' }}">
                             {{ number_format($student->gpa, 2) }}
                         </span>
                     </div>
                     <div class="flex justify-between items-center p-3 bg-blue-50 rounded-2xl">
-                        <span class="text-xs font-bold text-gray-600">الساعات المجتازة</span>
+                        <span class="text-xs font-bold text-gray-600">{{ __('الساعات المجتازة') }}</span>
                         <span class="text-lg font-black text-blue-600">{{ $student->total_credits }}</span>
                     </div>
                     <div class="flex justify-between items-center p-3 {{ $student->courses->sum('pivot.absences_count') > 15 ? 'bg-red-50' : 'bg-gray-50' }} rounded-2xl">
-                        <span class="text-xs font-bold text-gray-600">إجمالي الغيابات</span>
+                        <span class="text-xs font-bold text-gray-600">{{ __('إجمالي الغيابات') }}</span>
                         <span class="text-lg font-black {{ $student->courses->sum('pivot.absences_count') > 15 ? 'text-red-600' : 'text-gray-700' }}">
                             {{ $student->courses->sum('pivot.absences_count') }}
                         </span>
                     </div>
                     <div class="flex justify-between items-center p-3 {{ $student->academic_status === 'Warning' ? 'bg-amber-50' : 'bg-gray-50' }} rounded-2xl">
-                        <span class="text-xs font-bold text-gray-600">الحالة الأكاديمية</span>
+                        <span class="text-xs font-bold text-gray-600">{{ __('الحالة الأكاديمية') }}</span>
                         <span class="text-sm font-bold {{ $student->academic_status === 'Warning' ? 'text-amber-600' : 'text-green-600' }}">
                             {{ $student->academic_status === 'Warning' ? 'تحذير' : 'منتظم' }}
                         </span>
@@ -79,7 +79,7 @@
             @if($student->riskFlags->where('is_resolved', false)->isNotEmpty())
             <div class="bg-white p-6 rounded-3xl shadow-sm border border-red-100">
                 <h4 class="font-bold text-red-600 mb-4 flex items-center gap-2">
-                    <i class="fas fa-exclamation-triangle"></i> تنبيهات نشطة
+                    <i class="fas fa-exclamation-triangle"></i> {{ __('تنبيهات نشطة') }}
                 </h4>
                 <div class="space-y-2">
                     @foreach($student->riskFlags->where('is_resolved', false) as $flag)
@@ -93,7 +93,7 @@
                         <form method="POST" action="{{ route('flags.resolve', $flag->id) }}">
                             @csrf
                             <button type="submit" class="text-xs font-bold text-gray-400 hover:text-green-600 transition-colors">
-                                <i class="fas fa-check-circle"></i> حل
+                                <i class="fas fa-check-circle"></i> {{ __('حل') }}
                             </button>
                         </form>
                     </div>
@@ -106,7 +106,7 @@
             @if($student->dropActions->isNotEmpty())
             <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
                 <h4 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
-                    <i class="fas fa-history text-kku-primary"></i> سجل حذف المواد
+                    <i class="fas fa-history text-kku-primary"></i> {{ __('سجل حذف المواد') }}
                     <span class="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full mr-auto">
                         {{ $student->dropActions->where('status','Completed')->count() }}/3
                     </span>
@@ -139,10 +139,10 @@
             <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
                 <div class="p-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
                     <h4 class="font-bold text-gray-800 flex items-center gap-2">
-                        <i class="fas fa-book-open text-kku-primary"></i> المقررات المسجلة
+                        <i class="fas fa-book-open text-kku-primary"></i> {{ __('المقررات المسجلة') }}
                     </h4>
                     <span class="text-xs text-gray-400">
-                        محاولات الحذف المتبقية:
+                        {{ __('محاولات الحذف المتبقية:') }}
                         <span class="font-black text-kku-primary">
                             {{ max(0, 3 - $student->dropActions->where('status','Completed')->count()) }}/3
                         </span>
@@ -152,12 +152,12 @@
                     <table class="w-full text-right text-sm">
                         <thead class="bg-gray-50 text-[11px] font-bold text-gray-500 uppercase">
                             <tr>
-                                <th class="px-5 py-3">المادة</th>
-                                <th class="px-5 py-3">النوع</th>
-                                <th class="px-5 py-3">الغياب</th>
-                                <th class="px-5 py-3">نسبة الخطر</th>
-                                <th class="px-5 py-3 text-center">الحالة</th>
-                                <th class="px-5 py-3 text-center">حذف</th>
+                                <th class="px-5 py-3">{{ __('المادة') }}</th>
+                                <th class="px-5 py-3">{{ __('النوع') }}</th>
+                                <th class="px-5 py-3">{{ __('الغياب') }}</th>
+                                <th class="px-5 py-3">{{ __('نسبة الخطر') }}</th>
+                                <th class="px-5 py-3 text-center">{{ __('الحالة') }}</th>
+                                <th class="px-5 py-3 text-center">{{ __('حذف') }}</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-50">
@@ -192,27 +192,27 @@
                                 </td>
                                 <td class="px-5 py-4 text-center">
                                     @if($percent >= 100)
-                                        <span class="px-2 py-1 rounded-md text-[10px] font-bold bg-red-100 text-red-600">حرمان</span>
+                                        <span class="px-2 py-1 rounded-md text-[10px] font-bold bg-red-100 text-red-600">{{ __('حرمان') }}</span>
                                     @elseif($percent >= 60)
-                                        <span class="px-2 py-1 rounded-md text-[10px] font-bold bg-amber-50 text-amber-600">إنذار</span>
+                                        <span class="px-2 py-1 rounded-md text-[10px] font-bold bg-amber-50 text-amber-600">{{ __('إنذار') }}</span>
                                     @else
-                                        <span class="px-2 py-1 rounded-md text-[10px] font-bold bg-green-50 text-green-600">منتظم</span>
+                                        <span class="px-2 py-1 rounded-md text-[10px] font-bold bg-green-50 text-green-600">{{ __('منتظم') }}</span>
                                     @endif
                                 </td>
                                 <td class="px-5 py-4 text-center">
                                     @if($canDrop)
                                         <button onclick="openDropModal({{ $course->id }}, '{{ addslashes($course->name) }}')"
                                             class="inline-flex items-center gap-1 px-3 py-1.5 bg-red-50 text-red-600 border border-red-200 rounded-lg text-[11px] font-bold hover:bg-red-500 hover:text-white transition-all">
-                                            <i class="fas fa-trash-alt text-[10px]"></i> حذف
+                                            <i class="fas fa-trash-alt text-[10px]"></i> {{ __('حذف') }}
                                         </button>
                                     @else
-                                        <span class="text-[10px] text-gray-300">استُنفدت المحاولات</span>
+                                        <span class="text-[10px] text-gray-300">{{ __('استُنفدت المحاولات') }}</span>
                                     @endif
                                 </td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="6" class="py-10 text-center text-gray-400 text-sm">لا توجد مواد مسجلة</td>
+                                <td colspan="6" class="py-10 text-center text-gray-400 text-sm">{{ __('لا توجد مواد مسجلة') }}</td>
                             </tr>
                             @endforelse
                         </tbody>
@@ -224,7 +224,7 @@
             <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
                 <div class="p-5 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
                     <h4 class="font-bold text-gray-800 flex items-center gap-2">
-                        <i class="fas fa-history text-kku-primary"></i> السجل الإرشادي
+                        <i class="fas fa-history text-kku-primary"></i> {{ __('السجل الإرشادي') }}
                     </h4>
                     <span class="text-xs text-gray-400">{{ $notes->count() }} ملاحظة</span>
                 </div>
@@ -244,7 +244,7 @@
                                     @endif
                                     @if($note->follow_up_required)
                                         <span class="text-[10px] font-bold text-amber-600">
-                                            <i class="fas fa-flag text-[9px]"></i> متابعة
+                                            <i class="fas fa-flag text-[9px]"></i> {{ __('متابعة') }}
                                         </span>
                                     @endif
                                 </div>
@@ -257,7 +257,7 @@
                     @empty
                     <div class="text-center py-10 text-gray-400">
                         <i class="fas fa-comment-slash text-4xl mb-3 block opacity-30"></i>
-                        <p class="text-sm">لا توجد سجلات إرشادية سابقة</p>
+                        <p class="text-sm">{{ __('لا توجد سجلات إرشادية سابقة') }}</p>
                     </div>
                     @endforelse
                 </div>
@@ -272,7 +272,7 @@
     <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeNoteModal()"></div>
     <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-lg z-10 overflow-hidden animate-modal-in">
         <div class="bg-kku-primary p-5 text-white flex justify-between items-center">
-            <h3 class="font-bold text-lg">إضافة ملاحظة إرشادية</h3>
+            <h3 class="font-bold text-lg">{{ __('إضافة ملاحظة إرشادية') }}</h3>
             <button onclick="closeNoteModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition-colors">
                 <i class="fas fa-times"></i>
             </button>
@@ -282,35 +282,35 @@
             <input type="hidden" name="student_id" value="{{ $student->id }}">
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 mb-1.5">نوع الملاحظة</label>
+                    <label class="block text-xs font-bold text-gray-500 mb-1.5">{{ __('نوع الملاحظة') }}</label>
                     <select name="note_type" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-kku-primary transition-all">
-                        <option value="Academic">أكاديمية</option>
-                        <option value="Behavioral">سلوكية</option>
+                        <option value="Academic">{{ __('أكاديمية') }}</option>
+                        <option value="Behavioral">{{ __('سلوكية') }}</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 mb-1.5">العنوان (اختياري)</label>
+                    <label class="block text-xs font-bold text-gray-500 mb-1.5">{{ __('العنوان (اختياري)') }}</label>
                     <input type="text" name="title" placeholder="مثال: متابعة غياب"
                         class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-kku-primary transition-all">
                 </div>
             </div>
             <div>
-                <label class="block text-xs font-bold text-gray-500 mb-1.5">تفاصيل الملاحظة</label>
+                <label class="block text-xs font-bold text-gray-500 mb-1.5">{{ __('تفاصيل الملاحظة') }}</label>
                 <textarea name="content" rows="4" required minlength="10"
                     placeholder="اكتب ما تم مناقشته مع الطالب..."
                     class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-kku-primary transition-all resize-none"></textarea>
             </div>
             <label class="flex items-center gap-3 cursor-pointer p-3 rounded-xl hover:bg-gray-50 transition-colors">
                 <input type="checkbox" name="follow_up_required" value="1" class="w-4 h-4 rounded accent-kku-primary">
-                <span class="text-sm text-gray-600">تحتاج متابعة لاحقة</span>
+                <span class="text-sm text-gray-600">{{ __('تحتاج متابعة لاحقة') }}</span>
                 <i class="fas fa-flag text-amber-500 text-xs mr-auto"></i>
             </label>
             <div class="flex gap-3 pt-1">
                 <button type="submit" class="flex-1 py-3 bg-kku-primary text-white rounded-xl font-bold hover:bg-kku-dark transition-all">
-                    <i class="fas fa-save ml-1"></i> حفظ الملاحظة
+                    <i class="fas fa-save ml-1"></i> {{ __('حفظ الملاحظة') }}
                 </button>
                 <button type="button" onclick="closeNoteModal()" class="flex-1 py-3 bg-gray-100 text-gray-600 rounded-xl font-bold hover:bg-gray-200 transition-all">
-                    إلغاء
+                    {{ __('إلغاء') }}
                 </button>
             </div>
         </form>
@@ -324,7 +324,7 @@
     <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-md z-10 overflow-hidden animate-modal-in">
         <div class="bg-red-500 p-5 text-white flex justify-between items-center">
             <div>
-                <p class="text-xs opacity-75 mb-0.5">تأكيد حذف المادة</p>
+                <p class="text-xs opacity-75 mb-0.5">{{ __('تأكيد حذف المادة') }}</p>
                 <h3 class="font-bold text-lg" id="dropCourseName">—</h3>
             </div>
             <button onclick="closeDropModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition-colors">
@@ -338,7 +338,7 @@
             <div class="p-4 bg-amber-50 border border-amber-200 rounded-xl flex gap-3">
                 <i class="fas fa-exclamation-triangle text-amber-500 mt-0.5 shrink-0"></i>
                 <p class="text-sm text-amber-700">
-                    سيتم حذف المادة من سجل الطالب وخصم ساعاتها. تأكد من صحة قرارك قبل المتابعة.
+                    {{ __('سيتم حذف المادة من سجل الطالب وخصم ساعاتها. تأكد من صحة قرارك قبل المتابعة.') }}
                     <span class="block mt-1 font-bold">
                         المحاولات المتبقية: {{ max(0, 3 - $student->dropActions->where('status','Completed')->count()) }}/3
                     </span>
@@ -346,7 +346,7 @@
             </div>
 
             <div>
-                <label class="block text-xs font-bold text-gray-500 mb-1.5">سبب الحذف <span class="text-red-500">*</span></label>
+                <label class="block text-xs font-bold text-gray-500 mb-1.5">{{ __('سبب الحذف') }} <span class="text-red-500">*</span></label>
                 <textarea name="reason" rows="3" required minlength="10"
                     placeholder="اذكر سبب حذف المادة..."
                     class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-red-400 transition-all resize-none"></textarea>
@@ -355,11 +355,11 @@
             <div class="flex gap-3 pt-1">
                 <button type="submit"
                     class="flex-1 py-3 bg-red-500 text-white rounded-xl font-bold hover:bg-red-600 transition-all">
-                    <i class="fas fa-trash-alt ml-1"></i> تأكيد الحذف
+                    <i class="fas fa-trash-alt ml-1"></i> {{ __('تأكيد الحذف') }}
                 </button>
                 <button type="button" onclick="closeDropModal()"
                     class="flex-1 py-3 bg-gray-100 text-gray-600 rounded-xl font-bold hover:bg-gray-200 transition-all">
-                    إلغاء
+                    {{ __('إلغاء') }}
                 </button>
             </div>
         </form>

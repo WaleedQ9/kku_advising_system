@@ -103,8 +103,8 @@
         </div>
         {{-- Not --}}
         <div class="text-left border-r pr-4">
-            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">الفصل الدراسي</p>
-            <p class="text-sm font-bold text-kku-primary">الثاني 1447هـ</p>
+            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">{{ __('الفصل الدراسي') }}</p>
+            <p class="text-sm font-bold text-kku-primary">{{ __('الثاني 1447هـ') }}</p>
         </div>
 
     </div>

@@ -13,7 +13,7 @@
             <button type="submit"
                 class="flex items-center gap-2 px-4 py-2.5 bg-amber-50 border border-amber-200 text-amber-700 rounded-xl text-sm font-bold hover:bg-amber-100 transition-all"
                 title="فحص تنبيهات جميع الطلاب">
-                <i class="fas fa-radar"></i> فحص التنبيهات
+                <i class="fas fa-radar"></i> {{ __('فحص التنبيهات') }}
             </button>
         </form>
 
@@ -21,7 +21,7 @@
         <div class="relative" id="colToggleWrapper">
             <button onclick="toggleColPanel()"
                 class="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 text-gray-600 rounded-xl text-sm font-bold hover:bg-gray-50 transition-all">
-                <i class="fas fa-columns text-kku-primary"></i> الأعمدة
+                <i class="fas fa-columns text-kku-primary"></i> {{ __('الأعمدة') }}
             </button>
             <div id="colPanel"
                 class="hidden absolute left-0 top-12 z-50 bg-white border border-gray-200 rounded-2xl shadow-xl p-4 w-52 space-y-2">
@@ -42,7 +42,7 @@
                 @endforeach
                 <hr class="my-2">
                 <button onclick="resetColumns()" class="text-xs text-gray-400 hover:text-kku-primary transition-colors w-full text-right">
-                    <i class="fas fa-undo ml-1"></i> إعادة تعيين
+                    <i class="fas fa-undo ml-1"></i> {{ __('إعادة تعيين') }}
                 </button>
             </div>
         </div>
@@ -59,7 +59,7 @@
             {{-- Header الجدول --}}
             <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
                 <h3 class="font-bold text-gray-800 flex items-center gap-2">
-                    <i class="fas fa-users text-kku-primary"></i> طلابي
+                    <i class="fas fa-users text-kku-primary"></i> {{ __('طلابي') }}
                 </h3>
                 <span class="text-xs font-bold text-gray-400 bg-gray-100 px-3 py-1 rounded-full">
                     {{ $students->total() }} طالب
@@ -71,7 +71,7 @@
                 <table class="w-full text-right text-sm" id="studentsTable">
                     <thead class="bg-gray-50 text-[11px] font-bold text-gray-500 uppercase">
                         <tr>
-                            <th class="px-5 py-3">الطالب</th>
+                            <th class="px-5 py-3">{{ __('الطالب') }}</th>
                             <th class="px-5 py-3 col-major">{{ __('التخصص') }}</th>
                             <th class="px-5 py-3 col-gpa">{{ __('المعدل') }}</th>
                             <th class="px-5 py-3 col-credits">{{ __('الساعات') }}</th>
@@ -123,7 +123,7 @@
                             {{-- الساعات --}}
                             <td class="px-5 py-4 col-credits">
                                 <span class="font-bold text-gray-700">{{ $student->total_credits }}</span>
-                                <span class="text-[10px] text-gray-400"> ساعة</span>
+                                <span class="text-[10px] text-gray-400"> {{ __('ساعة') }}</span>
                             </td>
 
                             {{-- الحالة --}}
@@ -177,12 +177,12 @@
                                     <button onclick="openQuickNote({{ $student->id }}, '{{ addslashes($student->name_ar) }}')"
                                         class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-kku-primary/10 text-kku-primary rounded-lg text-[11px] font-bold hover:bg-kku-primary hover:text-white transition-all"
                                         title="{{ __('إضافة ملاحظة سريعة') }}">
-                                        <i class="fas fa-plus text-[10px]"></i> ملاحظة
+                                        <i class="fas fa-plus text-[10px]"></i> {{ __('ملاحظة') }}
                                     </button>
                                     <a href="{{ route('students.show', $student->id) }}"
                                         class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 text-gray-600 rounded-lg text-[11px] font-bold hover:bg-gray-200 transition-all"
                                         title="{{ __('الملف الكامل للطالب') }}">
-                                        <i class="fas fa-eye text-[10px]"></i> الملف
+                                        <i class="fas fa-eye text-[10px]"></i> {{ __('الملف') }}
                                     </a>
                                     <a href="{{ route('students.print', $student->id) }}" target="_blank"
                                         class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-800 text-white rounded-lg text-[11px] font-bold hover:bg-black transition-all"
@@ -235,7 +235,7 @@
                         <tr>
                             <td colspan="8" class="py-16 text-center text-gray-400">
                                 <i class="fas fa-search text-4xl mb-3 block opacity-30"></i>
-                                لا يوجد طلاب مطابقون
+                                {{ __('لا يوجد طلاب مطابقون') }}
                             </td>
                         </tr>
                         @endforelse
@@ -256,7 +256,7 @@
         {{-- ملخص الحالات --}}
         <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
             <h4 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <i class="fas fa-chart-pie text-kku-primary"></i> ملخص الحالات
+                <i class="fas fa-chart-pie text-kku-primary"></i> {{ __('ملخص الحالات') }}
             </h4>
             <div class="space-y-3">
                 @foreach(['منتظم' => ['bg-green-50','text-green-700','fa-check-circle'], 'متعثر' => ['bg-red-50','text-red-600','fa-exclamation-circle'], 'خريج' => ['bg-blue-50','text-blue-600','fa-graduation-cap']] as $s => $cls)
@@ -306,19 +306,19 @@
             <i class="fas fa-graduation-cap absolute -bottom-4 -left-4 text-white/10 text-6xl rotate-12"></i>
             <div class="relative space-y-3">
                 <h4 class="font-bold flex items-center gap-2">
-                    <i class="fas fa-robot text-kku-accent"></i> آلية التنبيهات
+                    <i class="fas fa-robot text-kku-accent"></i> {{ __('آلية التنبيهات') }}
                 </h4>
                 <div class="space-y-2 text-xs opacity-80">
                     <div class="flex items-start gap-2">
                         <i class="fas fa-chart-line mt-0.5 text-red-300 shrink-0"></i>
-                        <span>معدل أقل من 2.0 → تنبيه <strong>معدل منخفض</strong></span>
+                        <span>{{ __('معدل أقل من 2.0 → تنبيه') }} <strong>{{ __('معدل منخفض') }}</strong></span>
                     </div>
                     <div class="flex items-start gap-2">
                         <i class="fas fa-calendar-times mt-0.5 text-amber-300 shrink-0"></i>
-                        <span>غيابات 4 أو أكثر → تنبيه <strong>غيابات عالية</strong></span>
+                        <span>{{ __('غيابات 4 أو أكثر → تنبيه') }} <strong>{{ __('غيابات عالية') }}</strong></span>
                     </div>
                 </div>
-                <p class="text-[10px] opacity-50">استخدم زر "فحص التنبيهات" في الأعلى لتشغيل الفحص.</p>
+                <p class="text-[10px] opacity-50">{{ __('استخدم زر "فحص التنبيهات" في الأعلى لتشغيل الفحص.') }}</p>
             </div>
         </div>
 
@@ -331,7 +331,7 @@
         @if($followUpStudents->isNotEmpty())
         <div class="bg-white rounded-3xl p-6 shadow-sm border border-amber-100">
             <h4 class="font-bold text-amber-600 mb-4 flex items-center gap-2">
-                <i class="fas fa-flag"></i> يحتاجون متابعة
+                <i class="fas fa-flag"></i> {{ __('يحتاجون متابعة') }}
                 <span class="text-xs bg-amber-100 text-amber-600 px-2 py-0.5 rounded-full mr-auto font-bold">
                     {{ $followUpStudents->count() }}
                 </span>
@@ -348,14 +348,14 @@
                         <div class="flex items-center gap-1.5 shrink-0">
                             <button onclick="toggleNotes({{ $fs->id }})"
                                 class="text-[10px] font-bold text-amber-600 hover:underline">
-                                عرض
+                                {{ __('عرض') }}
                             </button>
                             <form method="POST" action="{{ route('notes.followup.done', $lastNote->id) }}">
                                 @csrf
                                 <button type="submit"
                                     class="text-[10px] font-bold px-2 py-0.5 bg-green-100 text-green-700 rounded-md hover:bg-green-500 hover:text-white transition-all"
                                     title="تمت المتابعة">
-                                    <i class="fas fa-check text-[9px]"></i> تمت
+                                    <i class="fas fa-check text-[9px]"></i> {{ __('تمت') }}
                                 </button>
                             </form>
                         </div>
@@ -434,11 +434,11 @@
             <div class="flex gap-3 pt-1">
                 <button type="submit"
                     class="flex-1 py-3 bg-kku-primary text-white rounded-xl font-bold hover:bg-kku-dark transition-all shadow-lg shadow-kku-primary/20">
-                    <i class="fas fa-save ml-1"></i> حفظ الملاحظة
+                    <i class="fas fa-save ml-1"></i> {{ __('حفظ الملاحظة') }}
                 </button>
                 <button type="button" onclick="closeQuickNote()"
                     class="flex-1 py-3 bg-gray-100 text-gray-600 rounded-xl font-bold hover:bg-gray-200 transition-all">
-                    إلغاء
+                    {{ __('إلغاء') }}
                 </button>
             </div>
         </form>

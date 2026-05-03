@@ -17,9 +17,9 @@
                 </div>
             </div>
             <div class="text-left">
-                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">إجمالي الساعات المسجلة</p>
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{{ __('إجمالي الساعات المسجلة') }}</p>
                 <p class="text-3xl font-black text-kku-primary">{{ $student->total_credits }} <span
-                        class="text-sm">ساعة</span></p>
+                        class="text-sm">{{ __('ساعة') }}</span></p>
             </div>
         </div>
 
@@ -30,14 +30,14 @@
                     <div class="p-5 border-b border-gray-50 bg-gray-50/50">
                         <h3 class="font-bold text-gray-800 flex items-center gap-2">
                             <i class="fas fa-plus-circle text-kku-primary"></i>
-                            تسجيل مادة جديدة
+                            {{ __('تسجيل مادة جديدة') }}
                         </h3>
                     </div>
                     <form action="{{ route('registrar.students.store_enroll', $student->id) }}" method="POST"
                         class="p-6 space-y-4">
                         @csrf
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 mb-2 mr-1">اختر المادة</label>
+                            <label class="block text-xs font-bold text-gray-500 mb-2 mr-1">{{ __('اختر المادة') }}</label>
                             <select name="course_id" required
                                 class="w-full p-3 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-kku-primary outline-none appearance-none cursor-pointer">
                                 <option value="" disabled selected>-- المواد المتاحة --</option>
@@ -50,7 +50,7 @@
                         </div>
                         <button type="submit"
                             class="w-full py-4 bg-kku-primary text-white rounded-2xl font-bold shadow-lg shadow-kku-primary/20 hover:bg-kku-dark transition-all">
-                            إضافة للجدول
+                            {{ __('إضافة للجدول') }}
                         </button>
                     </form>
                 </div>
@@ -59,7 +59,7 @@
             <div class="lg:col-span-2">
                 <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
                     <div class="p-5 border-b border-gray-50 flex justify-between items-center">
-                        <h3 class="font-bold text-gray-800">المواد المسجلة في الترم الحالي</h3>
+                        <h3 class="font-bold text-gray-800">{{ __('المواد المسجلة في الترم الحالي') }}</h3>
                         <span class="bg-blue-50 text-blue-600 text-[10px] font-bold px-3 py-1 rounded-full">
                             {{ $registeredCourses->count() }} مواد
                         </span>
@@ -69,10 +69,10 @@
                         <table class="w-full text-right">
                             <thead class="bg-gray-50 text-[10px] font-bold text-gray-400 uppercase">
                                 <tr>
-                                    <th class="px-6 py-4">المادة</th>
-                                    <th class="px-6 py-4">القسم المالك</th>
-                                    <th class="px-6 py-4">النوع</th>
-                                    <th class="px-6 py-4 text-center">الساعات</th>
+                                    <th class="px-6 py-4">{{ __('المادة') }}</th>
+                                    <th class="px-6 py-4">{{ __('القسم المالك') }}</th>
+                                    <th class="px-6 py-4">{{ __('النوع') }}</th>
+                                    <th class="px-6 py-4 text-center">{{ __('الساعات') }}</th>
                                     <th class="px-6 py-4"></th>
                                 </tr>
                             </thead>
@@ -113,7 +113,7 @@
                                         <td colspan="5" class="px-6 py-12 text-center">
                                             <div class="text-gray-300 mb-2"><i class="fas fa-calendar-times text-4xl"></i>
                                             </div>
-                                            <p class="text-sm text-gray-400">لا توجد مواد مسجلة لهذا الطالب حالياً</p>
+                                            <p class="text-sm text-gray-400">{{ __('لا توجد مواد مسجلة لهذا الطالب حالياً') }}</p>
                                         </td>
                                     </tr>
                                 @endforelse
@@ -127,7 +127,7 @@
             </div>
             <a href="http://127.0.0.1:8000/registrar/students?search=&department_id={{ $student->department->id }}"
                 class="flex-1 bg-gray-200 text-gray-600 py-3 text-center rounded-xl font-bold hover:bg-gray-200 transition-all">
-                العودة إلى قائمة الطلاب
+                {{ __('العودة إلى قائمة الطلاب') }}
             </a>
 
         </div>

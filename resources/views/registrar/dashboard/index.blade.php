@@ -5,9 +5,9 @@
         <div class="flex justify-between items-end">
             <div>
                 <h1 class="text-3xl font-bold text-gray-800">مرحباً بك {{ Auth::user()->name }} مجدداً..</h1>
-                <p class="text-gray-500 mt-1 text-lg">لديك <span class="text-kku-primary font-bold underline">12
-                        طالباً</span> يحتاجون لمتابعة عاجلة هذا الأسبوع.</p>
-                <p class="text-sm text-gray-500">إليك نظرة عامة على الحالة الأكاديمية الحالية</p>
+                <p class="text-gray-500 mt-1 text-lg">{{ __('لديك') }} <span class="text-kku-primary font-bold underline">12
+                        طالباً</span> {{ __('يحتاجون لمتابعة عاجلة هذا الأسبوع.') }}</p>
+                <p class="text-sm text-gray-500">{{ __('إليك نظرة عامة على الحالة الأكاديمية الحالية') }}</p>
 
             </div>
             <button onclick="toggleModal()"
@@ -25,7 +25,7 @@
                     <i class="fas fa-users"></i>
                 </div>
                 <div>
-                    <p class="text-xs text-gray-400 font-bold uppercase">إجمالي الطلاب</p>
+                    <p class="text-xs text-gray-400 font-bold uppercase">{{ __('إجمالي الطلاب') }}</p>
                     <h3 class="text-2xl font-black text-gray-800">{{ $stats['total_students'] }}</h3>
                 </div>
             </div>
@@ -37,7 +37,7 @@
                     <i class="fas fa-user-plus"></i>
                 </div>
                 <div>
-                    <p class="text-xs text-gray-400 font-bold uppercase">بانتظار الجداول</p>
+                    <p class="text-xs text-gray-400 font-bold uppercase">{{ __('بانتظار الجداول') }}</p>
                     <h3 class="text-2xl font-black text-gray-800">{{ $stats['new_students'] }}</h3>
                 </div>
             </a>
@@ -49,14 +49,14 @@
                     <i class="fas fa-exclamation-triangle"></i>
                 </div>
                 <div>
-                    <p class="text-xs text-gray-400 font-bold uppercase">تحت الإنذار</p>
+                    <p class="text-xs text-gray-400 font-bold uppercase">{{ __('تحت الإنذار') }}</p>
                     <h3 class="text-2xl font-black text-gray-800">{{ $stats['at_risk'] }}</h3>
                 </div>
             </a>
         </div>
 
         <h3 class="text-lg font-bold text-gray-700 flex items-center gap-2 mt-10">
-            <i class="fas fa-university text-kku-primary"></i> إحصائيات الأقسام
+            <i class="fas fa-university text-kku-primary"></i> {{ __('إحصائيات الأقسام') }}
         </h3>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -74,11 +74,11 @@
 
                         <div class="grid grid-cols-2 gap-3 mb-4">
                             <div class="bg-gray-50 p-3 rounded-2xl">
-                                <p class="text-[9px] text-gray-400 font-bold mb-1">متوسط المعدل</p>
+                                <p class="text-[9px] text-gray-400 font-bold mb-1">{{ __('متوسط المعدل') }}</p>
                                 <p class="text-lg font-black text-gray-700">{{ $dStat['avg_gpa'] }}</p>
                             </div>
                             <div class="bg-gray-50 p-3 rounded-2xl">
-                                <p class="text-[9px] text-gray-400 font-bold mb-1">الطلاب</p>
+                                <p class="text-[9px] text-gray-400 font-bold mb-1">{{ __('الطلاب') }}</p>
                                 <p class="text-lg font-black text-gray-700">{{ $dStat['count'] }}</p>
                             </div>
                         </div>

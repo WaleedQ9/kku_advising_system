@@ -106,7 +106,7 @@
             <div class="bg-kku-primary p-6 text-white flex justify-between items-center">
                 <div class="flex items-center gap-3">
                     <i class="fas fa-file-alt text-2xl text-kku-accent"></i>
-                    <h3 class="font-bold text-xl">تقرير إرشادي جديد</h3>
+                    <h3 class="font-bold text-xl">{{ __('تقرير إرشادي جديد') }}</h3>
                 </div>
                 <button onclick="toggleModal()"
                     class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition-colors">
@@ -117,34 +117,34 @@
             <form id="reportForm" class="p-8 space-y-5">
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">رقم الطالب</label>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">{{ __('رقم الطالب') }}</label>
                         <input type="text" placeholder="مثال: 44100..."
                             class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 outline-none focus:border-kku-primary transition-all">
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">نوع الجلسة</label>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">{{ __('نوع الجلسة') }}</label>
                         <select
                             class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 outline-none focus:border-kku-primary">
-                            <option>جلسة حضورية</option>
-                            <option>جلسة عن بعد (Zoom)</option>
-                            <option>استشارة سريعة</option>
+                            <option>{{ __('جلسة حضورية') }}</option>
+                            <option>{{ __('جلسة عن بعد (Zoom)') }}</option>
+                            <option>{{ __('استشارة سريعة') }}</option>
                         </select>
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-2">موضوع التقرير</label>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">{{ __('موضوع التقرير') }}</label>
                     <select
                         class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 outline-none focus:border-kku-primary">
-                        <option>تدني المعدل الأكاديمي</option>
-                        <option>مشاكل في تسجيل المواد</option>
-                        <option>استفسار عن الخطة الدراسية</option>
-                        <option>أخرى</option>
+                        <option>{{ __('تدني المعدل الأكاديمي') }}</option>
+                        <option>{{ __('مشاكل في تسجيل المواد') }}</option>
+                        <option>{{ __('استفسار عن الخطة الدراسية') }}</option>
+                        <option>{{ __('أخرى') }}</option>
                     </select>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-2">تفاصيل التوصيات</label>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">{{ __('تفاصيل التوصيات') }}</label>
                     <textarea rows="4" placeholder="اكتب ملاحظاتك وتوصياتك للطالب هنا..."
                         class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 outline-none focus:border-kku-primary"></textarea>
                 </div>
@@ -152,11 +152,11 @@
                 <div class="pt-4 flex gap-3">
                     <button type="button" onclick="saveReport()"
                         class="flex-1 bg-kku-primary text-white py-3 rounded-xl font-bold hover:bg-kku-dark transition-all">
-                        حفظ التقرير
+                        {{ __('حفظ التقرير') }}
                     </button>
                     <button type="button" onclick="toggleModal()"
                         class="flex-1 bg-gray-100 text-gray-600 py-3 rounded-xl font-bold hover:bg-gray-200 transition-all">
-                        إلغاء
+                        {{ __('إلغاء') }}
                     </button>
                 </div>
             </form>

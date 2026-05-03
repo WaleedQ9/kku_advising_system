@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تسجيل الدخول - نظام الإرشاد الأكاديمي</title>
+    <title>{{ __('تسجيل الدخول - نظام الإرشاد الأكاديمي') }}</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -94,14 +94,14 @@
                     <img src="{{ asset('img/logo.svg') }}" alt="شعار جامعة الملك خالد" class="w-24 h-24 object-contain">
                 </div>
             </div>
-            <h1 class="text-3xl font-bold text-white mb-2">نظام الإرشاد الأكاديمي</h1>
-            <p class="text-white/80 text-sm">جامعة الملك خالد</p>
+            <h1 class="text-3xl font-bold text-white mb-2">{{ __('نظام الإرشاد الأكاديمي') }}</h1>
+            <p class="text-white/80 text-sm">{{ __('جامعة الملك خالد') }}</p>
         </div>
 
         <!-- Login Card -->
         <div class="bg-white rounded-3xl login-card p-8 animate-slide-up">
-            <h2 class="text-2xl font-bold text-gray-800 mb-2">تسجيل الدخول</h2>
-            <p class="text-gray-500 text-sm mb-8">أدخل بيانات حسابك للمتابعة</p>
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">{{ __('تسجيل الدخول') }}</h2>
+            <p class="text-gray-500 text-sm mb-8">{{ __('أدخل بيانات حسابك للمتابعة') }}</p>
 
             <form method="POST" action="{{ route('login') }}" class="space-y-6">
                 @csrf
@@ -109,7 +109,7 @@
                 <!-- Email Field -->
                 <div>
                     <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
-                        <i class="fas fa-envelope ml-2 text-kku-primary"></i>البريد الإلكتروني
+                        <i class="fas fa-envelope ml-2 text-kku-primary"></i>{{ __('البريد الإلكتروني') }}
                     </label>
                     <input id="email" type="email" name="email" value="{{ old('email') }}" required
                         autocomplete="email" autofocus
@@ -126,7 +126,7 @@
                 <!-- Password Field -->
                 <div>
                     <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">
-                        <i class="fas fa-lock ml-2 text-kku-primary"></i>كلمة المرور
+                        <i class="fas fa-lock ml-2 text-kku-primary"></i>{{ __('كلمة المرور') }}
                     </label>
                     <input id="password" type="password" name="password" required autocomplete="current-password"
                         class="input-focus w-full px-4 py-3 border-2 border-gray-200 rounded-lg bg-gray-50 focus:bg-white transition-all outline-none @error('password') border-red-500 bg-red-50 @enderror"
@@ -144,13 +144,13 @@
                     <label class="flex items-center gap-2 cursor-pointer">
                         <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}
                             class="w-5 h-5 text-kku-primary rounded border-gray-300 focus:ring-kku-primary cursor-pointer">
-                        <span class="text-sm text-gray-600">تذكرني</span>
+                        <span class="text-sm text-gray-600">{{ __('تذكرني') }}</span>
                     </label>
 
                     @if (Route::has('password.request'))
                         <a href="{{ route('password.request') }}"
                             class="text-sm text-kku-primary hover:text-kku-light font-semibold transition">
-                            هل نسيت كلمة المرور؟
+                            {{ __('هل نسيت كلمة المرور؟') }}
                         </a>
                     @endif
                 </div>
@@ -159,7 +159,7 @@
                 <button type="submit"
                     class="btn-login w-full bg-gradient-to-r from-kku-primary to-kku-light text-white font-bold py-3 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-lg">
 
-                    تسجيل الدخول
+                    {{ __('تسجيل الدخول') }}
                 </button>
 
                 <!-- Divider -->
@@ -168,7 +168,7 @@
                         <div class="w-full border-t border-gray-200"></div>
                     </div>
                     <div class="relative flex justify-center text-sm">
-                        <span class="px-2 bg-white text-gray-500">أو</span>
+                        <span class="px-2 bg-white text-gray-500">{{ __('أو') }}</span>
                     </div>
                 </div>
 
@@ -176,8 +176,8 @@
                 <div class="bg-blue-50 border-r-4 border-kku-primary rounded-lg p-4 flex gap-3">
                     <i class="fas fa-info-circle text-kku-primary flex-shrink-0 mt-0.5"></i>
                     <div class="text-sm text-gray-700">
-                        <p class="font-semibold mb-1">معلومة:</p>
-                        <p>في حالة نسيان بيانات الدخول، يرجى التواصل مع عمادة الدراسات الأكاديمية</p>
+                        <p class="font-semibold mb-1">{{ __('معلومة:') }}</p>
+                        <p>{{ __('في حالة نسيان بيانات الدخول، يرجى التواصل مع عمادة الدراسات الأكاديمية') }}</p>
                     </div>
                 </div>
             </form>

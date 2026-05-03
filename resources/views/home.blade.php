@@ -86,7 +86,7 @@
                 <i class="fas fa-exclamation-triangle text-red-500 text-lg group-hover:text-white transition-all"></i>
             </div>
             @if($atRisk > 0)
-            <span class="text-[10px] font-bold text-red-600 bg-red-50 px-2 py-1 rounded-lg animate-pulse">تنبيه</span>
+            <span class="text-[10px] font-bold text-red-600 bg-red-50 px-2 py-1 rounded-lg animate-pulse">{{ __('تنبيه') }}</span>
             @endif
         </div>
         <p class="text-3xl font-black {{ $atRisk > 0 ? 'text-red-600' : 'text-gray-800' }}">{{ $atRisk }}</p>
@@ -133,13 +133,13 @@
                     </span>
                     @endif
                 </h3>
-                <span class="text-[10px] text-red-400 font-bold">معدل / غياب</span>
+                <span class="text-[10px] text-red-400 font-bold">{{ __('معدل / غياب') }}</span>
             </div>
 
             @if($flaggedStudents->isEmpty())
             <div class="py-12 text-center text-gray-400">
                 <i class="fas fa-check-circle text-3xl mb-2 block text-green-400 opacity-60"></i>
-                <p class="text-xs font-bold text-gray-500">لا توجد تنبيهات نشطة</p>
+                <p class="text-xs font-bold text-gray-500">{{ __('لا توجد تنبيهات نشطة') }}</p>
             </div>
             @else
             <div class="divide-y divide-gray-50">
@@ -187,13 +187,13 @@
                     </span>
                     @endif
                 </h3>
-                <span class="text-[10px] text-amber-400 font-bold">يدوي</span>
+                <span class="text-[10px] text-amber-400 font-bold">{{ __('يدوي') }}</span>
             </div>
 
             @if($followUpStudents->isEmpty())
             <div class="py-12 text-center text-gray-400">
                 <i class="fas fa-check text-3xl mb-2 block text-green-400 opacity-60"></i>
-                <p class="text-xs font-bold text-gray-500">لا توجد متابعات معلقة</p>
+                <p class="text-xs font-bold text-gray-500">{{ __('لا توجد متابعات معلقة') }}</p>
             </div>
             @else
             <div class="divide-y divide-gray-50">
@@ -230,11 +230,11 @@
             <div class="p-5 border-b border-gray-100">
                 <h3 class="font-bold text-gray-800 flex items-center gap-2">
                     <i class="fas fa-history text-kku-primary"></i>
-                    آخر الملاحظات الإرشادية
+                    {{ __('آخر الملاحظات الإرشادية') }}
                 </h3>
             </div>
             @if($recentNotes->isEmpty())
-            <div class="py-10 text-center text-gray-400 text-sm">لا توجد ملاحظات بعد</div>
+            <div class="py-10 text-center text-gray-400 text-sm">{{ __('لا توجد ملاحظات بعد') }}</div>
             @else
             <div class="divide-y divide-gray-50">
                 @foreach($recentNotes as $note)
@@ -303,7 +303,7 @@
                     {{ $activeFlags }} {{ __('تنبيهات نشطة') }}
                 </h4>
                 <p class="text-xs text-red-100 leading-relaxed mb-4">
-                    يوجد طلاب يحتاجون تدخلاً عاجلاً. راجع قائمة الطلاب وافحص التنبيهات.
+                    {{ __('يوجد طلاب يحتاجون تدخلاً عاجلاً. راجع قائمة الطلاب وافحص التنبيهات.') }}
                 </p>
                 <a href="{{ route('students.index') }}"
                     class="inline-flex items-center gap-2 bg-white text-red-600 px-4 py-2 rounded-xl text-xs font-black hover:bg-red-50 transition-all">
@@ -316,10 +316,10 @@
             <i class="fas fa-graduation-cap absolute -bottom-3 -left-3 text-white/10 text-7xl"></i>
             <div class="relative">
                 <h4 class="font-bold mb-1 flex items-center gap-2">
-                    <i class="fas fa-check-circle text-green-300"></i> لا توجد تنبيهات نشطة
+                    <i class="fas fa-check-circle text-green-300"></i> {{ __('لا توجد تنبيهات نشطة') }}
                 </h4>
                 <p class="text-xs text-green-200/80 leading-relaxed mb-4">
-                    جميع طلاب قسمك ضمن المعدل الطبيعي. استمر في المتابعة الدورية.
+                    {{ __('جميع طلاب قسمك ضمن المعدل الطبيعي. استمر في المتابعة الدورية.') }}
                 </p>
                 <form method="POST" action="{{ route('flags.scan') }}">
                     @csrf

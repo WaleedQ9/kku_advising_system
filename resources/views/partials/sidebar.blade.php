@@ -2,8 +2,8 @@
         <div class="p-6 text-center border-b border-white/10">
             <img src="{{ asset('img/logo.svg') }}" alt="KKU"
                 class="w-20 mx-auto mb-4 bg-white rounded-xl p-1 shadow-lg">
-            <h2 class="font-bold text-lg tracking-wide">بوابة المرشد الأكاديمي</h2>
-            <p class="text-xs text-green-200 opacity-70">جامعة الملك خالد</p>
+            <h2 class="font-bold text-lg tracking-wide">{{ __('بوابة المرشد الأكاديمي') }}</h2>
+            <p class="text-xs text-green-200 opacity-70">{{ __('جامعة الملك خالد') }}</p>
         </div>
 
         <nav class="flex-1 mt-6 px-3 space-y-2">
