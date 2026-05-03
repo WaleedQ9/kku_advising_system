@@ -332,6 +332,45 @@
                 <p class="text-[10px] opacity-50">استخدم زر "فحص التنبيهات" في الأعلى لتشغيل الفحص.</p>
             </div>
         </div>
+
+        {{-- طلاب يحتاجون متابعة --}}
+        @php
+            $followUpStudents = $students->getCollection()->filter(function($s) {
+                return $s->advisingNotes->where('follow_up_required', true)->isNotEmpty();
+            });
+        @endphp
+        @if($followUpStudents->isNotEmpty())
+        <div class="bg-white rounded-3xl p-6 shadow-sm border border-amber-100">
+            <h4 class="font-bold text-amber-600 mb-4 flex items-center gap-2">
+                <i class="fas fa-flag"></i> يحتاجون متابعة
+                <span class="text-xs bg-amber-100 text-amber-600 px-2 py-0.5 rounded-full mr-auto font-bold">
+                    {{ $followUpStudents->count() }}
+                </span>
+            </h4>
+            <div class="space-y-2 max-h-52 overflow-y-auto">
+                @foreach($followUpStudents as $fs)
+                @php $lastNote = $fs->advisingNotes->where('follow_up_required', true)->sortByDesc('created_at')->first(); @endphp
+                <div class="p-3 bg-amber-50 border border-amber-100 rounded-xl">
+                    <div class="flex justify-between items-start gap-2">
+                        <div>
+                            <p class="text-sm font-bold text-gray-800">{{ $fs->name_ar }}</p>
+                            <p class="text-[10px] text-gray-400 font-mono">{{ $fs->student_id }}</p>
+                        </div>
+                        <button onclick="toggleNotes({{ $fs->id }})"
+                            class="text-[10px] font-bold text-amber-600 hover:underline shrink-0">
+                            عرض
+                        </button>
+                    </div>
+                    @if($lastNote?->title)
+                        <p class="text-[11px] text-amber-700 mt-1 font-bold">{{ $lastNote->title }}</p>
+                    @endif
+                    <p class="text-[10px] text-gray-500 mt-0.5 line-clamp-1">{{ $lastNote?->content }}</p>
+                    <p class="text-[9px] text-gray-400 mt-1">{{ $lastNote?->created_at->format('Y/m/d') }}</p>
+                </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
     </div>
 </div>
 
