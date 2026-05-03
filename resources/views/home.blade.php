@@ -18,6 +18,10 @@
                         ->whereHas('riskFlags', fn($q) => $q->where('is_resolved', false))
                         ->with(['riskFlags' => fn($q) => $q->where('is_resolved', false)])
                         ->take(5)->get();
+    $followUpStudents = \App\Models\Student::where('department_id', $advisor->department_id)
+                        ->whereHas('advisingNotes', fn($q) => $q->where('follow_up_required', true))
+                        ->with(['advisingNotes' => fn($q) => $q->where('follow_up_required', true)->latest()->take(1)])
+                        ->take(5)->get();
     $hour = now()->hour;
     $greeting = $hour < 12 ? 'صباح الخير' : ($hour < 17 ? 'مساء الخير' : 'مساء النور');
 @endphp
@@ -117,56 +121,99 @@
 {{-- ══════════ Main Grid ══════════ --}}
 <div class="grid grid-cols-12 gap-6">
 
-    {{-- ── طلاب يحتاجون متابعة ── --}}
-    <div class="col-span-12 lg:col-span-7">
-        <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-            <div class="p-5 border-b border-gray-100 flex justify-between items-center">
-                <h3 class="font-bold text-gray-800 flex items-center gap-2">
-                    <i class="fas fa-exclamation-circle text-red-500"></i>
-                    {{ __('طلاب بحاجة لمتابعة') }}
+    {{-- ── تنبيهات النظام ── --}}
+    <div class="col-span-12 lg:col-span-4">
+        <div class="bg-white rounded-3xl shadow-sm border border-red-100 overflow-hidden h-full">
+            <div class="p-5 border-b border-red-50 flex justify-between items-center bg-red-50/50">
+                <h3 class="font-bold text-red-700 flex items-center gap-2 text-sm">
+                    <i class="fas fa-robot"></i> تنبيهات النظام
                     @if($flaggedStudents->count())
-                    <span class="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded-full font-bold">
+                    <span class="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-full font-bold">
                         {{ $flaggedStudents->count() }}
                     </span>
                     @endif
                 </h3>
-                <a href="{{ route('students.index') }}"
-                    class="text-xs text-kku-primary font-bold hover:underline">
-                    {{ __('عرض جميع الطلاب') }} →
-                </a>
+                <span class="text-[10px] text-red-400 font-bold">معدل / غياب</span>
             </div>
 
             @if($flaggedStudents->isEmpty())
-            <div class="py-16 text-center text-gray-400">
-                <i class="fas fa-check-circle text-4xl mb-3 block text-green-400 opacity-60"></i>
-                <p class="text-sm font-bold text-gray-500">لا يوجد طلاب يحتاجون متابعة عاجلة</p>
-                <p class="text-xs mt-1">أداء جميع الطلاب ضمن المعدل الطبيعي</p>
+            <div class="py-12 text-center text-gray-400">
+                <i class="fas fa-check-circle text-3xl mb-2 block text-green-400 opacity-60"></i>
+                <p class="text-xs font-bold text-gray-500">لا توجد تنبيهات نشطة</p>
             </div>
             @else
             <div class="divide-y divide-gray-50">
                 @foreach($flaggedStudents as $st)
-                <div class="flex items-center gap-4 px-6 py-4 hover:bg-gray-50/70 transition-colors">
-                    <div class="w-10 h-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center font-black text-sm shrink-0">
+                <div class="flex items-center gap-3 px-5 py-3.5 hover:bg-red-50/30 transition-colors">
+                    <div class="w-9 h-9 rounded-xl bg-red-100 text-red-600 flex items-center justify-center font-black text-xs shrink-0">
                         {{ mb_substr($st->name_ar, 0, 1) }}
                     </div>
                     <div class="flex-1 min-w-0">
-                        <p class="font-bold text-gray-800 text-sm truncate">{{ $st->name_ar }}</p>
-                        <p class="text-[10px] text-gray-400 font-mono">{{ $st->student_id }}</p>
+                        <p class="font-bold text-gray-800 text-xs truncate">{{ $st->name_ar }}</p>
+                        <div class="flex gap-1 mt-0.5 flex-wrap">
+                            @foreach($st->riskFlags as $flag)
+                            <span class="text-[9px] font-bold px-1.5 py-0.5 rounded
+                                {{ $flag->severity === 'High' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700' }}">
+                                {{ $flag->type === 'Low_GPA' ? 'معدل منخفض' : 'غيابات' }}
+                            </span>
+                            @endforeach
+                        </div>
                     </div>
                     <div class="flex items-center gap-2 shrink-0">
-                        @foreach($st->riskFlags as $flag)
-                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-md
-                            {{ $flag->severity === 'High' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700' }}">
-                            {{ $flag->type === 'Low_GPA' ? __('معدل منخفض') : __('غيابات عالية') }}
-                        </span>
-                        @endforeach
-                        <span class="font-black {{ $st->gpa < 2 ? 'text-red-500' : 'text-gray-600' }}">
+                        <span class="font-black text-sm {{ $st->gpa < 2 ? 'text-red-500' : 'text-gray-600' }}">
                             {{ number_format($st->gpa, 2) }}
                         </span>
+                        <a href="{{ route('students.show', $st->id) }}"
+                            class="p-1.5 bg-kku-primary/10 text-kku-primary rounded-lg hover:bg-kku-primary hover:text-white transition-all">
+                            <i class="fas fa-arrow-left text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            @endif
+        </div>
+    </div>
+
+    {{-- ── متابعات المرشد ── --}}
+    <div class="col-span-12 lg:col-span-3">
+        <div class="bg-white rounded-3xl shadow-sm border border-amber-100 overflow-hidden h-full">
+            <div class="p-5 border-b border-amber-50 flex justify-between items-center bg-amber-50/50">
+                <h3 class="font-bold text-amber-700 flex items-center gap-2 text-sm">
+                    <i class="fas fa-flag"></i> متابعات المرشد
+                    @if($followUpStudents->count())
+                    <span class="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-bold">
+                        {{ $followUpStudents->count() }}
+                    </span>
+                    @endif
+                </h3>
+                <span class="text-[10px] text-amber-400 font-bold">يدوي</span>
+            </div>
+
+            @if($followUpStudents->isEmpty())
+            <div class="py-12 text-center text-gray-400">
+                <i class="fas fa-check text-3xl mb-2 block text-green-400 opacity-60"></i>
+                <p class="text-xs font-bold text-gray-500">لا توجد متابعات معلقة</p>
+            </div>
+            @else
+            <div class="divide-y divide-gray-50">
+                @foreach($followUpStudents as $st)
+                @php $note = $st->advisingNotes->first(); @endphp
+                <div class="flex items-center gap-3 px-5 py-3.5 hover:bg-amber-50/30 transition-colors">
+                    <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-black text-xs shrink-0">
+                        {{ mb_substr($st->name_ar, 0, 1) }}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-bold text-gray-800 text-xs truncate">{{ $st->name_ar }}</p>
+                        @if($note?->title)
+                        <p class="text-[9px] text-amber-600 truncate mt-0.5">{{ $note->title }}</p>
+                        @else
+                        <p class="text-[9px] text-gray-400 truncate mt-0.5">{{ Str::limit($note?->content, 30) }}</p>
+                        @endif
                     </div>
                     <a href="{{ route('students.show', $st->id) }}"
-                        class="px-3 py-1.5 bg-kku-primary/10 text-kku-primary rounded-lg text-[11px] font-bold hover:bg-kku-primary hover:text-white transition-all">
-                        {{ __('الملف') }}
+                        class="p-1.5 bg-amber-100 text-amber-700 rounded-lg hover:bg-amber-500 hover:text-white transition-all shrink-0">
+                        <i class="fas fa-arrow-left text-[10px]"></i>
                     </a>
                 </div>
                 @endforeach
