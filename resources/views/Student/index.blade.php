@@ -187,12 +187,20 @@
                                 @endif
                             </td>
 
-                            {{-- إجراء سريع: زر ملاحظة --}}
+                            {{-- إجراء سريع --}}
                             <td class="px-5 py-4 text-center">
-                                <button onclick="openQuickNote({{ $student->id }}, '{{ addslashes($student->name_ar) }}')"
-                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-kku-primary/10 text-kku-primary rounded-lg text-[11px] font-bold hover:bg-kku-primary hover:text-white transition-all">
-                                    <i class="fas fa-plus text-[10px]"></i> ملاحظة
-                                </button>
+                                <div class="flex items-center justify-center gap-2">
+                                    <button onclick="openQuickNote({{ $student->id }}, '{{ addslashes($student->name_ar) }}')"
+                                        class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-kku-primary/10 text-kku-primary rounded-lg text-[11px] font-bold hover:bg-kku-primary hover:text-white transition-all"
+                                        title="إضافة ملاحظة سريعة">
+                                        <i class="fas fa-plus text-[10px]"></i> ملاحظة
+                                    </button>
+                                    <a href="{{ route('students.show', $student->id) }}"
+                                        class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 text-gray-600 rounded-lg text-[11px] font-bold hover:bg-gray-200 transition-all"
+                                        title="الملف الكامل للطالب">
+                                        <i class="fas fa-eye text-[10px]"></i> الملف
+                                    </a>
+                                </div>
                             </td>
                         </tr>
 
