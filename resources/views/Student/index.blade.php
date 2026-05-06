@@ -171,7 +171,7 @@
             </div>
 
             {{-- Rows --}}
-            @forelse($students as $student)
+            @foreach($students as $student)
             @php
                 $activeFlags  = $student->riskFlags->where('is_resolved', false);
                 $hasWarning   = $activeFlags->isNotEmpty();
@@ -379,12 +379,13 @@
                     </div>
                 </div>
             </div>
-            @empty
+@endforeach
+            @if($students->isEmpty())
             <div class="py-20 text-center text-gray-400">
                 <i class="fas fa-search text-4xl mb-3 block opacity-20"></i>
                 <p class="font-bold">{{ __('لا يوجد طلاب مطابقون') }}</p>
             </div>
-            @endforelse
+            @endif
 
             {{-- Pagination --}}
             <div class="px-5 py-3 bg-white border-t border-gray-100">
