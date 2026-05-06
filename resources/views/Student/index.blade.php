@@ -231,7 +231,7 @@
 
                 {{-- Expanded Panel --}}
                 <div id="expanded-{{ $student->id }}" class="hidden border-t border-gray-100 bg-kku-primary/[0.02] p-5">
-                    <div class="grid grid-cols-3 gap-4">
+                    <div class="grid grid-cols-3 gap-4 items-stretch">
 
                         {{-- المقررات --}}
                         <div class="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm">
@@ -260,8 +260,8 @@
                         </div>
 
                         {{-- الملاحظات --}}
-                        <div class="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm">
-                            <p class="text-[11px] font-black text-gray-500 mb-3 flex items-center gap-1.5">
+                        <div class="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm flex flex-col">
+                            <p class="text-[11px] font-black text-gray-500 mb-3 flex items-center gap-1.5 shrink-0">
                                 <i class="fas fa-clipboard text-kku-primary"></i>
                                 {{ __('جميع الملاحظات') }}
                                 <span class="mr-auto bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded text-[10px]">{{ $student->advisingNotes->count() }}</span>
@@ -269,7 +269,7 @@
                             @if($student->advisingNotes->isEmpty())
                                 <p class="text-xs text-gray-400">{{ __('لا توجد ملاحظات') }}</p>
                             @else
-                                <div class="space-y-2 max-h-36 overflow-y-auto">
+                                <div class="flex-1 space-y-2 overflow-y-auto">
                                     @foreach($student->advisingNotes->sortByDesc('created_at') as $note)
                                     <div class="text-xs border-b border-gray-50 pb-2 last:border-0 last:pb-0">
                                         <p class="text-gray-700 leading-relaxed line-clamp-2">{{ $note->content }}</p>
