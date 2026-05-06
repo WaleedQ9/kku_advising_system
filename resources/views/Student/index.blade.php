@@ -132,7 +132,7 @@
 
             {{-- Header --}}
             <div class="grid text-[10px] font-black text-gray-400 uppercase bg-gray-50 border-b border-gray-100 px-5 py-2.5 sticky top-0 z-10"
-                style="grid-template-columns:32px 1fr 140px 80px 80px 80px 90px 120px">
+                style="grid-template-columns:32px minmax(180px,1.5fr) minmax(120px,1fr) 70px 70px 80px 90px 120px">
                 <div></div>
                 <div>{{ __('الطالب') }}</div>
                 <div class="col-major">{{ __('التخصص') }}</div>
@@ -166,7 +166,7 @@
 
                 {{-- Main Row --}}
                 <div class="grid items-center px-5 py-3 hover:bg-gray-50/80 transition-colors cursor-pointer group"
-                    style="grid-template-columns:32px 1fr 140px 80px 80px 80px 90px 120px"
+                    style="grid-template-columns:32px minmax(180px,1.5fr) minmax(120px,1fr) 70px 70px 80px 90px 120px"
                     onclick="toggleExpand({{ $student->id }})">
 
                     <div class="text-gray-300 group-hover:text-kku-primary transition-colors">
@@ -397,11 +397,37 @@
 </style>
 
 <script>
+let openStudentId = null;
+
 function toggleExpand(id) {
+    // لو في صف مفتوح غير هذا — اقفله أولاً
+    if (openStudentId && openStudentId !== id) {
+        const prevPanel = document.getElementById('expanded-' + openStudentId);
+        const prevIcon  = document.querySelector('.expand-icon-' + openStudentId);
+        const prevRow   = document.getElementById('row-' + openStudentId);
+        if (prevPanel) prevPanel.classList.add('hidden');
+        if (prevIcon)  prevIcon.style.transform = '';
+        if (prevRow)   prevRow.classList.remove('bg-kku-primary/5', 'border-r-kku-primary');
+    }
+
     const panel = document.getElementById('expanded-' + id);
     const icon  = document.querySelector('.expand-icon-' + id);
-    panel.classList.toggle('hidden');
-    icon.style.transform = panel.classList.contains('hidden') ? '' : 'rotate(-90deg)';
+    const row   = document.getElementById('row-' + id);
+    const isOpen = !panel.classList.contains('hidden');
+
+    if (isOpen) {
+        panel.classList.add('hidden');
+        icon.style.transform = '';
+        row.classList.remove('bg-kku-primary/5', 'border-r-kku-primary');
+        openStudentId = null;
+    } else {
+        panel.classList.remove('hidden');
+        icon.style.transform = 'rotate(-90deg)';
+        row.classList.add('bg-kku-primary/5', 'border-r-kku-primary');
+        openStudentId = id;
+        // scroll الصف ليظهر
+        row.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
 }
 function openQuickNote(id, name) {
     document.getElementById('quickNoteStudentId').value = id;
