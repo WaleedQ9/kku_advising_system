@@ -67,3 +67,19 @@ Route::middleware(['auth', 'role:registrar'])
         Route::get('/students/{student}/enroll',            [StudentManagementController::class, 'createEnrollment'])->name('students.enroll');
         Route::post('/students/{student}/enroll',           [StudentManagementController::class, 'storeEnrollment'])->name('students.store_enroll');
     });
+
+// ─── Chair ────────────────────────────────────────────────────────────────────
+Route::middleware(['auth', 'role:chair'])
+    ->prefix('chair')
+    ->name('chair.')
+    ->group(function () {
+        // TODO: Chair dashboard & reports
+    });
+
+// ─── Dean ─────────────────────────────────────────────────────────────────────
+Route::middleware(['auth', 'role:dean'])
+    ->prefix('dean')
+    ->name('dean.')
+    ->group(function () {
+        // TODO: Dean dashboard (view-only)
+    });

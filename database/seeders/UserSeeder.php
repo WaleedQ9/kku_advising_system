@@ -16,8 +16,10 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $registrarRole = Role::firstOrCreate(['name' => 'registrar']);
-        $advisorRole = Role::firstOrCreate(['name' => 'advisor']);
+        Role::firstOrCreate(['name' => 'registrar']);
+        Role::firstOrCreate(['name' => 'advisor']);
+        Role::firstOrCreate(['name' => 'chair']);
+        Role::firstOrCreate(['name' => 'dean']);
 
         $arDept = Department::where('code', 'AR')->first();
         $cysDept = Department::where('code', 'CYS')->first();
@@ -47,6 +49,22 @@ class UserSeeder extends Seeder
                 'department_id' => $ltDept->id,
                 'phone' => '0507778889',
                 'role' => 'advisor'
+            ],
+            [
+                'name' => 'د. فهد رئيس القسم',
+                'email' => 'chair@admin.com',
+                'password' => Hash::make('123123'),
+                'department_id' => $cysDept->id,
+                'phone' => '0511112222',
+                'role' => 'chair'
+            ],
+            [
+                'name' => 'د. عبدالله العميد',
+                'email' => 'dean@admin.com',
+                'password' => Hash::make('123123'),
+                'department_id' => $arDept->id,
+                'phone' => '0533334444',
+                'role' => 'dean'
             ],
         ];
 
