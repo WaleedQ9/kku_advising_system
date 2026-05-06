@@ -74,19 +74,22 @@
 
             {{-- Filter Chips --}}
             <div class="flex items-center gap-2 flex-wrap">
-                @foreach([
-                    null      => ['الكل',    $total,   'bg-kku-primary text-white', 'bg-gray-100 text-gray-600'],
-                    'منتظم'  => ['منتظم',   $regular, 'bg-green-500 text-white',   'bg-green-50 text-green-700'],
-                    'متعثر'  => ['خطر',     $atRisk,  'bg-red-500 text-white',     'bg-red-50 text-red-600'],
-                    'خريج'   => ['خريج',    $graduated,'bg-blue-500 text-white',   'bg-blue-50 text-blue-600'],
-                ] as $val => [$label, $count, $activeClass, $inactiveClass])
+                @php
+                $filterChips = [
+                    null     => ['الكل',  $total,     'bg-kku-primary text-white', 'bg-gray-100 text-gray-600'],
+                    'منتظم' => ['منتظم', $regular,   'bg-green-500 text-white',   'bg-green-50 text-green-700'],
+                    'متعثر' => ['خطر',   $atRisk,    'bg-red-500 text-white',     'bg-red-50 text-red-600'],
+                    'خريج'  => ['خريج',  $graduated, 'bg-blue-500 text-white',    'bg-blue-50 text-blue-600'],
+                ];
+                @endphp
+                @php foreach($filterChips as $val => [$label, $count, $activeClass, $inactiveClass]): @endphp
                 <a href="{{ route('students.index', array_filter(['status' => $val])) }}"
                     class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all
                     {{ request('status') === $val || (request('status') === null && $val === null && !request('followup')) ? $activeClass : $inactiveClass }}">
                     {{ __($label) }}
                     <span class="text-[10px] font-black opacity-80">({{ $count }})</span>
                 </a>
-                @endforeach
+                @php endforeach; @endphp
             </div>
 
             <div class="mr-auto flex items-center gap-2">
@@ -99,14 +102,17 @@
                     <div id="colPanel"
                         class="hidden absolute left-0 top-10 z-50 bg-white border border-gray-200 rounded-2xl shadow-xl p-4 w-52 space-y-2">
                         <p class="text-[10px] font-black text-gray-400 uppercase mb-2">{{ __('الأعمدة المرئية') }}</p>
-                        @foreach([
+                        @php
+                        $cols = [
                             'col-major'   => 'التخصص',
                             'col-level'   => 'المستوى',
                             'col-attend'  => 'الحضور',
                             'col-gpa'     => 'المعدل',
                             'col-credits' => 'الساعات',
                             'col-status'  => 'الحالة',
-                        ] as $col => $label)
+                        ];
+                        foreach($cols as $col => $label):
+                        @endphp
                         <label class="flex items-center gap-3 cursor-pointer group">
                             <div class="relative w-8 h-4 shrink-0" onclick="toggleColumn('{{ $col }}', this)">
                                 <input type="checkbox" checked class="col-toggle sr-only" data-col="{{ $col }}">
@@ -115,7 +121,7 @@
                             </div>
                             <span class="text-xs text-gray-700 group-hover:text-kku-primary transition-colors">{{ __($label) }}</span>
                         </label>
-                        @endforeach
+                        @php endforeach; @endphp
                         <hr class="my-2">
                         <button onclick="resetColumns()" class="text-xs text-gray-400 hover:text-kku-primary transition-colors w-full text-right">
                             <i class="fas fa-undo ml-1"></i> {{ __('إعادة تعيين') }}
@@ -285,7 +291,7 @@
                                 <p class="text-xs text-gray-400">{{ __('لا توجد مواد مسجلة') }}</p>
                             @else
                             <div class="space-y-2">
-                                @foreach($student->courses->take(4) as $course)
+                                @php foreach($student->courses->take(4) as $course): @endphp
                                 @php
                                     $abs = $course->pivot->absences_count;
                                     $pct = min(100, ($abs / 15) * 100);
@@ -296,7 +302,7 @@
                                     <span class="shrink-0 text-[10px] font-mono">{{ $course->credits }}س</span>
                                     <span class="shrink-0 font-bold {{ $ac }}">{{ 100 - round($pct) }}%</span>
                                 </div>
-                                @endforeach
+                                @php endforeach; @endphp
                             </div>
                             <div class="mt-3 pt-2 border-t border-gray-100">
                                 @php $dropsDone = $student->dropActions->where('status','Completed')->count(); @endphp
@@ -319,7 +325,7 @@
                                 <p class="text-xs text-gray-400">{{ __('لا توجد ملاحظات') }}</p>
                             @else
                             <div class="space-y-2 max-h-36 overflow-y-auto">
-                                @foreach($student->advisingNotes->sortByDesc('created_at') as $note)
+                                @php foreach($student->advisingNotes->sortByDesc('created_at') as $note): @endphp
                                 <div class="text-xs border-b border-gray-50 pb-2 last:border-0 last:pb-0">
                                     <p class="text-gray-700 leading-relaxed line-clamp-2">{{ $note->content }}</p>
                                     <p class="text-[9px] text-gray-400 mt-1 flex items-center gap-1.5">
@@ -332,7 +338,7 @@
                                         · {{ $note->user->name ?? __('المرشد') }}
                                     </p>
                                 </div>
-                                @endforeach
+                                @php endforeach; @endphp
                             </div>
                             @endif
                         </div>
