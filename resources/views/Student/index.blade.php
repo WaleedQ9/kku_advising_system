@@ -162,7 +162,7 @@
                 $dropsDone     = $student->dropActions->where('status','Completed')->count();
             @endphp
 
-            <div class="border-b border-gray-100 {{ $rowBorder }}">
+            <div class="student-row border-b border-gray-100 transition-colors duration-200 {{ $rowBorder }}" id="row-{{ $student->id }}">
 
                 {{-- Main Row --}}
                 <div class="grid items-center px-5 py-3 hover:bg-gray-50/80 transition-colors cursor-pointer group"
@@ -397,36 +397,33 @@
 </style>
 
 <script>
-let openStudentId = null;
-
 function toggleExpand(id) {
-    // لو في صف مفتوح غير هذا — اقفله أولاً
-    if (openStudentId && openStudentId !== id) {
-        const prevPanel = document.getElementById('expanded-' + openStudentId);
-        const prevIcon  = document.querySelector('.expand-icon-' + openStudentId);
-        const prevRow   = document.getElementById('row-' + openStudentId);
-        if (prevPanel) prevPanel.classList.add('hidden');
-        if (prevIcon)  prevIcon.style.transform = '';
-        if (prevRow)   prevRow.classList.remove('bg-kku-primary/5', 'border-r-kku-primary');
-    }
+    // أغلق جميع الصفوف أولاً
+    document.querySelectorAll('.student-row').forEach(row => {
+        const rid = row.id.replace('row-', '');
+        const panel = document.getElementById('expanded-' + rid);
+        const icon  = document.querySelector('.expand-icon-' + rid);
+        if (panel) panel.classList.add('hidden');
+        if (icon)  icon.style.transform = '';
+        row.style.background = '';
+        row.style.borderRight = '';
+    });
 
+    // افتح الصف المطلوب فقط (toggle — لو كان مفتوح اقفله)
     const panel = document.getElementById('expanded-' + id);
     const icon  = document.querySelector('.expand-icon-' + id);
     const row   = document.getElementById('row-' + id);
-    const isOpen = !panel.classList.contains('hidden');
+    const wasOpen = panel.dataset.open === '1';
 
-    if (isOpen) {
-        panel.classList.add('hidden');
-        icon.style.transform = '';
-        row.classList.remove('bg-kku-primary/5', 'border-r-kku-primary');
-        openStudentId = null;
-    } else {
+    if (!wasOpen) {
         panel.classList.remove('hidden');
+        panel.dataset.open = '1';
         icon.style.transform = 'rotate(-90deg)';
-        row.classList.add('bg-kku-primary/5', 'border-r-kku-primary');
-        openStudentId = id;
-        // scroll الصف ليظهر
+        row.style.background = '#f0fdf4';
+        row.style.borderRight = '4px solid #16a34a';
         row.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } else {
+        panel.dataset.open = '0';
     }
 }
 function openQuickNote(id, name) {
