@@ -212,16 +212,19 @@
 
                     <div class="flex items-center justify-center gap-2" onclick="event.stopPropagation()">
                         <button onclick="openQuickNote({{ $student->id }},'{{ addslashes($student->name_ar) }}')"
-                            class="p-2 rounded-lg bg-kku-primary/10 text-kku-primary hover:bg-kku-primary hover:text-white transition-all" title="{{ __('ملاحظة سريعة') }}">
+                            class="flex flex-col items-center gap-0.5 px-2.5 py-1.5 rounded-lg bg-kku-primary/10 text-kku-primary hover:bg-kku-primary hover:text-white transition-all">
                             <i class="fas fa-plus text-xs"></i>
+                            <span class="text-[9px] font-bold leading-none">{{ __('ملاحظة') }}</span>
                         </button>
                         <a href="{{ route('students.show',$student->id) }}"
-                            class="p-2 rounded-lg bg-gray-100 text-gray-500 hover:bg-gray-600 hover:text-white transition-all" title="{{ __('الملف') }}">
+                            class="flex flex-col items-center gap-0.5 px-2.5 py-1.5 rounded-lg bg-gray-100 text-gray-500 hover:bg-gray-600 hover:text-white transition-all">
                             <i class="fas fa-user text-xs"></i>
+                            <span class="text-[9px] font-bold leading-none">{{ __('الملف') }}</span>
                         </a>
                         <a href="{{ route('students.print',$student->id) }}" target="_blank"
-                            class="p-2 rounded-lg bg-gray-800 text-white hover:bg-black transition-all" title="{{ __('طباعة') }}">
+                            class="flex flex-col items-center gap-0.5 px-2.5 py-1.5 rounded-lg bg-gray-800 text-white hover:bg-black transition-all">
                             <i class="fas fa-print text-xs"></i>
+                            <span class="text-[9px] font-bold leading-none">{{ __('طباعة') }}</span>
                         </a>
                     </div>
                 </div>
