@@ -18,12 +18,15 @@ class StudentCourseSeeder extends Seeder
         return rand(40, 59); // متعثر
     }
 
-    // غياب عشوائي ثابت: المتعثرون لديهم غيابات أعلى
+    // غياب لكل مادة — المجموع عبر المواد يجب أن يكون منطقياً
+    // RiskFlag::triggerAlert يُطلق High_Absence عند totalAbsences >= 4
+    // منتظم (gpa >= 2.0): 0 غياب لكل مادة → المجموع = 0 → لا إنذار
+    // متعثر (gpa < 2.0): 2-4 غياب لكل مادة → المجموع >= 4 → إنذار
     private function absencesFromGpa(float $gpa): int
     {
-        if ($gpa >= 3.0) return rand(0, 2);
-        if ($gpa >= 2.0) return rand(1, 4);
-        return rand(3, 8); // متعثر
+        if ($gpa >= 2.0) return 0;
+        if ($gpa >= 1.7) return 2;
+        return 4;
     }
 
     public function run(): void
