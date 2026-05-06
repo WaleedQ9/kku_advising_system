@@ -132,14 +132,14 @@
 
             {{-- Header --}}
             <div class="grid text-[10px] font-black text-gray-400 uppercase bg-gray-50 border-b border-gray-100 px-5 py-2.5 sticky top-0 z-10"
-                style="grid-template-columns:40px 220px 1fr 80px 80px 90px 100px 130px">
+                style="grid-template-columns:40px 30% 20% repeat(6, 1fr)">
                 <div></div>
-                <div>{{ __('الطالب') }}</div>
-                <div class="col-major">{{ __('التخصص') }}</div>
-                <div class="col-level text-center">{{ __('المستوى') }}</div>
-                <div class="col-attend text-center">{{ __('الحضور') }}</div>
-                <div class="col-gpa text-center">{{ __('المعدل') }}</div>
-                <div class="col-status text-center">{{ __('الحالة') }}</div>
+                <div class="flex items-center">{{ __('الطالب') }}</div>
+                <div class="col-major flex items-center justify-center">{{ __('التخصص') }}</div>
+                <div class="col-level flex items-center justify-center">{{ __('المستوى') }}</div>
+                <div class="col-attend flex items-center justify-center">{{ __('الحضور') }}</div>
+                <div class="col-gpa flex items-center justify-center">{{ __('المعدل') }}</div>
+                <div class="col-status flex items-center justify-center">{{ __('الحالة') }}</div>
                 <div></div>
             </div>
 
@@ -166,7 +166,7 @@
 
                 {{-- Main Row --}}
                 <div class="grid items-center px-5 py-3 hover:bg-gray-50/80 transition-colors cursor-pointer group"
-                    style="grid-template-columns:40px 220px 1fr 80px 80px 90px 100px 130px"
+                    style="grid-template-columns:40px 30% 20% repeat(6, 1fr)"
                     onclick="toggleExpand({{ $student->id }})">
 
                     <div class="text-gray-300 group-hover:text-kku-primary transition-colors">
@@ -189,28 +189,28 @@
                         @endif
                     </div>
 
-                    <div class="col-major min-w-0">
+                    <div class="col-major flex flex-col items-center justify-center text-center min-w-0">
                         <div class="text-xs font-bold text-gray-700 truncate">{{ $student->department->name_ar }}</div>
                         <div class="text-[10px] text-gray-400 truncate">{{ $student->major ?? '—' }}</div>
                     </div>
 
-                    <div class="col-level text-center">
+                    <div class="col-level flex items-center justify-center">
                         <span class="text-xs font-bold text-gray-600">{{ $student->total_credits > 0 ? ceil($student->total_credits/18) : 1 }}</span>
                     </div>
 
-                    <div class="col-attend text-center">
+                    <div class="col-attend flex items-center justify-center">
                         <span class="text-xs font-bold {{ $attendColor }}">{{ $attendPct }}%</span>
                     </div>
 
-                    <div class="col-gpa text-center">
+                    <div class="col-gpa flex items-center justify-center">
                         <span class="text-sm font-black {{ $gpaColor }}">{{ number_format($student->gpa,2) }}</span>
                     </div>
 
-                    <div class="col-status text-center">
+                    <div class="col-status flex items-center justify-center">
                         <span class="inline-block px-2.5 py-1 rounded-lg text-[10px] font-bold {{ $statusCls }}">{{ __($statusLabel) }}</span>
                     </div>
 
-                    <div class="flex items-center justify-end gap-1.5" onclick="event.stopPropagation()">
+                    <div class="flex items-center justify-center gap-2" onclick="event.stopPropagation()">
                         <button onclick="openQuickNote({{ $student->id }},'{{ addslashes($student->name_ar) }}')"
                             class="p-2 rounded-lg bg-kku-primary/10 text-kku-primary hover:bg-kku-primary hover:text-white transition-all" title="{{ __('ملاحظة سريعة') }}">
                             <i class="fas fa-plus text-xs"></i>
