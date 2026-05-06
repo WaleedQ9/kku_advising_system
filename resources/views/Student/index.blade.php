@@ -132,7 +132,7 @@
 
             {{-- Header --}}
             <div class="grid text-[10px] font-black text-gray-400 uppercase bg-gray-50 border-b border-gray-100 px-5 py-2.5 sticky top-0 z-10"
-                style="grid-template-columns:32px minmax(180px,1.5fr) minmax(120px,1fr) 70px 70px 80px 90px 120px">
+                style="grid-template-columns:40px 220px 1fr 80px 80px 90px 100px 130px">
                 <div></div>
                 <div>{{ __('الطالب') }}</div>
                 <div class="col-major">{{ __('التخصص') }}</div>
@@ -166,11 +166,11 @@
 
                 {{-- Main Row --}}
                 <div class="grid items-center px-5 py-3 hover:bg-gray-50/80 transition-colors cursor-pointer group"
-                    style="grid-template-columns:32px minmax(180px,1.5fr) minmax(120px,1fr) 70px 70px 80px 90px 120px"
+                    style="grid-template-columns:40px 220px 1fr 80px 80px 90px 100px 130px"
                     onclick="toggleExpand({{ $student->id }})">
 
                     <div class="text-gray-300 group-hover:text-kku-primary transition-colors">
-                        <i class="fas fa-chevron-left text-[10px] expand-icon-{{ $student->id }} transition-transform duration-200"></i>
+                        <i class="fas fa-chevron-down text-sm expand-icon-{{ $student->id }} transition-transform duration-200"></i>
                     </div>
 
                     <div class="flex items-center gap-3 min-w-0">
@@ -212,16 +212,16 @@
 
                     <div class="flex items-center justify-end gap-1.5" onclick="event.stopPropagation()">
                         <button onclick="openQuickNote({{ $student->id }},'{{ addslashes($student->name_ar) }}')"
-                            class="p-1.5 rounded-lg bg-kku-primary/10 text-kku-primary hover:bg-kku-primary hover:text-white transition-all" title="{{ __('ملاحظة سريعة') }}">
-                            <i class="fas fa-plus text-[10px]"></i>
+                            class="p-2 rounded-lg bg-kku-primary/10 text-kku-primary hover:bg-kku-primary hover:text-white transition-all" title="{{ __('ملاحظة سريعة') }}">
+                            <i class="fas fa-plus text-xs"></i>
                         </button>
                         <a href="{{ route('students.show',$student->id) }}"
-                            class="p-1.5 rounded-lg bg-gray-100 text-gray-500 hover:bg-gray-600 hover:text-white transition-all" title="{{ __('الملف') }}">
-                            <i class="fas fa-user text-[10px]"></i>
+                            class="p-2 rounded-lg bg-gray-100 text-gray-500 hover:bg-gray-600 hover:text-white transition-all" title="{{ __('الملف') }}">
+                            <i class="fas fa-user text-xs"></i>
                         </a>
                         <a href="{{ route('students.print',$student->id) }}" target="_blank"
-                            class="p-1.5 rounded-lg bg-gray-800 text-white hover:bg-black transition-all" title="{{ __('طباعة') }}">
-                            <i class="fas fa-print text-[10px]"></i>
+                            class="p-2 rounded-lg bg-gray-800 text-white hover:bg-black transition-all" title="{{ __('طباعة') }}">
+                            <i class="fas fa-print text-xs"></i>
                         </a>
                     </div>
                 </div>
