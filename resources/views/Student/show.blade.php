@@ -244,11 +244,22 @@
                                     @endif
                                     @if($note->follow_up_required)
                                         <span class="text-[10px] font-bold text-amber-600">
-                                            <i class="fas fa-flag text-[9px]"></i> {{ __('متابعة') }}
+                                            <i class="fas fa-flag text-[9px]"></i> {{ __('متابعة مطلوبة') }}
                                         </span>
                                     @endif
                                 </div>
-                                <span class="text-[10px] text-gray-400">{{ $note->created_at->format('Y/m/d') }}</span>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] text-gray-400">{{ $note->created_at->format('Y/m/d') }}</span>
+                                    @if($note->follow_up_required)
+                                    <form method="POST" action="{{ route('notes.followup.done', $note->id) }}" class="inline">
+                                        @csrf
+                                        <button type="submit"
+                                            class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 bg-green-100 text-green-700 rounded-md hover:bg-green-500 hover:text-white transition-all">
+                                            <i class="fas fa-check text-[9px]"></i> {{ __('تمت المتابعة') }}
+                                        </button>
+                                    </form>
+                                    @endif
+                                </div>
                             </div>
                             <p class="text-sm text-gray-700 leading-relaxed">{{ $note->content }}</p>
                             <p class="text-[10px] text-gray-400 mt-2 italic">بواسطة: {{ $note->user->name ?? 'المرشد الأكاديمي' }}</p>
