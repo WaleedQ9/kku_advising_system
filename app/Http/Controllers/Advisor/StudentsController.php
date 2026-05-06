@@ -21,6 +21,18 @@ class StudentsController extends Controller
         $status   = $request->input('status');
         $followup = $request->boolean('followup');
 
+        // إحصائيات القسم الكاملة (مستقلة عن الصفحة الحالية)
+        $deptQuery = Student::where('department_id', $advisor->department_id);
+        $deptStats = [
+            'total'        => (clone $deptQuery)->count(),
+            'regular'      => (clone $deptQuery)->where('status', 'منتظم')->count(),
+            'atRisk'       => (clone $deptQuery)->where('status', 'متعثر')->count(),
+            'graduated'    => (clone $deptQuery)->where('status', 'خريج')->count(),
+            'avgGpa'       => round((clone $deptQuery)->avg('gpa') ?? 0, 2),
+            'flaggedCount' => (clone $deptQuery)->whereHas('riskFlags', fn($q) => $q->where('is_resolved', false))->count(),
+            'followUpCount'=> (clone $deptQuery)->whereHas('advisingNotes', fn($q) => $q->where('follow_up_required', true))->count(),
+        ];
+
         $students = Student::query()
             ->where('department_id', $advisor->department_id)
             ->with([
@@ -41,7 +53,7 @@ class StudentsController extends Controller
             ->paginate(20)
             ->withQueryString();
 
-        return view('Student.index', compact('students'));
+        return view('Student.index', compact('students', 'deptStats'));
     }
 
     public function print(Student $student)

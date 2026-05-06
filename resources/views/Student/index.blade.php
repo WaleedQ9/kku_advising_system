@@ -3,15 +3,14 @@
 
 @section('content')
 @php
-    $advisor          = auth()->user();
-    $collection       = $students->getCollection();
-    $total            = $students->total();
-    $regular          = $collection->where('status','منتظم')->count();
-    $atRisk           = $collection->where('status','متعثر')->count();
-    $graduated        = $collection->where('status','خريج')->count();
-    $avgGpa           = $collection->avg('gpa');
-    $followUpCount    = $collection->filter(fn($s) => $s->advisingNotes->where('follow_up_required',true)->isNotEmpty())->count();
-    $flaggedCount     = $collection->filter(fn($s) => $s->riskFlags->where('is_resolved',false)->isNotEmpty())->count();
+    $advisor        = auth()->user();
+    $total          = $deptStats['total'];
+    $regular        = $deptStats['regular'];
+    $atRisk         = $deptStats['atRisk'];
+    $graduated      = $deptStats['graduated'];
+    $avgGpa         = $deptStats['avgGpa'];
+    $flaggedCount   = $deptStats['flaggedCount'];
+    $followUpCount  = $deptStats['followUpCount'];
 
     $filterChips = [
         ''       => ['الكل',  $total,     'bg-kku-primary text-white', 'bg-gray-100 text-gray-600'],
@@ -93,10 +92,30 @@
                     </a>
                 @endforeach
             </div>
-            <div class="mr-auto relative" id="colToggleWrapper">
+
+            {{-- Search --}}
+            <form method="GET" action="{{ route('students.index') }}" class="flex items-center gap-2 mr-auto">
+                @if(request('status')) <input type="hidden" name="status" value="{{ request('status') }}"> @endif
+                @if(request('followup')) <input type="hidden" name="followup" value="1"> @endif
+                <div class="relative">
+                    <i class="fas fa-search absolute right-3 top-1/2 -translate-y-1/2 text-gray-300 text-xs"></i>
+                    <input type="text" name="search" value="{{ request('search') }}"
+                        placeholder="{{ __('بحث باسم أو رقم...') }}"
+                        class="pr-8 pl-3 py-1.5 bg-gray-100 rounded-lg text-xs outline-none focus:bg-white focus:ring-1 focus:ring-kku-primary/30 w-44 transition-all">
+                </div>
+                @if(request('search'))
+                    <a href="{{ route('students.index', array_filter(['status'=>request('status'),'followup'=>request('followup')])) }}"
+                        class="text-xs text-gray-400 hover:text-red-500 transition">
+                        <i class="fas fa-times"></i>
+                    </a>
+                @endif
+            </form>
+
+            {{-- Column Toggle --}}
+            <div class="relative" id="colToggleWrapper">
                 <button onclick="toggleColPanel()"
                     class="flex items-center gap-2 px-3 py-1.5 bg-gray-100 text-gray-600 rounded-lg text-xs font-bold hover:bg-gray-200 transition-all">
-                    <i class="fas fa-sliders-h"></i> {{ __('إخفاء/إظهار الأعمدة') }}
+                    <i class="fas fa-sliders-h"></i> {{ __('الأعمدة') }}
                 </button>
                 <div id="colPanel" class="hidden absolute left-0 top-10 z-50 bg-white border border-gray-200 rounded-2xl shadow-xl p-4 w-52 space-y-2">
                     <p class="text-[10px] font-black text-gray-400 uppercase mb-2">{{ __('الأعمدة المرئية') }}</p>
@@ -122,9 +141,10 @@
         <div class="flex items-center gap-6 px-5 py-2.5 bg-white border-b border-gray-100 shrink-0 text-xs">
             <div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-kku-primary"></div><span class="text-gray-500">{{ __('إجمالي') }}:</span><strong>{{ $total }}</strong></div>
             <div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-green-500"></div><span class="text-gray-500">{{ __('منتظم') }}:</span><strong class="text-green-700">{{ $regular }}</strong></div>
-            <div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-amber-400"></div><span class="text-gray-500">{{ __('مراقبة') }}:</span><strong class="text-amber-700">{{ $flaggedCount }}</strong></div>
+            <div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-amber-400"></div><span class="text-gray-500">{{ __('إنذارات') }}:</span><strong class="text-amber-700">{{ $flaggedCount }}</strong></div>
             <div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-red-500"></div><span class="text-gray-500">{{ __('خطر') }}:</span><strong class="text-red-600">{{ $atRisk }}</strong></div>
-            <div class="flex items-center gap-2 mr-auto"><div class="w-2 h-2 rounded-full bg-yellow-400"></div><span class="text-gray-500">{{ __('متوسط المعدل') }}:</span><strong>{{ number_format($avgGpa, 2) }}</strong></div>
+            <div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-orange-400"></div><span class="text-gray-500">{{ __('متابعات') }}:</span><strong class="text-orange-600">{{ $followUpCount }}</strong></div>
+            <div class="flex items-center gap-2 mr-auto"><div class="w-2 h-2 rounded-full bg-yellow-400"></div><span class="text-gray-500">{{ __('متوسط المعدل') }}:</span><strong>{{ $avgGpa }}</strong></div>
         </div>
 
         {{-- Table --}}
@@ -132,22 +152,23 @@
 
             {{-- Header --}}
             <div class="grid text-[10px] font-black text-gray-400 uppercase bg-gray-50 border-b border-gray-100 px-5 py-2.5 sticky top-0 z-10"
-                style="grid-template-columns:40px 30% 20% repeat(6, 1fr)">
+                style="grid-template-columns:40px 30% 15% repeat(6,1fr) 100px">
                 <div></div>
-                <div class="flex items-center">{{ __('الطالب') }}</div>
-                <div class="col-major flex items-center justify-center">{{ __('التخصص') }}</div>
-                <div class="col-level flex items-center justify-center">{{ __('المستوى') }}</div>
-                <div class="col-attend flex items-center justify-center">{{ __('الحضور') }}</div>
-                <div class="col-gpa flex items-center justify-center">{{ __('المعدل') }}</div>
-                <div class="col-status flex items-center justify-center">{{ __('الحالة') }}</div>
-                <div></div>
+                <div>{{ __('الطالب') }}</div>
+                <div class="col-major text-center">{{ __('التخصص') }}</div>
+                <div class="col-level text-center">{{ __('المستوى') }}</div>
+                <div class="col-attend text-center">{{ __('الحضور') }}</div>
+                <div class="col-gpa text-center">{{ __('المعدل') }}</div>
+                <div class="col-credits text-center">{{ __('الساعات') }}</div>
+                <div class="col-status text-center">{{ __('الحالة') }}</div>
+                <div class="text-center">{{ __('إجراءات') }}</div>
             </div>
 
             {{-- Rows --}}
             @foreach($students as $student)
             @php
-                $activeFlags   = $student->riskFlags->where('is_resolved', false);
-                $hasWarning    = $activeFlags->isNotEmpty();
+                // ✅ الإصلاح: riskFlags محمّلة مسبقاً بفلتر is_resolved=false من الـ controller
+                $hasWarning    = $student->riskFlags->isNotEmpty();
                 $hasFollowUp   = $student->advisingNotes->where('follow_up_required', true)->isNotEmpty();
                 $totalAbsences = $student->courses->sum('pivot.absences_count');
                 $totalSessions = $student->courses->count() * 15;
@@ -156,23 +177,25 @@
                 $attendColor   = $attendPct >= 85 ? 'text-green-600' : ($attendPct >= 70 ? 'text-amber-600' : 'text-red-600');
                 $rowBorder     = $hasWarning ? 'border-r-[3px] border-r-red-400' : ($hasFollowUp ? 'border-r-[3px] border-r-amber-400' : '');
                 $statusCls     = match($student->status) { 'منتظم'=>'bg-green-50 text-green-700','متعثر'=>'bg-red-50 text-red-700','خريج'=>'bg-blue-50 text-blue-700',default=>'bg-gray-100 text-gray-600' };
-                $statusLabel   = match($student->status) { 'متعثر'=>'⚠ خطر', default=>$student->status };
+                $statusLabel   = $student->status === 'متعثر' ? '⚠ خطر' : $student->status;
                 $gradientColor = $hasWarning ? '#ef4444,#be123c' : ($student->gpa>=3.75 ? '#10b981,#059669' : ($student->gpa>=2.5 ? '#f59e0b,#f97316' : '#8b5cf6,#6d28d9'));
-                $initials      = mb_substr($student->name_ar,0,1) . mb_substr(explode(' ',$student->name_ar)[1]??'',0,1);
+                $initials      = mb_substr($student->name_ar,0,1) . (mb_substr(explode(' ',$student->name_ar)[1]??'',0,1));
                 $dropsDone     = $student->dropActions->where('status','Completed')->count();
+                $currentCredits= $student->courses->sum('credits');
             @endphp
 
             <div class="student-row border-b border-gray-100 transition-colors duration-200 {{ $rowBorder }}" id="row-{{ $student->id }}">
 
                 {{-- Main Row --}}
                 <div class="grid items-center px-5 py-3 hover:bg-gray-50/80 transition-colors cursor-pointer group"
-                    style="grid-template-columns:40px 30% 20% repeat(6, 1fr)"
+                    style="grid-template-columns:40px 30% 15% repeat(6,1fr) 100px"
                     onclick="toggleExpand({{ $student->id }})">
 
                     <div class="text-gray-300 group-hover:text-kku-primary transition-colors">
                         <i class="fas fa-chevron-down text-sm expand-icon-{{ $student->id }} transition-transform duration-200"></i>
                     </div>
 
+                    {{-- اسم الطالب --}}
                     <div class="flex items-center gap-3 min-w-0">
                         <div class="w-9 h-9 rounded-xl shrink-0 flex items-center justify-center text-sm font-black text-white shadow-sm"
                             style="background:linear-gradient(135deg,{{ $gradientColor }})">
@@ -189,40 +212,52 @@
                         @endif
                     </div>
 
+                    {{-- التخصص --}}
                     <div class="col-major flex flex-col items-center justify-center text-center min-w-0">
-                        <div class="text-xs font-bold text-gray-700 truncate">{{ $student->department->name_ar }}</div>
-                        <div class="text-[10px] text-gray-400 truncate">{{ $student->major ?? '—' }}</div>
+                        <div class="text-xs font-bold text-gray-700 truncate max-w-full px-1">{{ $student->major ?? $student->department->name_ar }}</div>
                     </div>
 
+                    {{-- المستوى --}}
                     <div class="col-level flex items-center justify-center">
-                        <span class="text-xs font-bold text-gray-600">{{ $student->total_credits > 0 ? ceil($student->total_credits/18) : 1 }}</span>
+                        <span class="text-xs font-bold text-gray-600 bg-gray-100 w-6 h-6 rounded-full flex items-center justify-center">
+                            {{ $student->total_credits > 0 ? ceil($student->total_credits / 18) : 1 }}
+                        </span>
                     </div>
 
+                    {{-- الحضور --}}
                     <div class="col-attend flex items-center justify-center">
                         <span class="text-xs font-bold {{ $attendColor }}">{{ $attendPct }}%</span>
                     </div>
 
+                    {{-- المعدل --}}
                     <div class="col-gpa flex items-center justify-center">
                         <span class="text-sm font-black {{ $gpaColor }}">{{ number_format($student->gpa,2) }}</span>
                     </div>
 
+                    {{-- الساعات المسجلة حالياً --}}
+                    <div class="col-credits flex items-center justify-center">
+                        <span class="text-xs font-bold text-gray-600">{{ $currentCredits }}س</span>
+                    </div>
+
+                    {{-- الحالة --}}
                     <div class="col-status flex items-center justify-center">
                         <span class="inline-block px-2.5 py-1 rounded-lg text-[10px] font-bold {{ $statusCls }}">{{ __($statusLabel) }}</span>
                     </div>
 
-                    <div class="flex items-center justify-center gap-2" onclick="event.stopPropagation()">
+                    {{-- الإجراءات --}}
+                    <div class="flex items-center justify-center gap-1.5" onclick="event.stopPropagation()">
                         <button onclick="openQuickNote({{ $student->id }},'{{ addslashes($student->name_ar) }}')"
-                            class="flex flex-col items-center gap-0.5 px-2.5 py-1.5 rounded-lg bg-kku-primary/10 text-kku-primary hover:bg-kku-primary hover:text-white transition-all">
+                            class="flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-lg bg-kku-primary/10 text-kku-primary hover:bg-kku-primary hover:text-white transition-all">
                             <i class="fas fa-plus text-xs"></i>
                             <span class="text-[9px] font-bold leading-none">{{ __('ملاحظة') }}</span>
                         </button>
                         <a href="{{ route('students.show',$student->id) }}"
-                            class="flex flex-col items-center gap-0.5 px-2.5 py-1.5 rounded-lg bg-gray-100 text-gray-500 hover:bg-gray-600 hover:text-white transition-all">
+                            class="flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-lg bg-gray-100 text-gray-500 hover:bg-gray-600 hover:text-white transition-all">
                             <i class="fas fa-user text-xs"></i>
                             <span class="text-[9px] font-bold leading-none">{{ __('الملف') }}</span>
                         </a>
                         <a href="{{ route('students.print',$student->id) }}" target="_blank"
-                            class="flex flex-col items-center gap-0.5 px-2.5 py-1.5 rounded-lg bg-gray-800 text-white hover:bg-black transition-all">
+                            class="flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-lg bg-gray-800 text-white hover:bg-black transition-all">
                             <i class="fas fa-print text-xs"></i>
                             <span class="text-[9px] font-bold leading-none">{{ __('طباعة') }}</span>
                         </a>
@@ -237,23 +272,31 @@
                         <div class="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm">
                             <p class="text-[11px] font-black text-gray-500 mb-3 flex items-center gap-1.5">
                                 <i class="fas fa-book text-kku-primary"></i> {{ __('المقررات المسجلة') }}
+                                <span class="mr-auto text-[10px] bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded font-bold">
+                                    {{ $currentCredits }} {{ __('ساعة') }}
+                                </span>
                             </p>
                             @if($student->courses->isEmpty())
                                 <p class="text-xs text-gray-400">{{ __('لا توجد مواد مسجلة') }}</p>
                             @else
                                 <div class="space-y-2">
-                                    @foreach($student->courses->take(4) as $c)
-                                    @php $ap = min(100,($c->pivot->absences_count/15)*100); $ac=$ap>=100?'text-red-600':($ap>=60?'text-amber-600':'text-green-600'); @endphp
+                                    @foreach($student->courses->take(5) as $c)
+                                    @php
+                                        $absPct = $c->pivot->absences_count > 0 ? min(100, round(($c->pivot->absences_count / 15) * 100)) : 0;
+                                        $absColor = $absPct >= 40 ? 'text-red-500' : ($absPct >= 25 ? 'text-amber-500' : 'text-green-600');
+                                    @endphp
                                     <div class="flex items-center justify-between text-xs gap-2">
                                         <span class="text-gray-700 truncate flex-1">{{ $c->name }}</span>
-                                        <span class="shrink-0 text-[10px] font-mono">{{ $c->credits }}س</span>
-                                        <span class="shrink-0 font-bold {{ $ac }}">{{ 100-round($ap) }}%</span>
+                                        <span class="shrink-0 text-[10px] text-gray-400 font-mono">{{ $c->credits }}س</span>
+                                        <span class="shrink-0 font-bold {{ $absColor }}">
+                                            {{ $c->pivot->absences_count }} {{ __('غياب') }}
+                                        </span>
                                     </div>
                                     @endforeach
                                 </div>
                                 <div class="mt-3 pt-2 border-t border-gray-100">
-                                    <span class="text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded font-bold">
-                                        {{ __('صلاحية الحذف') }}: {{ 3-$dropsDone }} {{ __('محاولات متبقية') }}
+                                    <span class="text-[10px] bg-{{ (3-$dropsDone) > 0 ? 'blue' : 'red' }}-50 text-{{ (3-$dropsDone) > 0 ? 'blue' : 'red' }}-600 px-2 py-0.5 rounded font-bold">
+                                        {{ __('الحذف') }}: {{ 3-$dropsDone }}/3 {{ __('متبقية') }}
                                     </span>
                                 </div>
                             @endif
@@ -263,23 +306,23 @@
                         <div class="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm flex flex-col">
                             <p class="text-[11px] font-black text-gray-500 mb-3 flex items-center gap-1.5 shrink-0">
                                 <i class="fas fa-clipboard text-kku-primary"></i>
-                                {{ __('جميع الملاحظات') }}
+                                {{ __('الملاحظات الإرشادية') }}
                                 <span class="mr-auto bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded text-[10px]">{{ $student->advisingNotes->count() }}</span>
                             </p>
                             @if($student->advisingNotes->isEmpty())
-                                <p class="text-xs text-gray-400">{{ __('لا توجد ملاحظات') }}</p>
+                                <p class="text-xs text-gray-400 mt-2">{{ __('لا توجد ملاحظات بعد') }}</p>
                             @else
-                                <div class="flex-1 space-y-2 overflow-y-auto">
+                                <div class="flex-1 space-y-2 overflow-y-auto max-h-36">
                                     @foreach($student->advisingNotes->sortByDesc('created_at') as $note)
                                     <div class="text-xs border-b border-gray-50 pb-2 last:border-0 last:pb-0">
                                         <p class="text-gray-700 leading-relaxed line-clamp-2">{{ $note->content }}</p>
-                                        <p class="text-[9px] text-gray-400 mt-1">
+                                        <p class="text-[9px] text-gray-400 mt-1 flex items-center gap-1">
                                             @if($note->follow_up_required)
-                                                <span class="text-amber-600 font-bold">🔔 {{ __('متابعة') }}</span> ·
+                                                <span class="text-amber-600 font-bold">🔔 {{ __('متابعة') }}</span>
                                             @else
-                                                <span class="text-green-600 font-bold">✅ {{ __('مكتمل') }}</span> ·
+                                                <span class="text-green-600 font-bold">✅ {{ __('مكتمل') }}</span>
                                             @endif
-                                            {{ $note->created_at->format('d M Y') }} · {{ $note->user->name ?? __('المرشد') }}
+                                            <span>· {{ $note->created_at->format('d M Y') }}</span>
                                         </p>
                                     </div>
                                     @endforeach
@@ -307,7 +350,7 @@
                                     {{ __('تحتاج متابعة') }}
                                 </label>
                                 <button type="submit" class="w-full py-1.5 bg-kku-primary text-white rounded-lg text-xs font-bold hover:bg-kku-dark transition-all">
-                                    <i class="fas fa-save ml-1"></i> {{ __('حفظ الملاحظة') }}
+                                    <i class="fas fa-save ml-1"></i> {{ __('حفظ') }}
                                 </button>
                             </form>
                             <div class="grid grid-cols-2 gap-2 pt-2 border-t border-gray-100">
@@ -331,6 +374,11 @@
             <div class="py-20 text-center text-gray-400">
                 <i class="fas fa-search text-4xl mb-3 block opacity-20"></i>
                 <p class="font-bold">{{ __('لا يوجد طلاب مطابقون') }}</p>
+                @if(request('search'))
+                    <a href="{{ route('students.index') }}" class="mt-2 inline-block text-xs text-kku-primary hover:underline">
+                        {{ __('مسح البحث') }}
+                    </a>
+                @endif
             </div>
             @endif
 
@@ -401,18 +449,15 @@
 
 <script>
 function toggleExpand(id) {
-    // أغلق جميع الصفوف أولاً
     document.querySelectorAll('.student-row').forEach(row => {
         const rid = row.id.replace('row-', '');
         const panel = document.getElementById('expanded-' + rid);
         const icon  = document.querySelector('.expand-icon-' + rid);
-        if (panel) panel.classList.add('hidden');
+        if (panel) { panel.classList.add('hidden'); panel.dataset.open = '0'; }
         if (icon)  icon.style.transform = '';
         row.style.background = '';
-        row.style.borderRight = '';
     });
 
-    // افتح الصف المطلوب فقط (toggle — لو كان مفتوح اقفله)
     const panel = document.getElementById('expanded-' + id);
     const icon  = document.querySelector('.expand-icon-' + id);
     const row   = document.getElementById('row-' + id);
@@ -423,10 +468,7 @@ function toggleExpand(id) {
         panel.dataset.open = '1';
         icon.style.transform = 'rotate(-90deg)';
         row.style.background = '#f0fdf4';
-        row.style.borderRight = '4px solid #16a34a';
         row.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    } else {
-        panel.dataset.open = '0';
     }
 }
 function openQuickNote(id, name) {
@@ -441,7 +483,7 @@ function closeQuickNote() {
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeQuickNote(); });
 
-const COL_KEY = 'kku_cols_v2';
+const COL_KEY = 'kku_cols_v3';
 function toggleColumn(col, wrapper) {
     const cb = wrapper.querySelector('input');
     cb.checked = !cb.checked;
