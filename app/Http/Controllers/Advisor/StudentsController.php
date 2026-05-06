@@ -18,21 +18,27 @@ class StudentsController extends Controller
         $search  = $request->input('search');
         $advisor = auth()->user();
 
+        $status   = $request->input('status');
+        $followup = $request->boolean('followup');
+
         $students = Student::query()
             ->where('department_id', $advisor->department_id)
             ->with([
                 'department',
                 'advisingNotes' => fn($q) => $q->with('user')->latest(),
                 'riskFlags'     => fn($q) => $q->where('is_resolved', false)->latest(),
-                'courses',
+                'courses'       => fn($q) => $q->withPivot('current_grade', 'absences_count'),
+                'dropActions',
             ])
             ->when($search, fn($q) => $q->where(function ($q2) use ($search) {
                 $q2->where('student_id', 'LIKE', "%{$search}%")
                    ->orWhere('name_ar',   'LIKE', "%{$search}%")
                    ->orWhere('name_en',   'LIKE', "%{$search}%");
             }))
+            ->when($status, fn($q) => $q->where('status', $status))
+            ->when($followup, fn($q) => $q->whereHas('advisingNotes', fn($q2) => $q2->where('follow_up_required', true)))
             ->latest()
-            ->paginate(15)
+            ->paginate(20)
             ->withQueryString();
 
         return view('Student.index', compact('students'));
