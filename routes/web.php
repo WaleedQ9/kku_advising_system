@@ -8,8 +8,6 @@ use App\Http\Controllers\Chair\DashboardController as ChairDashboardController;
 use App\Http\Controllers\Chair\ReportController as ChairReportController;
 use App\Http\Controllers\Dean\DashboardController as DeanDashboardController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\Registrar\DashboardController;
-use App\Http\Controllers\Registrar\StudentManagementController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -58,18 +56,6 @@ Route::middleware(['auth', 'role:advisor'])->group(function () {
         Route::post('/flags/scan',               'scan')->name('flags.scan');
     });
 });
-
-// ─── Registrar ────────────────────────────────────────────────────────────────
-Route::middleware(['auth', 'role:registrar'])
-    ->prefix('registrar')
-    ->name('registrar.')
-    ->group(function () {
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-        Route::get('/students',                             [StudentManagementController::class, 'index'])->name('students.index');
-        Route::get('/students/{student}/enroll',            [StudentManagementController::class, 'createEnrollment'])->name('students.enroll');
-        Route::post('/students/{student}/enroll',           [StudentManagementController::class, 'storeEnrollment'])->name('students.store_enroll');
-    });
 
 // ─── Chair ────────────────────────────────────────────────────────────────────
 Route::middleware(['auth', 'role:chair'])

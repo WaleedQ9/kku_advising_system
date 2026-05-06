@@ -4,114 +4,109 @@ namespace Database\Seeders;
 
 use App\Models\Department;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
+
 class UserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        Role::firstOrCreate(['name' => 'registrar']);
         Role::firstOrCreate(['name' => 'advisor']);
         Role::firstOrCreate(['name' => 'chair']);
         Role::firstOrCreate(['name' => 'dean']);
 
-        $arDept = Department::where('code', 'AR')->first();
-        $cysDept = Department::where('code', 'CYS')->first();
-        $ltDept = Department::where('code', 'LT')->first();
+        $cs  = Department::where('code', 'CS')->first();
+        $cys = Department::where('code', 'CYS')->first();
+        $is  = Department::where('code', 'IS')->first();
+        $cen = Department::where('code', 'CEN')->first();
 
         $users = [
+            // ══════════ المرشدون الأكاديميون ══════════
             [
-                'name' => 'محمد المسجل',
-                'email' => 'admin@admin.com',
-                'password' => Hash::make('123123'),
-                'department_id' => $arDept->id,
-                'phone' => '0500000000',
-                'role' => 'registrar'
+                'name'          => 'د. أحمد الحاسوبي',
+                'email'         => 'advisor.cs@kku.edu.sa',
+                'password'      => Hash::make('123123'),
+                'department_id' => $cs->id,
+                'phone'         => '0501112221',
+                'role'          => 'advisor',
             ],
             [
-                'name' => 'د. سارة السيبراني',
-                'email' => 'admin2@admin.com',
-                'password' => Hash::make('123123'),
-                'department_id' => $cysDept->id,
-                'phone' => '0504445556',
-                'role' => 'advisor'
+                'name'          => 'د. سارة السيبراني',
+                'email'         => 'advisor.cys@kku.edu.sa',
+                'password'      => Hash::make('123123'),
+                'department_id' => $cys->id,
+                'phone'         => '0501112222',
+                'role'          => 'advisor',
             ],
             [
-                'name' => 'د. خالد اللغوي',
-                'email' => 'admin3@admin.com',
-                'password' => Hash::make('123123'),
-                'department_id' => $ltDept->id,
-                'phone' => '0507778889',
-                'role' => 'advisor'
+                'name'          => 'د. خالد النظمي',
+                'email'         => 'advisor.is@kku.edu.sa',
+                'password'      => Hash::make('123123'),
+                'department_id' => $is->id,
+                'phone'         => '0501112223',
+                'role'          => 'advisor',
             ],
             [
-                'name' => 'د. فهد رئيس القسم',
-                'email' => 'chair@admin.com',
-                'password' => Hash::make('123123'),
-                'department_id' => $cysDept->id,
-                'phone' => '0511112222',
-                'role' => 'chair'
+                'name'          => 'د. منى الهندسية',
+                'email'         => 'advisor.cen@kku.edu.sa',
+                'password'      => Hash::make('123123'),
+                'department_id' => $cen->id,
+                'phone'         => '0501112224',
+                'role'          => 'advisor',
+            ],
+
+            // ══════════ رؤساء الأقسام ══════════
+            [
+                'name'          => 'د. فهد رئيس قسم الحاسب',
+                'email'         => 'chair.cs@kku.edu.sa',
+                'password'      => Hash::make('123123'),
+                'department_id' => $cs->id,
+                'phone'         => '0511112221',
+                'role'          => 'chair',
             ],
             [
-                'name' => 'د. عبدالله العميد',
-                'email' => 'dean@admin.com',
-                'password' => Hash::make('123123'),
-                'department_id' => $arDept->id,
-                'phone' => '0533334444',
-                'role' => 'dean'
+                'name'          => 'د. نورة رئيسة قسم السيبراني',
+                'email'         => 'chair.cys@kku.edu.sa',
+                'password'      => Hash::make('123123'),
+                'department_id' => $cys->id,
+                'phone'         => '0511112222',
+                'role'          => 'chair',
+            ],
+            [
+                'name'          => 'د. عمر رئيس قسم نظم المعلومات',
+                'email'         => 'chair.is@kku.edu.sa',
+                'password'      => Hash::make('123123'),
+                'department_id' => $is->id,
+                'phone'         => '0511112223',
+                'role'          => 'chair',
+            ],
+            [
+                'name'          => 'د. ريم رئيسة قسم هندسة الحاسب',
+                'email'         => 'chair.cen@kku.edu.sa',
+                'password'      => Hash::make('123123'),
+                'department_id' => $cen->id,
+                'phone'         => '0511112224',
+                'role'          => 'chair',
+            ],
+
+            // ══════════ العميد ══════════
+            [
+                'name'          => 'أ.د. عبدالله العميد',
+                'email'         => 'dean@kku.edu.sa',
+                'password'      => Hash::make('123123'),
+                'department_id' => $cs->id,
+                'phone'         => '0533334444',
+                'role'          => 'dean',
             ],
         ];
 
         foreach ($users as $userData) {
-
             $roleName = $userData['role'];
             unset($userData['role']);
-
-
             $user = User::updateOrCreate(['email' => $userData['email']], $userData);
-
-
             $user->syncRoles([$roleName]);
         }
-        //
-
-
-        // $csDept = Department::where('code', 'CS')->first();
-        // $cysDept = Department::where('code', 'CYS')->first();
-        // $ltDept = Department::where('code', 'LT')->first();
-
-        // $advisors = [
-        //     [
-        //         'name' => 'د. أحمد الحاسوبي',
-        //         'email' => 'admin@admin.com',
-        //         'password' => Hash::make('123123'),
-        //         'department_id' => $csDept->id,
-        //         'phone' => '0501112223'
-        //     ],
-        //     [
-        //         'name' => 'د. سارة السيبراني',
-        //         'email' => 'admin2@admin.com',
-        //         'password' => Hash::make('123123'),
-        //         'department_id' => $cysDept->id,
-        //         'phone' => '0504445556'
-        //     ],
-        //     [
-        //         'name' => 'د. خالد اللغوي',
-        //         'email' => 'admin3@admin.com',
-        //         'password' => Hash::make('123123'),
-        //         'department_id' => $ltDept->id,
-        //         'phone' => '0507778889'
-        //     ],
-        // ];
-
-        // foreach ($advisors as $advisor) {
-        //     User::updateOrCreate(['email' => $advisor['email']], $advisor);
-        // }
     }
 }

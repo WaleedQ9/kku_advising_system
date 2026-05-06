@@ -4,68 +4,53 @@ namespace Database\Seeders;
 
 use App\Models\Course;
 use App\Models\Department;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class CourseSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
+        $cs  = Department::where('code', 'CS')->first()->id;
+        $cys = Department::where('code', 'CYS')->first()->id;
+        $is  = Department::where('code', 'IS')->first()->id;
+        $cen = Department::where('code', 'CEN')->first()->id;
 
-        $csDept = Department::where('code', 'CS')->first()->id;
-        $isDept = Department::where('code', 'IS')->first()->id;
-        $cenDept = Department::where('code', 'CEN')->first()->id;
-        $cysDept = Department::where('code', 'CYS')->first()->id;
-        $ltDept = Department::where('code', 'LT')->first()->id;
-        $eduDept = Department::where('code', 'EDU')->first()->id;
-
-        $islDept = Department::where('code', 'ISL')->first()->id;
-        $arbDept = Department::where('code', 'ARB')->first()->id;
-        $mathDept = Department::where('code', 'MATH')->first()->id;
-        $engDept = Department::where('code', 'ENG')->first()->id;
+        // نستخدم أي قسم للمواد العامة — نختار CS
+        $gen = $cs;
 
         $courses = [
-            ['code' => 'IC101', 'name' => 'الثقافة الإسلامية 1', 'credits' => 2, 'department_id' => $islDept, 'level_type' => 'عام', 'requirement_type' => 'اجباري'],
-            ['code' => 'IC102', 'name' => 'الثقافة الإسلامية 2', 'credits' => 2, 'department_id' => $islDept, 'level_type' => 'عام', 'requirement_type' => 'اجباري'],
-            ['code' => 'IC103', 'name' => 'الثقافة الإسلامية 3', 'credits' => 2, 'department_id' => $islDept, 'level_type' => 'عام', 'requirement_type' => 'اجباري'],
-            ['code' => 'IC104', 'name' => 'الثقافة الإسلامية 4', 'credits' => 2, 'department_id' => $islDept, 'level_type' => 'عام', 'requirement_type' => 'اجباري'],
-            ['code' => 'ISL201', 'name' => 'النظام الاقتصادي في الإسلام', 'credits' => 2, 'department_id' => $islDept, 'level_type' => 'عام', 'requirement_type' => 'اختياري'],
+            // ══════════ مواد عامة اجبارية (5) ══════════
+            ['code' => 'GEN101', 'name' => 'الثقافة الإسلامية',            'credits' => 2, 'department_id' => $gen, 'level_type' => 'عام', 'requirement_type' => 'اجباري'],
+            ['code' => 'GEN102', 'name' => 'المهارات اللغوية العربية',      'credits' => 2, 'department_id' => $gen, 'level_type' => 'عام', 'requirement_type' => 'اجباري'],
+            ['code' => 'GEN103', 'name' => 'اللغة الإنجليزية 1',           'credits' => 3, 'department_id' => $gen, 'level_type' => 'عام', 'requirement_type' => 'اجباري'],
+            ['code' => 'GEN104', 'name' => 'حساب التفاضل والتكامل',        'credits' => 3, 'department_id' => $gen, 'level_type' => 'عام', 'requirement_type' => 'اجباري'],
+            ['code' => 'GEN105', 'name' => 'الإحصاء والاحتمالات',          'credits' => 3, 'department_id' => $gen, 'level_type' => 'عام', 'requirement_type' => 'اجباري'],
 
-            ['code' => 'ARAB101', 'name' => 'المهارات اللغوية', 'credits' => 2, 'department_id' => $arbDept, 'level_type' => 'عام', 'requirement_type' => 'اجباري'],
-            ['code' => 'ARAB103', 'name' => 'التحرير العربي', 'credits' => 2, 'department_id' => $arbDept, 'level_type' => 'عام', 'requirement_type' => 'اجباري'],
-            ['code' => 'ARAB201', 'name' => 'الأدب العربي الحديث', 'credits' => 2, 'department_id' => $arbDept, 'level_type' => 'عام', 'requirement_type' => 'اختياري'],
-            ['code' => 'ARAB202', 'name' => 'البلاغة العربية', 'credits' => 2, 'department_id' => $arbDept, 'level_type' => 'عام', 'requirement_type' => 'اختياري'],
-            ['code' => 'ARAB301', 'name' => 'النحو الواضح', 'credits' => 2, 'department_id' => $arbDept, 'level_type' => 'عام', 'requirement_type' => 'اختياري'],
+            // ══════════ مواد عامة اختيارية (3) ══════════
+            ['code' => 'GEN201', 'name' => 'اللغة الإنجليزية 2',           'credits' => 3, 'department_id' => $gen, 'level_type' => 'عام', 'requirement_type' => 'اختياري'],
+            ['code' => 'GEN202', 'name' => 'ريادة الأعمال والابتكار',      'credits' => 2, 'department_id' => $gen, 'level_type' => 'عام', 'requirement_type' => 'اختياري'],
+            ['code' => 'GEN203', 'name' => 'مهارات التواصل والعرض',        'credits' => 2, 'department_id' => $gen, 'level_type' => 'عام', 'requirement_type' => 'اختياري'],
 
-            ['code' => 'MATH101', 'name' => 'حساب التفاضل والتكامل 1', 'credits' => 3, 'department_id' => $mathDept, 'level_type' => 'عام', 'requirement_type' => 'اجباري'],
-            ['code' => 'MATH102', 'name' => 'حساب التفاضل والتكامل 2', 'credits' => 3, 'department_id' => $mathDept, 'level_type' => 'عام', 'requirement_type' => 'اجباري'],
-            ['code' => 'MATH105', 'name' => 'الجبر الخطي', 'credits' => 3, 'department_id' => $mathDept, 'level_type' => 'عام', 'requirement_type' => 'اجباري'],
-            ['code' => 'MATH201', 'name' => 'الإحصاء والاحتمالات', 'credits' => 3, 'department_id' => $mathDept, 'level_type' => 'عام', 'requirement_type' => 'اجباري'],
-            ['code' => 'MATH202', 'name' => 'الرياضيات المتقطعة', 'credits' => 3, 'department_id' => $mathDept, 'level_type' => 'عام', 'requirement_type' => 'اجباري'],
+            // ══════════ علوم الحاسب — تخصص (3) ══════════
+            ['code' => 'CS111',  'name' => 'برمجة الحاسب 1',               'credits' => 4, 'department_id' => $cs,  'level_type' => 'تخصص', 'requirement_type' => 'اجباري'],
+            ['code' => 'CS221',  'name' => 'تراكيب البيانات والخوارزميات', 'credits' => 3, 'department_id' => $cs,  'level_type' => 'تخصص', 'requirement_type' => 'اجباري'],
+            ['code' => 'CS331',  'name' => 'نظم التشغيل',                  'credits' => 3, 'department_id' => $cs,  'level_type' => 'تخصص', 'requirement_type' => 'اختياري'],
 
-            ['code' => 'ENG101', 'name' => 'اللغة الإنجليزية 1', 'credits' => 3, 'department_id' => $engDept, 'level_type' => 'عام', 'requirement_type' => 'اجباري'],
-            ['code' => 'ENG102', 'name' => 'اللغة الإنجليزية 2', 'credits' => 3, 'department_id' => $engDept, 'level_type' => 'عام', 'requirement_type' => 'اجباري'],
-            ['code' => 'ENG201', 'name' => 'الكتابة التقنية', 'credits' => 2, 'department_id' => $engDept, 'level_type' => 'عام', 'requirement_type' => 'اجباري'],
-            ['code' => 'ENG202', 'name' => 'مهارات المحادثة', 'credits' => 2, 'department_id' => $engDept, 'level_type' => 'عام', 'requirement_type' => 'اختياري'],
-            ['code' => 'ENG301', 'name' => 'الإنجليزية للأغراض الأكاديمية', 'credits' => 3, 'department_id' => $engDept, 'level_type' => 'عام', 'requirement_type' => 'اختياري'],
+            // ══════════ الأمن السيبراني — تخصص (3) ══════════
+            ['code' => 'CYS201', 'name' => 'مقدمة في الأمن السيبراني',     'credits' => 3, 'department_id' => $cys, 'level_type' => 'تخصص', 'requirement_type' => 'اجباري'],
+            ['code' => 'CYS301', 'name' => 'التشفير وأمن المعلومات',       'credits' => 3, 'department_id' => $cys, 'level_type' => 'تخصص', 'requirement_type' => 'اجباري'],
+            ['code' => 'CYS401', 'name' => 'الاختراق الأخلاقي',            'credits' => 3, 'department_id' => $cys, 'level_type' => 'تخصص', 'requirement_type' => 'اختياري'],
 
-            ['code' => 'CS111', 'name' => 'برمجة الحاسب 1', 'credits' => 4, 'department_id' => $csDept, 'level_type' => 'تخصص', 'requirement_type' => 'اجباري'],
-            ['code' => 'CS112', 'name' => 'برمجة الحاسب 2', 'credits' => 4, 'department_id' => $csDept, 'level_type' => 'تخصص', 'requirement_type' => 'اجباري'],
-            ['code' => 'CS221', 'name' => 'تراكيب البيانات', 'credits' => 3, 'department_id' => $csDept, 'level_type' => 'تخصص', 'requirement_type' => 'اجباري'],
-            ['code' => 'CS331', 'name' => 'تصميم الخوارزميات', 'credits' => 3, 'department_id' => $csDept, 'level_type' => 'تخصص', 'requirement_type' => 'اجباري'],
-            ['code' => 'CS441', 'name' => 'الذكاء الاصطناعي', 'credits' => 3, 'department_id' => $csDept, 'level_type' => 'تخصص', 'requirement_type' => 'اختياري'],
+            // ══════════ نظم المعلومات — تخصص (3) ══════════
+            ['code' => 'IS201',  'name' => 'مقدمة في نظم المعلومات',       'credits' => 3, 'department_id' => $is,  'level_type' => 'تخصص', 'requirement_type' => 'اجباري'],
+            ['code' => 'IS301',  'name' => 'قواعد البيانات',               'credits' => 3, 'department_id' => $is,  'level_type' => 'تخصص', 'requirement_type' => 'اجباري'],
+            ['code' => 'IS401',  'name' => 'تحليل الأنظمة وتصميمها',      'credits' => 3, 'department_id' => $is,  'level_type' => 'تخصص', 'requirement_type' => 'اختياري'],
 
-            ['code' => 'CYS201', 'name' => 'مقدمة في الأمن السيبراني', 'credits' => 3, 'department_id' => $cysDept, 'level_type' => 'تخصص', 'requirement_type' => 'اجباري'],
-            ['code' => 'CYS301', 'name' => 'التشفير وأمن المعلومات', 'credits' => 3, 'department_id' => $cysDept, 'level_type' => 'تخصص', 'requirement_type' => 'اجباري'],
-            ['code' => 'CYS320', 'name' => 'أمن الشبكات', 'credits' => 3, 'department_id' => $cysDept, 'level_type' => 'تخصص', 'requirement_type' => 'اجباري'],
-            ['code' => 'CYS401', 'name' => 'الاختراق الأخلاقي', 'credits' => 3, 'department_id' => $cysDept, 'level_type' => 'تخصص', 'requirement_type' => 'اجباري'],
-            ['code' => 'CYS410', 'name' => 'التحقيق الجنائي الرقمي', 'credits' => 3, 'department_id' => $cysDept, 'level_type' => 'تخصص', 'requirement_type' => 'اختياري'],
-
+            // ══════════ هندسة الحاسب — تخصص (3) ══════════
+            ['code' => 'CEN201', 'name' => 'الدوائر المنطقية الرقمية',     'credits' => 3, 'department_id' => $cen, 'level_type' => 'تخصص', 'requirement_type' => 'اجباري'],
+            ['code' => 'CEN301', 'name' => 'معمارية الحاسب',               'credits' => 3, 'department_id' => $cen, 'level_type' => 'تخصص', 'requirement_type' => 'اجباري'],
+            ['code' => 'CEN401', 'name' => 'الأنظمة المدمجة',              'credits' => 3, 'department_id' => $cen, 'level_type' => 'تخصص', 'requirement_type' => 'اختياري'],
         ];
-
 
         foreach ($courses as $course) {
             Course::updateOrCreate(['code' => $course['code']], $course);
