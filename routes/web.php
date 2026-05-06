@@ -4,6 +4,9 @@ use App\Http\Controllers\Advisor\AdvisingNoteController;
 use App\Http\Controllers\Advisor\DropActionController;
 use App\Http\Controllers\Advisor\RiskFlagController;
 use App\Http\Controllers\Advisor\StudentsController;
+use App\Http\Controllers\Chair\DashboardController as ChairDashboardController;
+use App\Http\Controllers\Chair\ReportController as ChairReportController;
+use App\Http\Controllers\Dean\DashboardController as DeanDashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Registrar\DashboardController;
 use App\Http\Controllers\Registrar\StudentManagementController;
@@ -73,7 +76,9 @@ Route::middleware(['auth', 'role:chair'])
     ->prefix('chair')
     ->name('chair.')
     ->group(function () {
-        // TODO: Chair dashboard & reports
+        Route::get('/dashboard',       [ChairDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/report/print',    [ChairReportController::class,    'print'])->name('report.print');
+        Route::get('/report/csv',      [ChairReportController::class,    'exportCsv'])->name('report.csv');
     });
 
 // ─── Dean ─────────────────────────────────────────────────────────────────────
@@ -81,5 +86,5 @@ Route::middleware(['auth', 'role:dean'])
     ->prefix('dean')
     ->name('dean.')
     ->group(function () {
-        // TODO: Dean dashboard (view-only)
+        Route::get('/dashboard', [DeanDashboardController::class, 'index'])->name('dashboard');
     });
