@@ -20,7 +20,7 @@ class AdvisingNoteController extends Controller
             'note_type'         => 'required|in:Academic,Behavioral',
             'title'             => 'nullable|string|max:255',
             'content'           => 'required|string|min:10',
-            'follow_up_required'=> 'nullable|boolean',
+            'follow_up_required' => 'nullable|boolean',
         ]);
 
         AdvisingNote::createNote([
@@ -28,9 +28,9 @@ class AdvisingNoteController extends Controller
             'user_id'           => auth()->id(),
             'title'             => $request->title,
             'note_type'         => $request->note_type,
-            'type'              => $request->note_type, // توافق عكسي
+            'type'              => $request->note_type,
             'content'           => $request->content,
-            'follow_up_required'=> $request->boolean('follow_up_required'),
+            'follow_up_required' => $request->boolean('follow_up_required'),
         ]);
 
         return back()->with('success', 'تم حفظ الملاحظة الإرشادية بنجاح');
@@ -42,7 +42,6 @@ class AdvisingNoteController extends Controller
             abort(403);
         }
 
-        // نطفئ follow_up_required على جميع ملاحظات هذا الطالب التي تحتاج متابعة
         AdvisingNote::where('student_id', $note->student_id)
             ->where('follow_up_required', true)
             ->update(['follow_up_required' => false]);

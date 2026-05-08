@@ -8,7 +8,6 @@ use Illuminate\Database\Seeder;
 
 class StudentCourseSeeder extends Seeder
 {
-    // درجة عشوائية ثابتة بناءً على المعدل
     private function gradeFromGpa(float $gpa): int
     {
         if ($gpa >= 3.75) return rand(90, 100);
@@ -18,10 +17,7 @@ class StudentCourseSeeder extends Seeder
         return rand(40, 59); // متعثر
     }
 
-    // غياب لكل مادة — المجموع عبر المواد يجب أن يكون منطقياً
-    // RiskFlag::triggerAlert يُطلق High_Absence عند totalAbsences >= 4
-    // منتظم (gpa >= 2.0): 0 غياب لكل مادة → المجموع = 0 → لا إنذار
-    // متعثر (gpa < 2.0): 2-4 غياب لكل مادة → المجموع >= 4 → إنذار
+
     private function absencesFromGpa(float $gpa): int
     {
         if ($gpa >= 2.0) return 0;
@@ -31,48 +27,44 @@ class StudentCourseSeeder extends Seeder
 
     public function run(): void
     {
-        // ══════════ تجميع المواد حسب النوع ══════════
+
         $generalMandatory = Course::where('level_type', 'عام')
             ->where('requirement_type', 'اجباري')
-            ->get(); // 5 مواد، مجموعها 13 ساعة
+            ->get();
 
         $generalElective = Course::where('level_type', 'عام')
             ->where('requirement_type', 'اختياري')
-            ->get(); // 3 مواد
+            ->get();
 
-        // ══════════ توزيع المواد لكل طالب ══════════
+
+
         $students = Student::with('department')->get();
 
         foreach ($students as $student) {
             $deptId = $student->department_id;
             $gpa    = $student->gpa;
 
-            // مواد التخصص الاجبارية لقسم الطالب
+
+
             $deptMandatory = Course::where('department_id', $deptId)
                 ->where('level_type', 'تخصص')
                 ->where('requirement_type', 'اجباري')
-                ->get(); // 2 مواد × 3 ساعة = 6 ساعات
+                ->get();
 
-            // مواد التخصص الاختيارية لقسم الطالب
+
+
             $deptElective = Course::where('department_id', $deptId)
                 ->where('level_type', 'تخصص')
                 ->where('requirement_type', 'اختياري')
                 ->get(); // 1 مادة × 3 ساعات
 
-            // حساب المواد المختارة مع ضمان 15-24 ساعة
-            // القاعدة: 3 عامة اجبارية (8cr) + 2 تخصص اجباري (6cr) = 14cr كحد أدنى
-            // نضيف اختياريات للوصول لـ 15-24
 
-            // اختر 3 من المواد العامة الاجبارية
             $selectedGenMandatory = $generalMandatory->shuffle()->take(3); // 8 ساعات
 
-            // جميع مواد التخصص الاجبارية
             $selectedDeptMandatory = $deptMandatory; // 6 ساعات
 
             $currentCredits = $selectedGenMandatory->sum('credits') + $selectedDeptMandatory->sum('credits');
-            // currentCredits = 8 + 6 = 14
 
-            // اجمع كل الاختياريات المتاحة
             $availableElectives = $generalElective->merge($deptElective)->shuffle();
 
             $selectedElectives = collect();
@@ -81,15 +73,13 @@ class StudentCourseSeeder extends Seeder
                 if ($currentCredits >= 24) break;
                 $selectedElectives->push($elective);
                 $currentCredits += $elective->credits;
-                if ($currentCredits >= 18) break; // هدف معقول
+                if ($currentCredits >= 18) break;
             }
 
-            // ادمج جميع المواد المختارة
             $allCourses = $selectedGenMandatory
                 ->merge($selectedDeptMandatory)
                 ->merge($selectedElectives);
 
-            // أضف المواد للطالب
             foreach ($allCourses as $course) {
                 $student->courses()->syncWithoutDetaching([
                     $course->id => [

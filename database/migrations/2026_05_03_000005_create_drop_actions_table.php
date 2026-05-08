@@ -15,7 +15,6 @@ return new class extends Migration
             $table->foreignId('advisor_id')->references('id')->on('users')->onDelete('cascade');
             $table->enum('status', ['Completed', 'Rejected'])->default('Completed');
             $table->text('reason')->nullable();
-            // snapshot نتيجة فحص الـ policy وقت الطلب
             $table->json('eligibility_check_result')->nullable();
             $table->timestamps();
         });

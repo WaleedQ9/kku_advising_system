@@ -10,9 +10,9 @@ class DropAction extends Model
         'student_id',
         'course_id',
         'advisor_id',
-        'status',                   // Completed | Rejected
+        'status',
         'reason',
-        'eligibility_check_result', // JSON snapshot للـ policy check
+        'eligibility_check_result',
     ];
 
     protected $casts = [
@@ -34,10 +34,7 @@ class DropAction extends Model
         return $this->belongsTo(User::class, 'advisor_id');
     }
 
-    /**
-     * تحقق من أهلية الطالب لحذف المادة
-     * القواعد: لا يتجاوز 3 محاولات حذف + ما يقل عن 12 ساعة بعد الحذف
-     */
+
     public static function validatePolicy(Student $student, int $courseId): array
     {
         $dropCount = self::where('student_id', $student->id)
@@ -50,14 +47,13 @@ class DropAction extends Model
         return [
             'eligible'          => $eligible,
             'drop_count'        => $dropCount,
-            'remaining_attempts'=> $remainingAttempts,
+            'remaining_attempts' => $remainingAttempts,
             'reason'            => $eligible ? null : 'تجاوز الحد الأقصى لعدد مرات الحذف (3 مرات)',
             'checked_at'        => now()->toDateTimeString(),
         ];
     }
 
     /**
-     * نفّذ الحذف وسجّل في drop_actions + course_student
      */
     public static function executeDrop(Student $student, Course $course, User $advisor, string $reason = ''): self
     {
@@ -69,16 +65,14 @@ class DropAction extends Model
             'advisor_id'              => $advisor->id,
             'status'                  => $policyResult['eligible'] ? 'Completed' : 'Rejected',
             'reason'                  => $reason,
-            'eligibility_check_result'=> $policyResult,
+            'eligibility_check_result' => $policyResult,
         ]);
 
         if ($policyResult['eligible']) {
-            // احذف المادة من سجل الطالب وانقص الساعات
             $credits = $course->credits;
             $student->courses()->detach($course->id);
             $student->decrement('total_credits', $credits);
 
-            // حدّث الـ academic_status
             $student->refresh();
             $student->update([
                 'academic_status' => $student->gpa < 2.0 ? 'Warning' : 'Regular',
@@ -90,7 +84,6 @@ class DropAction extends Model
     }
 
     /**
-     * سجّل الحذف في log (للـ audit trail)
      */
     public function logTransaction(): void
     {

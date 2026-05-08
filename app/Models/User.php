@@ -14,8 +14,8 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'employee_id',   // مضاف من التوثيق
-        'faculty_role',  // Advisor | Chair | Dean (من التوثيق) — منفصل عن Spatie role
+        'employee_id',
+        'faculty_role',
         'password',
         'phone',
         'department_id',

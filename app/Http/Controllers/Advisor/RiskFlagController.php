@@ -15,7 +15,6 @@ class RiskFlagController extends Controller
     }
 
     /**
-     * عرض جميع تنبيهات الطالب
      */
     public function index(Student $student)
     {
@@ -29,11 +28,9 @@ class RiskFlagController extends Controller
     }
 
     /**
-     * حل تنبيه معين (resolve)
      */
     public function resolve(Request $request, RiskFlag $riskFlag)
     {
-        // تحقق أن المرشد يملك صلاحية على طالب هذا الـ flag
         $student = $riskFlag->student;
         if (auth()->user()->department_id !== $student->department_id) {
             abort(403);
@@ -49,7 +46,6 @@ class RiskFlagController extends Controller
     }
 
     /**
-     * تشغيل فحص تلقائي لجميع طلاب المرشد وتوليد flags جديدة
      */
     public function scan()
     {

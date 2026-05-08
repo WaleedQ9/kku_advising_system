@@ -21,7 +21,6 @@ class StudentsController extends Controller
         $status   = $request->input('status');
         $followup = $request->boolean('followup');
 
-        // إحصائيات القسم الكاملة (مستقلة عن الصفحة الحالية)
         $deptQuery = Student::where('department_id', $advisor->department_id);
         $deptStats = [
             'total'        => (clone $deptQuery)->count(),
@@ -30,7 +29,7 @@ class StudentsController extends Controller
             'graduated'    => (clone $deptQuery)->where('status', 'خريج')->count(),
             'avgGpa'       => round((clone $deptQuery)->avg('gpa') ?? 0, 2),
             'flaggedCount' => (clone $deptQuery)->whereHas('riskFlags', fn($q) => $q->where('is_resolved', false))->count(),
-            'followUpCount'=> (clone $deptQuery)->whereHas('advisingNotes', fn($q) => $q->where('follow_up_required', true))->count(),
+            'followUpCount' => (clone $deptQuery)->whereHas('advisingNotes', fn($q) => $q->where('follow_up_required', true))->count(),
         ];
 
         $students = Student::query()
@@ -44,8 +43,8 @@ class StudentsController extends Controller
             ])
             ->when($search, fn($q) => $q->where(function ($q2) use ($search) {
                 $q2->where('student_id', 'LIKE', "%{$search}%")
-                   ->orWhere('name_ar',   'LIKE', "%{$search}%")
-                   ->orWhere('name_en',   'LIKE', "%{$search}%");
+                    ->orWhere('name_ar',   'LIKE', "%{$search}%")
+                    ->orWhere('name_en',   'LIKE', "%{$search}%");
             }))
             ->when($status, fn($q) => $q->where('status', $status))
             ->when($followup, fn($q) => $q->whereHas('advisingNotes', fn($q2) => $q2->where('follow_up_required', true)))
@@ -76,7 +75,6 @@ class StudentsController extends Controller
 
     public function show(Student $student)
     {
-        // يسمح لأي مرشد من نفس القسم
         if (auth()->user()->department_id !== $student->department_id) {
             abort(403, 'ليس لديك صلاحية الوصول لبيانات هذا الطالب');
         }

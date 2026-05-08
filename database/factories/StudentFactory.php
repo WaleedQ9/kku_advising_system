@@ -20,7 +20,6 @@ class StudentFactory extends Factory
 
         $gpa = $this->faker->randomFloat(2, 1.0, 4.0);
 
-        // academic_status يعتمد على الـ gpa
         $academicStatus = $gpa < 2.0 ? 'Warning' : 'Regular';
         $status         = $gpa < 2.0 ? 'متعثر' : 'منتظم';
 

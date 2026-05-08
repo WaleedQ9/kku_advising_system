@@ -15,20 +15,17 @@ class DashboardController extends Controller
     {
         $deptId = auth()->user()->department_id;
 
-        // جميع المرشدين في القسم مع عدد طلابهم
         $advisors = User::role('advisor')
             ->where('department_id', $deptId)
             ->withCount('students')
             ->get();
 
-        // إحصائيات الطلاب في القسم
         $totalStudents    = Student::where('department_id', $deptId)->count();
         $atRiskStudents   = Student::where('department_id', $deptId)
             ->where('academic_status', 'Warning')
             ->count();
         $regularStudents  = $totalStudents - $atRiskStudents;
 
-        // مؤشرات الخطر النشطة في القسم
         $activeFlags = RiskFlag::where('is_resolved', false)
             ->whereHas('student', fn($q) => $q->where('department_id', $deptId))
             ->selectRaw('type, severity, count(*) as total')
@@ -39,14 +36,12 @@ class DashboardController extends Controller
             ->whereHas('student', fn($q) => $q->where('department_id', $deptId))
             ->count();
 
-        // آخر الملاحظات الإرشادية في القسم
         $recentNotes = AdvisingNote::with(['student', 'user'])
             ->whereHas('student', fn($q) => $q->where('department_id', $deptId))
             ->latest()
             ->take(10)
             ->get();
 
-        // الطلاب المتعثرون في القسم
         $atRiskList = Student::where('department_id', $deptId)
             ->where('academic_status', 'Warning')
             ->with(['advisor', 'riskFlags' => fn($q) => $q->where('is_resolved', false)])

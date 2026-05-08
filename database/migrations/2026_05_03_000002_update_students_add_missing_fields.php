@@ -9,10 +9,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('students', function (Blueprint $table) {
-            // إضافة major (موجود في التوثيق، غائب في الكود)
             $table->string('major')->nullable()->after('name_en');
 
-            // academic_status كما في التوثيق (Regular/Warning) — status الحالية تُبقى للعرض العربي
             $table->enum('academic_status', ['Regular', 'Warning'])->default('Regular')->after('status');
         });
     }

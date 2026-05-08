@@ -21,10 +21,9 @@ class StudentSeeder extends Seeder
         $advisorIs  = User::role('advisor')->where('department_id', $is->id)->first();
         $advisorCen = User::role('advisor')->where('department_id', $cen->id)->first();
 
-        // gpa < 2.0 → Warning/متعثر   |   gpa >= 2.0 → Regular/منتظم
         $students = [
 
-            // ══════════ قسم علوم الحاسب (10 طلاب) ══════════
+
             ['student_id' => '441000001', 'name_ar' => 'محمد عبدالله الغامدي',  'name_en' => 'Mohammed Abdullah Al-Ghamdi',  'gpa' => 3.85, 'total_credits' => 90,  'dept' => $cs,  'advisor' => $advisorCs],
             ['student_id' => '441000002', 'name_ar' => 'فيصل سعد القحطاني',     'name_en' => 'Faisal Saad Al-Qahtani',       'gpa' => 3.50, 'total_credits' => 72,  'dept' => $cs,  'advisor' => $advisorCs],
             ['student_id' => '441000003', 'name_ar' => 'عمر خالد الزهراني',     'name_en' => 'Omar Khalid Al-Zahrani',       'gpa' => 2.95, 'total_credits' => 54,  'dept' => $cs,  'advisor' => $advisorCs],
@@ -36,7 +35,7 @@ class StudentSeeder extends Seeder
             ['student_id' => '441000009', 'name_ar' => 'وليد عبدالرحمن الحربي', 'name_en' => 'Waleed AbdulRahman Al-Harbi', 'gpa' => 3.20, 'total_credits' => 72,  'dept' => $cs,  'advisor' => $advisorCs],
             ['student_id' => '441000010', 'name_ar' => 'أحمد سعود البقمي',      'name_en' => 'Ahmed Saud Al-Baqami',        'gpa' => 1.90, 'total_credits' => 18,  'dept' => $cs,  'advisor' => $advisorCs],
 
-            // ══════════ قسم الأمن السيبراني (10 طلاب) ══════════
+
             ['student_id' => '441000011', 'name_ar' => 'ريم سلمان العمري',      'name_en' => 'Reem Salman Al-Omari',         'gpa' => 4.20, 'total_credits' => 90,  'dept' => $cys, 'advisor' => $advisorCys],
             ['student_id' => '441000012', 'name_ar' => 'نورا فهد آل سعود',      'name_en' => 'Noura Fahad Al-Saud',          'gpa' => 3.75, 'total_credits' => 72,  'dept' => $cys, 'advisor' => $advisorCys],
             ['student_id' => '441000013', 'name_ar' => 'هند محمد الراشد',       'name_en' => 'Hind Mohammed Al-Rashed',      'gpa' => 2.60, 'total_credits' => 54,  'dept' => $cys, 'advisor' => $advisorCys],
@@ -48,7 +47,7 @@ class StudentSeeder extends Seeder
             ['student_id' => '441000019', 'name_ar' => 'وفاء ناصر الغامدي',     'name_en' => 'Wafa Nasser Al-Ghamdi',        'gpa' => 2.70, 'total_credits' => 54,  'dept' => $cys, 'advisor' => $advisorCys],
             ['student_id' => '441000020', 'name_ar' => 'بسمة سعد العتيبي',      'name_en' => 'Basma Saad Al-Otaibi',         'gpa' => 1.95, 'total_credits' => 36,  'dept' => $cys, 'advisor' => $advisorCys],
 
-            // ══════════ قسم نظم المعلومات (10 طلاب) ══════════
+
             ['student_id' => '441000021', 'name_ar' => 'راشد سالم القحطاني',    'name_en' => 'Rashed Salem Al-Qahtani',      'gpa' => 3.60, 'total_credits' => 72,  'dept' => $is,  'advisor' => $advisorIs],
             ['student_id' => '441000022', 'name_ar' => 'ماجد فهد الزهراني',     'name_en' => 'Majed Fahd Al-Zahrani',        'gpa' => 2.30, 'total_credits' => 36,  'dept' => $is,  'advisor' => $advisorIs],
             ['student_id' => '441000023', 'name_ar' => 'عبدالعزيز تركي الشهري', 'name_en' => 'Abdulaziz Turki Al-Shehri',    'gpa' => 1.70, 'total_credits' => 18,  'dept' => $is,  'advisor' => $advisorIs],
@@ -60,7 +59,7 @@ class StudentSeeder extends Seeder
             ['student_id' => '441000029', 'name_ar' => 'ضياء خالد البقمي',      'name_en' => 'Diaa Khalid Al-Baqami',        'gpa' => 2.55, 'total_credits' => 36,  'dept' => $is,  'advisor' => $advisorIs],
             ['student_id' => '441000030', 'name_ar' => 'وائل إبراهيم الغامدي',  'name_en' => 'Wael Ibrahim Al-Ghamdi',       'gpa' => 1.65, 'total_credits' => 18,  'dept' => $is,  'advisor' => $advisorIs],
 
-            // ══════════ قسم هندسة الحاسب (10 طلاب) ══════════
+
             ['student_id' => '441000031', 'name_ar' => 'سلمى أحمد العمري',      'name_en' => 'Salma Ahmed Al-Omari',         'gpa' => 3.95, 'total_credits' => 90,  'dept' => $cen, 'advisor' => $advisorCen],
             ['student_id' => '441000032', 'name_ar' => 'غدير محمد الراشد',      'name_en' => 'Ghadir Mohammed Al-Rashed',    'gpa' => 2.90, 'total_credits' => 54,  'dept' => $cen, 'advisor' => $advisorCen],
             ['student_id' => '441000033', 'name_ar' => 'شيخة فهد الخالدي',      'name_en' => 'Sheikha Fahd Al-Khalidi',      'gpa' => 1.55, 'total_credits' => 18,  'dept' => $cen, 'advisor' => $advisorCen],

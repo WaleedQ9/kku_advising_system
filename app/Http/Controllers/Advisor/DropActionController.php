@@ -16,11 +16,9 @@ class DropActionController extends Controller
     }
 
     /**
-     * عرض صفحة فحص أهلية الحذف قبل التنفيذ
      */
     public function check(Student $student, Course $course)
     {
-        // تحقق أن المرشد مسؤول عن هذا الطالب
         if (auth()->user()->department_id !== $student->department_id) {
             abort(403);
         }
@@ -30,9 +28,6 @@ class DropActionController extends Controller
         return response()->json($eligibility);
     }
 
-    /**
-     * تنفيذ حذف المادة
-     */
     public function store(Request $request, Student $student)
     {
         if (auth()->user()->department_id !== $student->department_id) {
@@ -46,7 +41,6 @@ class DropActionController extends Controller
 
         $course = Course::findOrFail($request->course_id);
 
-        // تحقق أن الطالب مسجل فيها
         if (!$student->courses()->where('course_id', $course->id)->exists()) {
             return back()->with('error', 'الطالب غير مسجل في هذه المادة.');
         }

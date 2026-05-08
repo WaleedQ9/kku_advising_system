@@ -8,8 +8,8 @@ class RiskFlag extends Model
 {
     protected $fillable = [
         'student_id',
-        'type',       // Low_GPA | High_Absence
-        'severity',   // High | Medium
+        'type',
+        'severity',
         'is_resolved',
     ];
 
@@ -23,7 +23,6 @@ class RiskFlag extends Model
     }
 
     /**
-     * احسب الـ severity بناءً على GPA أو عدد الغيابات
      */
     public static function calculateSeverity(float $gpa, int $absences): string
     {
@@ -34,7 +33,6 @@ class RiskFlag extends Model
     }
 
     /**
-     * حدّث أو أنشئ flag للطالب
      */
     public static function triggerAlert(Student $student): void
     {
@@ -46,7 +44,6 @@ class RiskFlag extends Model
             );
         }
 
-        // High Absence flag — نجمع مجموع الغيابات من pivot
         $totalAbsences = $student->courses()->sum('absences_count');
         if ($totalAbsences >= 4) {
             self::updateOrCreate(
@@ -57,7 +54,6 @@ class RiskFlag extends Model
     }
 
     /**
-     * حل الـ flag وربطه بملاحظة إرشادية
      */
     public function resolve(string $advisorNote = ''): bool
     {

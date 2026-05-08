@@ -10,15 +10,15 @@ class Student extends Model
     use HasFactory;
 
     protected $fillable = [
-        'student_id',   // student_no في التوثيق — نُبقي student_id للتوافق
+        'student_id',
         'name_ar',
         'name_en',
-        'major',        // مضاف من التوثيق
+        'major',
         'department_id',
         'gpa',
         'total_credits',
-        'status',           // منتظم | متعثر | خريج  (عرض عربي)
-        'academic_status',  // Regular | Warning      (منطق النظام)
+        'status',
+        'academic_status',
         'advisor_id',
     ];
 
@@ -65,10 +65,8 @@ class Student extends Model
         return $this->hasMany(DropAction::class);
     }
 
-    // ========== Business Methods (من التوثيق) ==========
 
     /**
-     * جلب الملف الأكاديمي الكامل
      */
     public function getAcademicProfile(): array
     {
@@ -85,7 +83,6 @@ class Student extends Model
     }
 
     /**
-     * تحقق من أهلية الطالب لحذف مادة معينة
      */
     public function checkDropEligibility(int $courseId): array
     {
@@ -93,7 +90,6 @@ class Student extends Model
     }
 
     /**
-     * هل للطالب تنبيهات نشطة غير محلولة؟
      */
     public function hasRiskFlags(): bool
     {

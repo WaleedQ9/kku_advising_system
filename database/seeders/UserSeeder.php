@@ -23,7 +23,7 @@ class UserSeeder extends Seeder
         $cen = Department::where('code', 'CEN')->first();
 
         $users = [
-            // ══════════ المرشدون الأكاديميون ══════════
+
             [
                 'name'          => 'د. أحمد الحاسوبي',
                 'email'         => 'advisor.cs@kku.edu.sa',
@@ -57,7 +57,7 @@ class UserSeeder extends Seeder
                 'role'          => 'advisor',
             ],
 
-            // ══════════ رؤساء الأقسام ══════════
+
             [
                 'name'          => 'د. فهد رئيس قسم الحاسب',
                 'email'         => 'chair.cs@kku.edu.sa',
@@ -91,7 +91,7 @@ class UserSeeder extends Seeder
                 'role'          => 'chair',
             ],
 
-            // ══════════ العميد ══════════
+
             [
                 'name'          => 'أ.د. عبدالله العميد',
                 'email'         => 'dean@kku.edu.sa',
