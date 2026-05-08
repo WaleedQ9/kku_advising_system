@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+@php $isRtl = app()->getLocale() === 'ar'; @endphp
+<html lang="{{ app()->getLocale() }}" dir="{{ $isRtl ? 'rtl' : 'ltr' }}">
 <head>
     <meta charset="UTF-8">
-    <title>ملف الطالب — {{ $student->name_ar }}</title>
+    <title>{{ __('الملف الإرشادي للطالب') }} — {{ $student->name_ar }}</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -11,7 +12,7 @@
             font-size: 13px;
             color: #1a1a1a;
             background: #fff;
-            direction: rtl;
+            direction: {{ $isRtl ? 'rtl' : 'ltr' }};
         }
 
         /* ── Header ── */
@@ -27,7 +28,7 @@
         .header-title { text-align: center; }
         .header-title h1 { font-size: 18px; font-weight: 800; }
         .header-title p  { font-size: 11px; opacity: 0.75; margin-top: 4px; }
-        .header-meta { text-align: left; font-size: 11px; opacity: 0.8; line-height: 1.8; }
+        .header-meta { text-align: {{ $isRtl ? 'left' : 'right' }}; font-size: 11px; opacity: 0.8; line-height: 1.8; }
 
         /* ── Student Info ── */
         .student-info {
@@ -41,9 +42,9 @@
         }
         .info-cell {
             padding: 14px 16px;
-            border-left: 1px solid #e5e7eb;
+            border-{{ $isRtl ? 'left' : 'right' }}: 1px solid #e5e7eb;
         }
-        .info-cell:last-child { border-left: none; }
+        .info-cell:last-child { border-{{ $isRtl ? 'left' : 'right' }}: none; }
         .info-cell label { font-size: 10px; color: #6b7280; font-weight: 700; display: block; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
         .info-cell span  { font-size: 14px; font-weight: 800; color: #111; }
 
@@ -91,14 +92,14 @@
             letter-spacing: 0.5px;
             border-bottom: 1px solid #e5e7eb;
         }
-        th:first-child { text-align: right; }
+        th:first-child { text-align: {{ $isRtl ? 'right' : 'left' }}; }
         td {
             padding: 9px 12px;
             border-bottom: 1px solid #f3f4f6;
             color: #374151;
             text-align: center;
         }
-        td:first-child { text-align: right; }
+        td:first-child { text-align: {{ $isRtl ? 'right' : 'left' }}; }
         tr:last-child td { border-bottom: none; }
 
         /* ── Badge ── */
@@ -198,48 +199,48 @@
 {{-- ── شريط الطباعة (يختفي عند الطباعة) ── --}}
 <div class="print-bar no-print">
     <a href="{{ route('students.show', $student->id) }}" class="btn-back">
-        ← العودة لملف الطالب
+        {{ $isRtl ? '←' : '→' }} {{ __('العودة لملف الطالب') }}
     </a>
     <button class="btn-print" onclick="window.print()">
-        🖨️ طباعة / حفظ PDF
+        🖨️ {{ __('طباعة / حفظ PDF') }}
     </button>
 </div>
 
 {{-- ── Header ── --}}
 <div class="header">
     <div class="header-logo">
-        جامعة الملك خالد<br>
-        كلية علوم الحاسب<br>
+        {{ __('جامعة الملك خالد') }}<br>
+        {{ __('كلية علوم الحاسب') }}<br>
         {{ $student->department->name_ar }}
     </div>
     <div class="header-title">
-        <h1>الملف الإرشادي للطالب</h1>
+        <h1>{{ __('الملف الإرشادي للطالب') }}</h1>
         <p>Academic Advising Profile</p>
     </div>
     <div class="header-meta">
-        رقم الملف: {{ $student->student_id }}<br>
-        تاريخ الطباعة: {{ now()->format('Y/m/d') }}<br>
-        المرشد: {{ auth()->user()->name }}
+        {{ __('رقم الملف') }}: {{ $student->student_id }}<br>
+        {{ __('تاريخ الطباعة') }}: {{ now()->format('Y/m/d') }}<br>
+        {{ __('المرشد') }}: {{ auth()->user()->name }}
     </div>
 </div>
 
 {{-- ── بيانات الطالب ── --}}
 <div class="student-info">
     <div class="info-cell">
-        <label>الاسم</label>
+        <label>{{ __('الاسم') }}</label>
         <span>{{ $student->name_ar }}</span>
     </div>
     <div class="info-cell">
-        <label>الرقم الجامعي</label>
+        <label>{{ __('الرقم الجامعي') }}</label>
         <span>{{ $student->student_id }}</span>
     </div>
     <div class="info-cell">
-        <label>القسم</label>
+        <label>{{ __('القسم') }}</label>
         <span>{{ $student->department->name_ar }}</span>
     </div>
     <div class="info-cell">
-        <label>الحالة</label>
-        <span>{{ $student->status }} ({{ $student->academic_status === 'Warning' ? 'تحذير' : 'منتظم' }})</span>
+        <label>{{ __('الحالة') }}</label>
+        <span>{{ $student->status }} ({{ $student->academic_status === 'Warning' ? __('تحذير') : __('منتظم') }})</span>
     </div>
 </div>
 
@@ -247,33 +248,33 @@
 <div class="stats">
     <div class="stat-card {{ $student->gpa < 2 ? 'warn' : 'ok' }}">
         <div class="val">{{ number_format($student->gpa, 2) }}</div>
-        <div class="lbl">المعدل التراكمي</div>
+        <div class="lbl">{{ __('المعدل التراكمي') }}</div>
     </div>
     <div class="stat-card">
         <div class="val">{{ $student->total_credits }}</div>
-        <div class="lbl">الساعات المجتازة</div>
+        <div class="lbl">{{ __('الساعات المجتازة') }}</div>
     </div>
     <div class="stat-card">
         <div class="val">{{ $student->courses->count() }}</div>
-        <div class="lbl">المواد المسجلة</div>
+        <div class="lbl">{{ __('المواد المسجلة') }}</div>
     </div>
     <div class="stat-card {{ $student->riskFlags->where('is_resolved',false)->isNotEmpty() ? 'warn' : 'ok' }}">
         <div class="val">{{ $student->riskFlags->where('is_resolved',false)->count() }}</div>
-        <div class="lbl">تنبيهات نشطة</div>
+        <div class="lbl">{{ __('تنبيهات نشطة') }}</div>
     </div>
 </div>
 
 {{-- ── التنبيهات ── --}}
 @if($student->riskFlags->where('is_resolved',false)->isNotEmpty())
 <div class="section">
-    <div class="section-title">⚠ التنبيهات النشطة</div>
+    <div class="section-title">⚠ {{ __('التنبيهات النشطة') }}</div>
     @foreach($student->riskFlags->where('is_resolved',false) as $flag)
     <div class="risk-item {{ $flag->severity === 'High' ? 'risk-high' : 'risk-medium' }}">
         <span style="font-weight:700;">
-            {{ $flag->type === 'Low_GPA' ? 'معدل منخفض' : 'غيابات عالية' }}
+            {{ $flag->type === 'Low_GPA' ? __('معدل منخفض') : __('غيابات عالية') }}
         </span>
         <span class="badge {{ $flag->severity === 'High' ? 'badge-red' : 'badge-amber' }}">
-            {{ $flag->severity === 'High' ? 'خطورة عالية' : 'خطورة متوسطة' }}
+            {{ $flag->severity === 'High' ? __('خطورة عالية') : __('خطورة متوسطة') }}
         </span>
     </div>
     @endforeach
@@ -283,7 +284,7 @@
 {{-- ── المقررات ── --}}
 @if($student->courses->isNotEmpty())
 <div class="section">
-    <div class="section-title">📚 المقررات المسجلة</div>
+    <div class="section-title">📚 {{ __('المقررات المسجلة') }}</div>
     <table>
         <colgroup>
             <col style="width:35%">
@@ -295,12 +296,12 @@
         </colgroup>
         <thead>
             <tr>
-                <th>المادة</th>
-                <th>الرمز</th>
-                <th>الساعات</th>
-                <th>الغيابات</th>
-                <th>الدرجة</th>
-                <th>الحالة</th>
+                <th>{{ __('المادة') }}</th>
+                <th>{{ __('الرمز') }}</th>
+                <th>{{ __('الساعات') }}</th>
+                <th>{{ __('الغيابات') }}</th>
+                <th>{{ __('الدرجة') }}</th>
+                <th>{{ __('الحالة') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -317,11 +318,11 @@
                 <td>{{ $course->pivot->current_grade ?? '—' }}</td>
                 <td>
                     @if($percent >= 100)
-                        <span class="badge badge-red">حرمان</span>
+                        <span class="badge badge-red">{{ __('حرمان') }}</span>
                     @elseif($percent >= 60)
-                        <span class="badge badge-amber">إنذار</span>
+                        <span class="badge badge-amber">{{ __('إنذار') }}</span>
                     @else
-                        <span class="badge badge-green">منتظم</span>
+                        <span class="badge badge-green">{{ __('منتظم') }}</span>
                     @endif
                 </td>
             </tr>
@@ -334,25 +335,25 @@
 {{-- ── السجل الإرشادي ── --}}
 @if($student->advisingNotes->isNotEmpty())
 <div class="section">
-    <div class="section-title">📝 السجل الإرشادي ({{ $student->advisingNotes->count() }} ملاحظة)</div>
+    <div class="section-title">📝 {{ __('السجل الإرشادي') }} ({{ $student->advisingNotes->count() }} {{ __('ملاحظة') }})</div>
     @foreach($student->advisingNotes as $note)
     <div class="note-item">
         <div class="note-header">
             <div style="display:flex; gap:8px; align-items:center;">
                 <span class="badge {{ ($note->note_type ?? $note->type) === 'Academic' ? 'badge-blue' : 'badge-purple' }}">
-                    {{ ($note->note_type ?? $note->type) === 'Academic' ? 'أكاديمية' : 'سلوكية' }}
+                    {{ ($note->note_type ?? $note->type) === 'Academic' ? __('أكاديمية') : __('سلوكية') }}
                 </span>
                 @if($note->title)
                     <span style="font-weight:700; font-size:12px;">{{ $note->title }}</span>
                 @endif
                 @if($note->follow_up_required)
-                    <span class="badge badge-amber">🚩 متابعة مطلوبة</span>
+                    <span class="badge badge-amber">🚩 {{ __('متابعة مطلوبة') }}</span>
                 @endif
             </div>
             <span style="font-size:10px; color:#9ca3af;">{{ $note->created_at->format('Y/m/d') }}</span>
         </div>
         <div class="note-content">{{ $note->content }}</div>
-        <div class="note-footer">بواسطة: {{ $note->user->name ?? 'المرشد الأكاديمي' }}</div>
+        <div class="note-footer">{{ __('بواسطة') }}: {{ $note->user->name ?? __('المرشد الأكاديمي') }}</div>
     </div>
     @endforeach
 </div>
@@ -361,14 +362,14 @@
 {{-- ── سجل حذف المواد ── --}}
 @if($student->dropActions->isNotEmpty())
 <div class="section">
-    <div class="section-title">🗑 سجل حذف المواد</div>
+    <div class="section-title">🗑 {{ __('سجل حذف المواد') }}</div>
     <table>
         <thead>
             <tr>
-                <th>المادة</th>
-                <th>السبب</th>
-                <th>الحالة</th>
-                <th>التاريخ</th>
+                <th>{{ __('المادة') }}</th>
+                <th>{{ __('السبب') }}</th>
+                <th>{{ __('الحالة') }}</th>
+                <th>{{ __('تاريخ') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -378,7 +379,7 @@
                 <td style="color:#6b7280;">{{ $drop->reason ?? '—' }}</td>
                 <td>
                     <span class="badge {{ $drop->status === 'Completed' ? 'badge-green' : 'badge-red' }}">
-                        {{ $drop->status === 'Completed' ? 'مكتمل' : 'مرفوض' }}
+                        {{ $drop->status === 'Completed' ? __('مكتمل') : __('مرفوض') }}
                     </span>
                 </td>
                 <td style="color:#6b7280; font-size:11px;">{{ $drop->created_at->format('Y/m/d') }}</td>
@@ -392,16 +393,15 @@
 {{-- ── Footer ── --}}
 <div class="footer">
     <div>
-        <p>نظام الإرشاد الأكاديمي — جامعة الملك خالد</p>
-        <p style="margin-top:4px;">تم إنشاء هذا التقرير بتاريخ {{ now()->format('Y/m/d H:i') }}</p>
+        <p>{{ __('نظام الإرشاد الأكاديمي') }} — {{ __('جامعة الملك خالد') }}</p>
+        <p style="margin-top:4px;">{{ __('تم إنشاء هذا التقرير بتاريخ') }} {{ now()->format('Y/m/d H:i') }}</p>
     </div>
-    <div style="text-align:left;">
-        <div class="signature-box">توقيع المرشد الأكاديمي</div>
+    <div style="text-align:{{ $isRtl ? 'left' : 'right' }};">
+        <div class="signature-box">{{ __('توقيع المرشد الأكاديمي') }}</div>
     </div>
 </div>
 
 <script>
-    // طباعة تلقائية عند فتح الصفحة (اختياري — شيل الـ comment لتفعيل)
     // window.onload = () => window.print();
 </script>
 

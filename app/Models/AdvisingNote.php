@@ -11,7 +11,6 @@ class AdvisingNote extends Model
         'user_id',
         'title',
         'note_type',
-        'type',
         'content',
         'follow_up_required',
     ];
@@ -38,11 +37,21 @@ class AdvisingNote extends Model
      */
     public static function createNote(array $data): self
     {
-        if (isset($data['note_type']) && !isset($data['type'])) {
-            $data['type'] = $data['note_type'];
+        // Normalise: always store in note_type; keep type in sync for legacy reads
+        if (isset($data['type']) && !isset($data['note_type'])) {
+            $data['note_type'] = $data['type'];
         }
+        unset($data['type']); // type is not in fillable; write via raw update below
 
-        return self::create($data);
+        $note = self::create($data);
+
+        // Keep the legacy `type` column in sync so old queries still work
+        $note->getConnection()
+             ->table('advising_notes')
+             ->where('id', $note->id)
+             ->update(['type' => $note->note_type]);
+
+        return $note;
     }
 
 

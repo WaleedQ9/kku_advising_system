@@ -41,7 +41,7 @@ class DropActionController extends Controller
 
         $course = Course::findOrFail($request->course_id);
 
-        if (!$student->courses()->where('course_id', $course->id)->exists()) {
+        if (!$student->courses()->wherePivot('course_id', $course->id)->exists()) {
             return back()->with('error', 'الطالب غير مسجل في هذه المادة.');
         }
 

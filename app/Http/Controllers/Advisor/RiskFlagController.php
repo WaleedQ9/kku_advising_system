@@ -50,13 +50,15 @@ class RiskFlagController extends Controller
     public function scan()
     {
         $advisor  = auth()->user();
-        $students = $advisor->students()->with('courses')->get();
+        $students = $advisor->students()->with(['courses', 'riskFlags'])->get();
         $generated = 0;
 
         foreach ($students as $student) {
-            $before = $student->riskFlags()->where('is_resolved', false)->count();
+            $before = $student->riskFlags->where('is_resolved', false)->count();
             RiskFlag::triggerAlert($student);
-            $after  = $student->riskFlags()->where('is_resolved', false)->count();
+            // Reload only riskFlags after the alert to get the updated count
+            $student->unsetRelation('riskFlags');
+            $after = $student->riskFlags()->where('is_resolved', false)->count();
             $generated += max(0, $after - $before);
         }
 

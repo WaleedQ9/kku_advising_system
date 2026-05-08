@@ -6,11 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
 {
-    //
     protected $fillable = [
         'code',
         'name',
         'credits',
+        'department_id',
+        'level_type',
+        'requirement_type',
     ];
 
     public function department()

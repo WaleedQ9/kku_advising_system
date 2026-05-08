@@ -288,7 +288,7 @@
                             {{-- التخصص --}}
                             <div class="col-major flex flex-col items-center justify-center text-center min-w-0">
                                 <div class="text-xs font-bold text-gray-700 truncate max-w-full px-1">
-                                    {{ $student->major ?? $student->department->name_ar }}</div>
+                                    {{ $student->major ?? optional($student->department)->name_ar ?? '—' }}</div>
                             </div>
 
                             {{-- المستوى --}}
