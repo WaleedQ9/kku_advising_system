@@ -1,11 +1,11 @@
 @extends('layouts.app')
-@section('title', 'لوحة تحكم رئيس القسم')
+@section('title', __('لوحة تحكم رئيس القسم'))
 
 @section('content')
 @php
     $chair = auth()->user();
     $hour  = now()->hour;
-    $greeting = $hour < 12 ? 'صباح الخير' : ($hour < 17 ? 'مساء الخير' : 'مساء النور');
+    $greeting = $hour < 12 ? __('صباح الخير') : ($hour < 17 ? __('مساء الخير') : __('مساء النور'));
 @endphp
 
 {{-- ══════════ Greeting ══════════ --}}
@@ -21,19 +21,19 @@
             </p>
             <h1 class="text-white text-3xl font-black leading-tight">{{ $chair->name }}</h1>
             <p class="text-green-200/80 mt-2 text-sm">
-                <i class="fas fa-building ml-1"></i>رئيس قسم {{ $chair->department->name_ar ?? '' }}
-                · الفصل الدراسي الثاني 1447هـ
+                <i class="fas fa-building ml-1"></i>{{ __('رئيس قسم') }} {{ $chair->department->name_ar ?? '' }}
+                · {{ __('الفصل الدراسي الثاني 1447هـ') }}
             </p>
         </div>
         <div class="flex gap-3">
             <a href="{{ route('chair.report.print') }}"
                target="_blank"
                class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white px-5 py-3 rounded-xl font-bold transition">
-                <i class="fas fa-print"></i> طباعة التقرير
+                <i class="fas fa-print"></i> {{ __('طباعة التقرير') }}
             </a>
             <a href="{{ route('chair.report.csv') }}"
                class="inline-flex items-center gap-2 bg-kku-accent/80 hover:bg-kku-accent border border-kku-accent/30 text-white px-5 py-3 rounded-xl font-bold transition">
-                <i class="fas fa-file-csv"></i> تصدير CSV
+                <i class="fas fa-file-csv"></i> {{ __('تصدير CSV') }}
             </a>
         </div>
     </div>
@@ -48,7 +48,7 @@
             </div>
         </div>
         <p class="text-2xl font-black text-gray-800">{{ $totalStudents }}</p>
-        <p class="text-sm text-gray-500 mt-1">إجمالي الطلاب</p>
+        <p class="text-sm text-gray-500 mt-1">{{ __('إجمالي الطلاب') }}</p>
     </div>
     <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
         <div class="flex items-center justify-between mb-3">
@@ -57,7 +57,7 @@
             </div>
         </div>
         <p class="text-2xl font-black text-gray-800">{{ $atRiskStudents }}</p>
-        <p class="text-sm text-gray-500 mt-1">طلاب متعثرون</p>
+        <p class="text-sm text-gray-500 mt-1">{{ __('طلاب متعثرون') }}</p>
     </div>
     <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
         <div class="flex items-center justify-between mb-3">
@@ -66,7 +66,7 @@
             </div>
         </div>
         <p class="text-2xl font-black text-gray-800">{{ $advisors->count() }}</p>
-        <p class="text-sm text-gray-500 mt-1">المرشدون الأكاديميون</p>
+        <p class="text-sm text-gray-500 mt-1">{{ __('المرشدون الأكاديميون') }}</p>
     </div>
     <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
         <div class="flex items-center justify-between mb-3">
@@ -75,7 +75,7 @@
             </div>
         </div>
         <p class="text-2xl font-black text-gray-800">{{ $totalActiveFlags }}</p>
-        <p class="text-sm text-gray-500 mt-1">إنذارات نشطة</p>
+        <p class="text-sm text-gray-500 mt-1">{{ __('إنذارات نشطة') }}</p>
     </div>
 </div>
 
@@ -85,16 +85,16 @@
     <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div class="p-5 border-b border-gray-100 flex items-center justify-between">
             <h2 class="font-black text-gray-800 text-lg">
-                <i class="fas fa-chalkboard-teacher text-kku-primary ml-2"></i>المرشدون في القسم
+                <i class="fas fa-chalkboard-teacher text-kku-primary ml-2"></i>{{ __('المرشدون في القسم') }}
             </h2>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-sm">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-4 py-3 text-right text-gray-500 font-semibold">المرشد</th>
-                        <th class="px-4 py-3 text-center text-gray-500 font-semibold">عدد الطلاب</th>
-                        <th class="px-4 py-3 text-center text-gray-500 font-semibold">البريد</th>
+                        <th class="px-4 py-3 text-right text-gray-500 font-semibold">{{ __('المرشد') }}</th>
+                        <th class="px-4 py-3 text-center text-gray-500 font-semibold">{{ __('عدد الطلاب') }}</th>
+                        <th class="px-4 py-3 text-center text-gray-500 font-semibold">{{ __('البريد') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-50">
@@ -109,7 +109,7 @@
                         <td class="px-4 py-3 text-center text-gray-400 text-xs">{{ $advisor->email }}</td>
                     </tr>
                     @empty
-                    <tr><td colspan="3" class="px-4 py-6 text-center text-gray-400">لا يوجد مرشدون</td></tr>
+                    <tr><td colspan="3" class="px-4 py-6 text-center text-gray-400">{{ __('لا يوجد مرشدون') }}</td></tr>
                     @endforelse
                 </tbody>
             </table>
@@ -120,7 +120,7 @@
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div class="p-5 border-b border-gray-100">
             <h2 class="font-black text-gray-800 text-lg">
-                <i class="fas fa-shield-alt text-red-500 ml-2"></i>ملخص مؤشرات الخطر
+                <i class="fas fa-shield-alt text-red-500 ml-2"></i>{{ __('ملخص مؤشرات الخطر') }}
             </h2>
         </div>
         <div class="p-5 space-y-3">
@@ -129,10 +129,10 @@
                 {{ $flag->severity === 'High' ? 'bg-red-50 border border-red-100' : 'bg-amber-50 border border-amber-100' }}">
                 <div>
                     <p class="font-bold text-sm {{ $flag->severity === 'High' ? 'text-red-700' : 'text-amber-700' }}">
-                        {{ $flag->type === 'Low_GPA' ? 'معدل منخفض' : 'غياب مرتفع' }}
+                        {{ $flag->type === 'Low_GPA' ? __('معدل منخفض') : __('غياب مرتفع') }}
                     </p>
                     <p class="text-xs {{ $flag->severity === 'High' ? 'text-red-400' : 'text-amber-400' }} mt-0.5">
-                        {{ $flag->severity === 'High' ? 'حرج' : 'متوسط' }}
+                        {{ $flag->severity === 'High' ? __('حرج') : __('متوسط') }}
                     </p>
                 </div>
                 <span class="text-2xl font-black {{ $flag->severity === 'High' ? 'text-red-600' : 'text-amber-600' }}">
@@ -142,7 +142,7 @@
             @empty
             <div class="text-center py-8 text-gray-400">
                 <i class="fas fa-check-circle text-3xl text-green-400 mb-2"></i>
-                <p>لا توجد إنذارات نشطة</p>
+                <p>{{ __('لا توجد إنذارات نشطة') }}</p>
             </div>
             @endforelse
         </div>
@@ -153,18 +153,18 @@
 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-8">
     <div class="p-5 border-b border-gray-100">
         <h2 class="font-black text-gray-800 text-lg">
-            <i class="fas fa-exclamation-triangle text-red-500 ml-2"></i>الطلاب المتعثرون في القسم
-            <span class="text-sm font-normal text-gray-400 mr-2">({{ $atRiskList->count() }} طالب)</span>
+            <i class="fas fa-exclamation-triangle text-red-500 ml-2"></i>{{ __('الطلاب المتعثرون في القسم') }}
+            <span class="text-sm font-normal text-gray-400 mr-2">({{ $atRiskList->count() }} {{ __('طالب') }})</span>
         </h2>
     </div>
     <div class="overflow-x-auto">
         <table class="w-full text-sm">
             <thead class="bg-gray-50">
                 <tr>
-                    <th class="px-4 py-3 text-right text-gray-500 font-semibold">الطالب</th>
-                    <th class="px-4 py-3 text-center text-gray-500 font-semibold">المعدل</th>
-                    <th class="px-4 py-3 text-right text-gray-500 font-semibold">المرشد</th>
-                    <th class="px-4 py-3 text-right text-gray-500 font-semibold">الإنذارات</th>
+                    <th class="px-4 py-3 text-right text-gray-500 font-semibold">{{ __('الطالب') }}</th>
+                    <th class="px-4 py-3 text-center text-gray-500 font-semibold">{{ __('المعدل') }}</th>
+                    <th class="px-4 py-3 text-right text-gray-500 font-semibold">{{ __('المرشد') }}</th>
+                    <th class="px-4 py-3 text-right text-gray-500 font-semibold">{{ __('الإنذارات') }}</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-50">
@@ -186,14 +186,14 @@
                             @foreach($student->riskFlags as $flag)
                             <span class="inline-block px-2 py-0.5 rounded-full text-xs font-bold
                                 {{ $flag->severity === 'High' ? 'bg-red-100 text-red-600' : 'bg-amber-100 text-amber-600' }}">
-                                {{ $flag->type === 'Low_GPA' ? 'معدل' : 'غياب' }}
+                                {{ $flag->type === 'Low_GPA' ? __('معدل') : __('غياب') }}
                             </span>
                             @endforeach
                         </div>
                     </td>
                 </tr>
                 @empty
-                <tr><td colspan="4" class="px-4 py-6 text-center text-gray-400">لا يوجد طلاب متعثرون</td></tr>
+                <tr><td colspan="4" class="px-4 py-6 text-center text-gray-400">{{ __('لا يوجد طلاب متعثرون') }}</td></tr>
                 @endforelse
             </tbody>
         </table>
@@ -204,7 +204,7 @@
 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
     <div class="p-5 border-b border-gray-100">
         <h2 class="font-black text-gray-800 text-lg">
-            <i class="fas fa-clipboard-list text-kku-primary ml-2"></i>آخر الملاحظات الإرشادية في القسم
+            <i class="fas fa-clipboard-list text-kku-primary ml-2"></i>{{ __('آخر الملاحظات الإرشادية في القسم') }}
         </h2>
     </div>
     <div class="divide-y divide-gray-50">
@@ -218,11 +218,11 @@
                         <span class="text-xs text-gray-400">{{ $note->user?->name }}</span>
                         <span class="inline-block px-2 py-0.5 rounded-full text-xs font-bold
                             {{ $note->note_type === 'Academic' ? 'bg-blue-100 text-blue-600' : 'bg-purple-100 text-purple-600' }}">
-                            {{ $note->note_type === 'Academic' ? 'أكاديمي' : 'سلوكي' }}
+                            {{ $note->note_type === 'Academic' ? __('أكاديمي') : __('سلوكي') }}
                         </span>
                         @if($note->follow_up_required)
                         <span class="inline-block px-2 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-600">
-                            متابعة
+                            {{ __('متابعة') }}
                         </span>
                         @endif
                     </div>
@@ -234,7 +234,7 @@
             </div>
         </div>
         @empty
-        <div class="p-8 text-center text-gray-400">لا توجد ملاحظات حديثة</div>
+        <div class="p-8 text-center text-gray-400">{{ __('لا توجد ملاحظات حديثة') }}</div>
         @endforelse
     </div>
 </div>

@@ -1,11 +1,11 @@
 @extends('layouts.app')
-@section('title', 'لوحة تحكم عميد الكلية')
+@section('title', __('لوحة تحكم عميد الكلية'))
 
 @section('content')
 @php
     $dean  = auth()->user();
     $hour  = now()->hour;
-    $greeting = $hour < 12 ? 'صباح الخير' : ($hour < 17 ? 'مساء الخير' : 'مساء النور');
+    $greeting = $hour < 12 ? __('صباح الخير') : ($hour < 17 ? __('مساء الخير') : __('مساء النور'));
 @endphp
 
 {{-- ══════════ Greeting ══════════ --}}
@@ -20,10 +20,10 @@
         </p>
         <h1 class="text-white text-3xl font-black leading-tight">{{ $dean->name }}</h1>
         <p class="text-green-200/80 mt-2 text-sm">
-            <i class="fas fa-university ml-1"></i>عميد الكلية · الفصل الدراسي الثاني 1447هـ
+            <i class="fas fa-university ml-1"></i>{{ __('عميد الكلية') }} · {{ __('الفصل الدراسي الثاني 1447هـ') }}
         </p>
         <p class="mt-3 inline-flex items-center gap-2 bg-white/10 border border-white/20 text-white/80 px-4 py-2 rounded-xl text-sm">
-            <i class="fas fa-eye"></i> صلاحية العرض فقط — لا يمكنك تعديل بيانات الطلاب
+            <i class="fas fa-eye"></i> {{ __('صلاحية العرض فقط — لا يمكنك تعديل بيانات الطلاب') }}
         </p>
     </div>
 </div>
@@ -35,28 +35,28 @@
             <i class="fas fa-users text-green-600"></i>
         </div>
         <p class="text-2xl font-black text-gray-800">{{ $totalStudents }}</p>
-        <p class="text-sm text-gray-500 mt-1">إجمالي طلاب الكلية</p>
+        <p class="text-sm text-gray-500 mt-1">{{ __('إجمالي طلاب الكلية') }}</p>
     </div>
     <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
         <div class="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center mb-3">
             <i class="fas fa-exclamation-triangle text-red-500"></i>
         </div>
         <p class="text-2xl font-black text-gray-800">{{ $atRiskStudents }}</p>
-        <p class="text-sm text-gray-500 mt-1">طلاب متعثرون</p>
+        <p class="text-sm text-gray-500 mt-1">{{ __('طلاب متعثرون') }}</p>
     </div>
     <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
         <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center mb-3">
             <i class="fas fa-chalkboard-teacher text-blue-500"></i>
         </div>
         <p class="text-2xl font-black text-gray-800">{{ $totalAdvisors }}</p>
-        <p class="text-sm text-gray-500 mt-1">المرشدون الأكاديميون</p>
+        <p class="text-sm text-gray-500 mt-1">{{ __('المرشدون الأكاديميون') }}</p>
     </div>
     <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
         <div class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center mb-3">
             <i class="fas fa-flag text-amber-500"></i>
         </div>
         <p class="text-2xl font-black text-gray-800">{{ $totalFlags }}</p>
-        <p class="text-sm text-gray-500 mt-1">إنذارات نشطة</p>
+        <p class="text-sm text-gray-500 mt-1">{{ __('إنذارات نشطة') }}</p>
     </div>
 </div>
 
@@ -66,7 +66,7 @@
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div class="p-5 border-b border-gray-100">
             <h2 class="font-black text-gray-800 text-lg">
-                <i class="fas fa-chart-bar text-kku-primary ml-2"></i>توزيع المعدلات — الكلية
+                <i class="fas fa-chart-bar text-kku-primary ml-2"></i>{{ __('توزيع المعدلات — الكلية') }}
             </h2>
         </div>
         <div class="p-5 space-y-3">
@@ -84,7 +84,7 @@
             <div>
                 <div class="flex justify-between text-sm mb-1">
                     <span class="text-gray-600 font-semibold">{{ $label }}</span>
-                    <span class="text-gray-400">{{ $count }} طالب ({{ $pct }}%)</span>
+                    <span class="text-gray-400">{{ $count }} {{ __('طالب') }} ({{ $pct }}%)</span>
                 </div>
                 <div class="w-full bg-gray-100 rounded-full h-2.5">
                     <div class="{{ $color }} h-2.5 rounded-full transition-all" style="width: {{ $pct }}%"></div>
@@ -98,19 +98,19 @@
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div class="p-5 border-b border-gray-100">
             <h2 class="font-black text-gray-800 text-lg">
-                <i class="fas fa-building text-kku-primary ml-2"></i>ملخص الأقسام
+                <i class="fas fa-building text-kku-primary ml-2"></i>{{ __('ملخص الأقسام') }}
             </h2>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-sm">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-4 py-3 text-right text-gray-500 font-semibold">القسم</th>
-                        <th class="px-4 py-3 text-center text-gray-500 font-semibold">الطلاب</th>
-                        <th class="px-4 py-3 text-center text-gray-500 font-semibold">متعثرون</th>
-                        <th class="px-4 py-3 text-center text-gray-500 font-semibold">متوسط المعدل</th>
-                        <th class="px-4 py-3 text-center text-gray-500 font-semibold">إنذارات</th>
-                        <th class="px-4 py-3 text-center text-gray-500 font-semibold">ملاحظات</th>
+                        <th class="px-4 py-3 text-right text-gray-500 font-semibold">{{ __('القسم') }}</th>
+                        <th class="px-4 py-3 text-center text-gray-500 font-semibold">{{ __('الطلاب') }}</th>
+                        <th class="px-4 py-3 text-center text-gray-500 font-semibold">{{ __('متعثرون') }}</th>
+                        <th class="px-4 py-3 text-center text-gray-500 font-semibold">{{ __('متوسط المعدل') }}</th>
+                        <th class="px-4 py-3 text-center text-gray-500 font-semibold">{{ __('إنذارات') }}</th>
+                        <th class="px-4 py-3 text-center text-gray-500 font-semibold">{{ __('ملاحظات') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-50">
@@ -151,7 +151,7 @@
 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
     <div class="p-5 border-b border-gray-100">
         <h2 class="font-black text-gray-800 text-lg">
-            <i class="fas fa-clipboard-check text-kku-primary ml-2"></i>الالتزام بالإرشاد الأكاديمي — تقرير موجز
+            <i class="fas fa-clipboard-check text-kku-primary ml-2"></i>{{ __('الالتزام بالإرشاد الأكاديمي — تقرير موجز') }}
         </h2>
     </div>
     <div class="p-5">
@@ -174,8 +174,8 @@
                     <span class="text-sm font-bold text-gray-600">{{ $compliancePct }}%</span>
                 </div>
                 <div class="flex justify-between text-xs text-gray-400">
-                    <span>{{ $deptNotes }} ملاحظة إرشادية</span>
-                    <span>{{ $deptFlags }} إنذار نشط</span>
+                    <span>{{ $deptNotes }} {{ __('ملاحظة إرشادية') }}</span>
+                    <span>{{ $deptFlags }} {{ __('إنذار نشط') }}</span>
                 </div>
             </div>
             @endforeach

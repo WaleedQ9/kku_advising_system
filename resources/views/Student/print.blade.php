@@ -83,7 +83,7 @@
         th {
             background: #f3f4f6;
             padding: 8px 12px;
-            text-align: right;
+            text-align: center;
             font-weight: 700;
             font-size: 10px;
             color: #6b7280;
@@ -91,11 +91,14 @@
             letter-spacing: 0.5px;
             border-bottom: 1px solid #e5e7eb;
         }
+        th:first-child { text-align: right; }
         td {
             padding: 9px 12px;
             border-bottom: 1px solid #f3f4f6;
             color: #374151;
+            text-align: center;
         }
+        td:first-child { text-align: right; }
         tr:last-child td { border-bottom: none; }
 
         /* ── Badge ── */
@@ -282,6 +285,14 @@
 <div class="section">
     <div class="section-title">📚 المقررات المسجلة</div>
     <table>
+        <colgroup>
+            <col style="width:35%">
+            <col style="width:12%">
+            <col style="width:10%">
+            <col style="width:10%">
+            <col style="width:10%">
+            <col style="width:13%">
+        </colgroup>
         <thead>
             <tr>
                 <th>المادة</th>
@@ -301,9 +312,9 @@
             <tr>
                 <td style="font-weight:700;">{{ $course->name }}</td>
                 <td style="font-family:monospace; color:#6b7280;">{{ $course->code }}</td>
-                <td style="text-align:center;">{{ $course->credits }}</td>
-                <td style="text-align:center; color:{{ $abs > 10 ? '#dc2626' : '#374151' }}; font-weight:{{ $abs > 10 ? '700' : '400' }};">{{ $abs }}</td>
-                <td style="text-align:center;">{{ $course->pivot->current_grade ?? '—' }}</td>
+                <td>{{ $course->credits }}</td>
+                <td style="color:{{ $abs > 10 ? '#dc2626' : '#374151' }}; font-weight:{{ $abs > 10 ? '700' : '400' }};">{{ $abs }}</td>
+                <td>{{ $course->pivot->current_grade ?? '—' }}</td>
                 <td>
                     @if($percent >= 100)
                         <span class="badge badge-red">حرمان</span>

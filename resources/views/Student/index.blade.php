@@ -25,6 +25,7 @@
             'col-attend' => 'الحضور',
             'col-gpa' => 'المعدل',
             'col-credits' => 'الساعات',
+            'col-notes' => 'الملاحظات',
             'col-status' => 'الحالة',
         ];
     @endphp
@@ -188,7 +189,7 @@
             <div class="flex-1 overflow-y-auto">
 
                 {{-- Header --}}
-                <div class="grid text-[10px] font-black text-gray-400 uppercase bg-gray-50 border-b border-gray-100 px-5 py-2.5 sticky top-0 z-10"
+                <div class="student-grid-row grid text-[10px] font-black text-gray-400 uppercase bg-gray-50 border-b border-gray-100 px-5 py-2.5 sticky top-0 z-10"
                     style="grid-template-columns:40px 30% 15% repeat(6,1fr) 100px">
                     <div></div>
                     <div>{{ __('الطالب') }}</div>
@@ -197,6 +198,7 @@
                     <div class="col-attend text-center">{{ __('الحضور') }}</div>
                     <div class="col-gpa text-center">{{ __('المعدل') }}</div>
                     <div class="col-credits text-center">{{ __('الساعات') }}</div>
+                    <div class="col-notes text-center">{{ __('الملاحظات') }}</div>
                     <div class="col-status text-center">{{ __('الحالة') }}</div>
                     <div class="text-center">{{ __('إجراءات') }}</div>
                 </div>
@@ -255,7 +257,7 @@
                         id="row-{{ $student->id }}">
 
                         {{-- Main Row --}}
-                        <div class="grid items-center px-5 py-3 hover:bg-gray-50/80 transition-colors cursor-pointer group"
+                        <div class="student-grid-row grid items-center px-5 py-3 hover:bg-gray-50/80 transition-colors cursor-pointer group"
                             style="grid-template-columns:40px 30% 15% repeat(6,1fr) 100px"
                             onclick="toggleExpand({{ $student->id }})">
 
@@ -311,6 +313,20 @@
                             {{-- الساعات المسجلة حالياً --}}
                             <div class="col-credits flex items-center justify-center">
                                 <span class="text-xs font-bold text-gray-600">{{ $currentCredits }}س</span>
+                            </div>
+
+                            {{-- عدد الملاحظات --}}
+                            <div class="col-notes flex items-center justify-center">
+                                @php $notesCount = $student->advisingNotes->count(); @endphp
+                                @if ($notesCount > 0)
+                                    <span
+                                        class="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-lg
+                                        {{ $student->advisingNotes->where('follow_up_required', true)->isNotEmpty() ? 'bg-amber-50 text-amber-700' : 'bg-blue-50 text-blue-600' }}">
+                                        <i class="fas fa-comment-alt text-[9px]"></i> {{ $notesCount }}
+                                    </span>
+                                @else
+                                    <span class="text-xs text-gray-300">—</span>
+                                @endif
                             </div>
 
                             {{-- الحالة --}}
@@ -558,9 +574,22 @@
     <script>
         function toggleExpand(id) {
             const panel = document.getElementById('expanded-' + id);
-            const icon  = document.querySelector('.expand-icon-' + id);
-            const row   = document.getElementById('row-' + id);
+            const icon = document.querySelector('.expand-icon-' + id);
+            const row = document.getElementById('row-' + id);
             const isOpen = panel.dataset.open === '1';
+
+            // close any other open row first
+            document.querySelectorAll('[data-open="1"]').forEach(p => {
+                if (p.id !== 'expanded-' + id) {
+                    const otherId = p.id.replace('expanded-', '');
+                    p.classList.add('hidden');
+                    p.dataset.open = '0';
+                    const otherIcon = document.querySelector('.expand-icon-' + otherId);
+                    const otherRow = document.getElementById('row-' + otherId);
+                    if (otherIcon) otherIcon.style.transform = '';
+                    if (otherRow) otherRow.style.background = '';
+                }
+            });
 
             if (isOpen) {
                 panel.classList.add('hidden');
@@ -572,7 +601,10 @@
                 panel.dataset.open = '1';
                 icon.style.transform = 'rotate(-90deg)';
                 row.style.background = '#f0fdf4';
-                row.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                row.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest'
+                });
             }
         }
 
@@ -591,7 +623,53 @@
             if (e.key === 'Escape') closeQuickNote();
         });
 
-        const COL_KEY = 'kku_cols_v3';
+        const COL_KEY = 'kku_cols_v4';
+
+        // تعريف الأعمدة بترتيبها وعرض كل منها في الـ grid
+        const COL_DEFS = [{
+                col: 'col-major',
+                width: '15%'
+            },
+            {
+                col: 'col-level',
+                width: '1fr'
+            },
+            {
+                col: 'col-attend',
+                width: '1fr'
+            },
+            {
+                col: 'col-gpa',
+                width: '1fr'
+            },
+            {
+                col: 'col-credits',
+                width: '1fr'
+            },
+            {
+                col: 'col-notes',
+                width: '1fr'
+            },
+            {
+                col: 'col-status',
+                width: '1fr'
+            },
+        ];
+
+        function rebuildGridTemplates() {
+            let tpl = '40px 30%';
+            COL_DEFS.forEach(({
+                col,
+                width
+            }) => {
+                const cb = document.querySelector(`.col-toggle[data-col="${col}"]`);
+                if (!cb || cb.checked) tpl += ' ' + width;
+            });
+            tpl += ' 100px';
+            document.querySelectorAll('.student-grid-row').forEach(el => {
+                el.style.gridTemplateColumns = tpl;
+            });
+        }
 
         function toggleColumn(col, wrapper) {
             const cb = wrapper.querySelector('input');
@@ -599,6 +677,7 @@
             wrapper.querySelector('.toggle-track').style.background = cb.checked ? '' : '#d1d5db';
             wrapper.querySelector('.toggle-thumb').style.transform = cb.checked ? '' : 'translateX(16px)';
             document.querySelectorAll('.' + col).forEach(el => el.style.display = cb.checked ? '' : 'none');
+            rebuildGridTemplates();
             const p = {};
             document.querySelectorAll('.col-toggle').forEach(c => p[c.dataset.col] = c.checked);
             localStorage.setItem(COL_KEY, JSON.stringify(p));
@@ -614,6 +693,7 @@
                 }
                 document.querySelectorAll('.' + cb.dataset.col).forEach(el => el.style.display = '');
             });
+            rebuildGridTemplates();
             localStorage.removeItem(COL_KEY);
         }
 
@@ -639,6 +719,7 @@
                         'none');
                 }
             });
+            rebuildGridTemplates();
         });
     </script>
 

@@ -44,16 +44,16 @@
 
 <div class="header">
     <div>
-        <p style="font-size:13px; font-weight:800;">جامعة الملك خالد</p>
-        <p style="font-size:11px; opacity:.75;">كلية علوم الحاسب وتقنية المعلومات</p>
+        <p style="font-size:13px; font-weight:800;">{{ __('جامعة الملك خالد') }}</p>
+        <p style="font-size:11px; opacity:.75;">{{ __('كلية علوم الحاسب وتقنية المعلومات') }}</p>
     </div>
     <div class="header-title">
-        <h1>تقرير أداء القسم الأكاديمي</h1>
-        <p>{{ auth()->user()->department->name_ar ?? '' }} · الفصل الدراسي الثاني 1447هـ</p>
+        <h1>{{ __('تقرير أداء القسم الأكاديمي') }}</h1>
+        <p>{{ auth()->user()->department->name_ar ?? '' }} · {{ __('الفصل الدراسي الثاني 1447هـ') }}</p>
     </div>
     <div class="header-meta">
-        <div>تاريخ الإصدار: {{ $generatedAt }}</div>
-        <div>أعده: {{ auth()->user()->name }}</div>
+        <div>{{ __('تاريخ الإصدار') }}: {{ $generatedAt }}</div>
+        <div>{{ __('أعده') }}: {{ auth()->user()->name }}</div>
     </div>
 </div>
 
@@ -63,38 +63,38 @@
     <div class="summary-grid">
         <div class="summary-card">
             <div class="num">{{ $summary['total'] }}</div>
-            <div class="lbl">إجمالي الطلاب</div>
+            <div class="lbl">{{ __('إجمالي الطلاب') }}</div>
         </div>
         <div class="summary-card">
             <div class="num" style="color:#dc2626;">{{ $summary['warning'] }}</div>
-            <div class="lbl">طلاب متعثرون</div>
+            <div class="lbl">{{ __('طلاب متعثرون') }}</div>
         </div>
         <div class="summary-card">
             <div class="num" style="color:#16a34a;">{{ $summary['regular'] }}</div>
-            <div class="lbl">طلاب منتظمون</div>
+            <div class="lbl">{{ __('طلاب منتظمون') }}</div>
         </div>
         <div class="summary-card">
             <div class="num">{{ $summary['avg_gpa'] }}</div>
-            <div class="lbl">متوسط المعدل</div>
+            <div class="lbl">{{ __('متوسط المعدل') }}</div>
         </div>
         <div class="summary-card">
             <div class="num" style="color:#d97706;">{{ $summary['flags'] }}</div>
-            <div class="lbl">إنذارات نشطة</div>
+            <div class="lbl">{{ __('إنذارات نشطة') }}</div>
         </div>
     </div>
 
     {{-- Active Filters --}}
     @if(!empty(array_filter($filters ?? [])))
     <div class="filters-bar">
-        <strong>الفلاتر المطبقة:</strong>
+        <strong>{{ __('الفلاتر المطبقة') }}:</strong>
         @if(!empty($filters['advisor_id']))
-            المرشد: {{ $advisors->find($filters['advisor_id'])?->name ?? $filters['advisor_id'] }} &nbsp;|&nbsp;
+            {{ __('المرشد') }}: {{ $advisors->find($filters['advisor_id'])?->name ?? $filters['advisor_id'] }} &nbsp;|&nbsp;
         @endif
         @if(!empty($filters['major']))
-            التخصص: {{ $filters['major'] }} &nbsp;|&nbsp;
+            {{ __('التخصص') }}: {{ $filters['major'] }} &nbsp;|&nbsp;
         @endif
         @if(!empty($filters['status']))
-            الحالة: {{ $filters['status'] === 'Warning' ? 'متعثر' : 'منتظم' }}
+            {{ __('الحالة') }}: {{ $filters['status'] === 'Warning' ? __('متعثر') : __('منتظم') }}
         @endif
     </div>
     @endif
@@ -104,14 +104,14 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>رقم الطالب</th>
-                <th>الاسم</th>
-                <th>التخصص</th>
-                <th>المعدل</th>
-                <th>الحالة</th>
-                <th>المرشد</th>
-                <th>إنذارات</th>
-                <th>ملاحظات</th>
+                <th>{{ __('رقم الطالب') }}</th>
+                <th>{{ __('الاسم') }}</th>
+                <th>{{ __('التخصص') }}</th>
+                <th>{{ __('المعدل') }}</th>
+                <th>{{ __('الحالة') }}</th>
+                <th>{{ __('المرشد') }}</th>
+                <th>{{ __('إنذارات') }}</th>
+                <th>{{ __('ملاحظات') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -140,15 +140,15 @@
     </table>
 
     <div class="footer">
-        <span>نظام الإرشاد الأكاديمي الذكي — جامعة الملك خالد</span>
-        <span>عدد الطلاب في التقرير: {{ $summary['total'] }}</span>
+        <span>{{ __('نظام الإرشاد الأكاديمي الذكي — جامعة الملك خالد') }}</span>
+        <span>{{ __('عدد الطلاب في التقرير') }}: {{ $summary['total'] }}</span>
     </div>
 </div>
 
 <div class="no-print" style="text-align:center; margin:20px;">
     <button onclick="window.print()"
         style="background:#004d25;color:white;border:none;padding:10px 28px;border-radius:8px;font-size:14px;cursor:pointer;font-family:inherit;">
-        🖨️ طباعة التقرير
+        🖨️ {{ __('طباعة التقرير') }}
     </button>
 </div>
 

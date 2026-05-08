@@ -10,8 +10,8 @@
     $topPerformers  = (clone $allStudents)->where('gpa', '>=', 3.75)->count();
     $followUp       = \App\Models\AdvisingNote::whereHas('student', fn($q) => $q->where('department_id', $advisor->department_id))
                         ->where('follow_up_required', true)->count();
-    $activeFlags    = \App\Models\RiskFlag::whereHas('student', fn($q) => $q->where('department_id', $advisor->department_id))
-                        ->where('is_resolved', false)->count();
+    $activeFlags    = \App\Models\Student::where('department_id', $advisor->department_id)
+                        ->whereHas('riskFlags', fn($q) => $q->where('is_resolved', false))->count();
     $recentNotes    = \App\Models\AdvisingNote::whereHas('student', fn($q) => $q->where('department_id', $advisor->department_id))
                         ->with(['student','user'])->latest()->take(5)->get();
     $flaggedStudents = \App\Models\Student::where('department_id', $advisor->department_id)
@@ -23,7 +23,7 @@
                         ->with(['advisingNotes' => fn($q) => $q->where('follow_up_required', true)->latest()->take(1)])
                         ->take(5)->get();
     $hour = now()->hour;
-    $greeting = $hour < 12 ? 'صباح الخير' : ($hour < 17 ? 'مساء الخير' : 'مساء النور');
+    $greeting = $hour < 12 ? __('صباح الخير') : ($hour < 17 ? __('مساء الخير') : __('مساء النور'));
 @endphp
 
 {{-- ══════════ Greeting ══════════ --}}
@@ -43,12 +43,12 @@
             </h1>
             <p class="text-green-200/80 mt-2 text-sm">
                 {{ $advisor->department->name_ar ?? 'قسمك' }} ·
-                الفصل الدراسي الثاني 1447هـ
+                {{ __('الفصل الدراسي الثاني 1447هـ') }}
             </p>
             @if($followUp > 0)
             <div class="mt-4 inline-flex items-center gap-2 bg-amber-400/20 border border-amber-400/30 text-amber-300 px-4 py-2 rounded-xl text-sm font-bold">
                 <i class="fas fa-flag animate-pulse"></i>
-                لديك {{ $followUp }} {{ __('طلاب بحاجة لمتابعة') }}
+                {{ __('لديك') }} {{ $followUp }} {{ __('طلاب بحاجة لمتابعة') }}
             </div>
             @endif
         </div>

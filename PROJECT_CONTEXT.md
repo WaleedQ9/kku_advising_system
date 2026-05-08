@@ -1,80 +1,75 @@
-# KKU Academic Advising System — Project Context for Claude Code
+# KKU Academic Advising System — Project Context
 
-## Project Overview
-**Name:** Enhancing User Experience of KKU Academic Advising System from Faculty Members' Perspective  
-**University:** King Khalid University — College of Computer Science  
-**Stack:** Laravel 12 + Blade + Tailwind CSS + MySQL 8 + Spatie Permissions  
-**Repo:** https://github.com/WaleedQ9/kku_advising_system.git
-
----
-
-## User Roles (from Documentation)
-
-The documentation defines **3 roles** — currently only `advisor` is fully implemented:
-
-| Role | Arabic | Spatie Role | Status |
-|------|--------|-------------|--------|
-| Academic Advisor | المرشد الأكاديمي | `advisor` | ✅ Implemented |
-| Department Chair | رئيس القسم | `chair` | ❌ Missing |
-| College Dean | عميد الكلية | `dean` | ❌ Missing |
-
-> **Note:** `registrar` role exists in the codebase but is NOT in the documentation. It should be reviewed — either removed or mapped to `chair`.
-
-### Role Permissions (from documentation):
-
-**Academic Advisor:**
-- View all students in their department (`department_id`)
-- Search students by name or ID
-- View student profile (GPA, attendance, courses, risk flags)
-- Add/view advising notes (Academic/Behavioral, follow-up flag)
-- Process course drop (max 3 attempts, inline policy validation)
-- View/resolve risk flags
-- Mark follow-ups as done
-
-**Department Chair:**
-- Everything the advisor can do PLUS:
-- View all advisors' activity in their department
-- Generate department-level reports (PDF/CSV)
-- Monitor all students' risk indicators across the department
-- Filter advising activity by semester, advisor, or major
-
-**College Dean:**
-- View-only access (no advising actions)
-- College-wide academic performance reports
-- GPA distribution across all departments
-- Advising compliance summaries
-- High-level dashboards (no student-level editing)
+## نظرة عامة
+**الاسم:** تحسين تجربة المستخدم لنظام الإرشاد الأكاديمي في جامعة الملك خالد من منظور أعضاء هيئة التدريس  
+**الجامعة:** جامعة الملك خالد — كلية علوم الحاسب  
+**المكدس التقني:** Laravel 12 + Blade + Tailwind CSS + MySQL 8 + Spatie Permissions  
+**المستودع:** https://github.com/WaleedQ9/kku_advising_system.git
 
 ---
 
-## Database Schema
+## الأدوار (Roles)
 
-### Existing Tables
+| الدور | الاسم العربي | Spatie Role | الحالة |
+|-------|-------------|-------------|--------|
+| Academic Advisor | المرشد الأكاديمي | `advisor` | ✅ مكتمل |
+| Department Chair | رئيس القسم | `chair` | ✅ مكتمل |
+| College Dean | عميد الكلية | `dean` | ✅ مكتمل |
+
+### صلاحيات كل دور:
+
+**المرشد الأكاديمي (advisor):**
+- عرض طلاب قسمه فقط (`department_id`)
+- بحث بالاسم أو الرقم الجامعي
+- عرض الملف الكامل للطالب (معدل، حضور، مواد، تنبيهات)
+- إضافة/عرض الملاحظات الإرشادية (أكاديمية/سلوكية، خيار المتابعة)
+- تنفيذ حذف المواد (الحد الأقصى 3 محاولات، التحقق الآني من الشروط)
+- عرض وحل التنبيهات (risk flags)
+- تعليم المتابعات كمكتملة
+
+**رئيس القسم (chair):**
+- لوحة تحكم تعرض جميع المرشدين في القسم مع إحصائياتهم
+- ملخص طلاب القسم بالكامل (إجمالي، منتظم، متعثر، مع إنذارات)
+- عرض آخر الملاحظات الإرشادية عبر القسم
+- طباعة تقرير HTML لطلاب القسم
+- تصدير CSV لبيانات الطلاب
+- فلترة التقارير بـ: المرشد، التخصص، الحالة
+
+**عميد الكلية (dean):**
+- لوحة تحكم شاملة لجميع الأقسام (عرض فقط)
+- إحصائيات معدلات التخرج وتوزيع GPA
+- ملخص تنبيهات الخطر لكل قسم
+- جدول مقارنة أداء الأقسام
+- لا يملك صلاحية تعديل أي بيانات
+
+---
+
+## بنية قاعدة البيانات
+
 ```
 users
   - id, name, email, password
-  - employee_id          ← added (unique)
-  - faculty_role         ← added (enum: Advisor, Chair, Dean) — NOT used for auth yet
+  - employee_id (unique)
+  - faculty_role (enum: Advisor, Chair, Dean)
   - department_id (FK)
   - phone
 
 students
   - id, student_id (unique), name_ar, name_en
-  - major                ← added
+  - major
   - department_id (FK)
   - advisor_id (FK → users)
   - gpa (decimal)
   - total_credits
-  - status               (منتظم / متعثر / خريج) — Arabic display
-  - academic_status      ← added (Regular / Warning) — system logic
+  - status               (منتظم / متعثر / خريج)
+  - academic_status      (Regular / Warning)
 
 advising_notes
   - id, student_id (FK), user_id (FK)
-  - title                ← added
-  - note_type            ← added (enum: Academic, Behavioral)
-  - type                 (original field — kept for backward compat)
+  - title
+  - note_type            (enum: Academic, Behavioral)
   - content
-  - follow_up_required   ← added (boolean)
+  - follow_up_required   (boolean)
 
 risk_flags
   - id, student_id (FK)
@@ -86,10 +81,13 @@ drop_actions
   - id, student_id (FK), course_id (FK), advisor_id (FK → users)
   - status               (enum: Completed, Rejected)
   - reason
-  - eligibility_check_result (JSON — policy snapshot)
+  - eligibility_check_result (JSON)
 
 courses
-  - id, name, code, credits, level_type, department_id
+  - id, name, code, credits
+  - level_type           (عام / تخصص)
+  - requirement_type     (اجباري / اختياري)
+  - department_id (FK, null for general courses)
 
 course_student (pivot)
   - student_id, course_id
@@ -101,135 +99,161 @@ departments
 
 ---
 
-## What's Implemented ✅
+## بيانات الاختبار (Seeders)
 
-### Backend
-- `advisor` Spatie role with full student management
-- `StudentsController` — index (by department), show, print
-- `AdvisingNoteController` — store, markFollowUpDone
-- `DropActionController` — check eligibility, store (executeDrop)
-- `RiskFlagController` — index, resolve, scan (auto-generate flags)
-- Models: Student, User, AdvisingNote, RiskFlag, DropAction, Course, Department
+### الأقسام (4 أقسام)
+| الكود | الاسم العربي |
+|-------|-------------|
+| CS | علوم الحاسب |
+| CYS | الأمن السيبراني |
+| IS | نظم المعلومات |
+| CEN | هندسة الحاسب |
 
-### Key Business Logic
-- **RiskFlag::triggerAlert()** — auto-generates flags: GPA < 2.0 → Low_GPA, absences >= 4 → High_Absence
-- **DropAction::validatePolicy()** — max 3 completed drops per student
-- **DropAction::executeDrop()** — drops course, decrements credits, updates academic_status
-- **Student::checkDropEligibility()**, **hasRiskFlags()**, **getAcademicProfile()**
+### المواد (20 مادة)
+- **5 عامة إجبارية** (GEN101–105): برمجة، رياضيات، إنجليزي، مهارات الحاسب، منطق
+- **3 عامة اختيارية** (GEN201–203): أخلاقيات، ريادة أعمال، تفكير نقدي
+- **3 مواد لكل قسم** (2 تخصص إجباري + 1 تخصص اختياري)
 
-### Frontend (Blade + Tailwind)
-- `home.blade.php` — Dashboard with live stats, system alerts vs advisor follow-ups
-- `Student/index.blade.php` — Accordion table, sidebar filters, column toggle, inline quick note
-- `Student/show.blade.php` — Full profile, course drop modal, notes timeline
-- `Student/print.blade.php` — Standalone print/PDF page
-- `lang/en.json` — 199 translation keys, all strings wrapped with `__()`
+### توزيع الساعات للطالب
+- 3 عامة إجبارية (8 ساعات) + 2 تخصص إجباري (6 ساعات) + اختياريات = **15–24 ساعة**
+
+### المستخدمون
+- 4 مرشدين (advisor) — واحد لكل قسم
+- 4 رؤساء أقسام (chair) — واحد لكل قسم
+- 1 عميد (dean)
+
+### الطلاب (40 طالباً)
+- 10 طلاب لكل قسم
+- أسماء عربية حقيقية
+- ~3 طلاب متعثرون لكل قسم (gpa < 2.0)
+- الطلاب المتعثرون: يملكون تنبيهات Low_GPA + High_Absence بعد تشغيل Scan
 
 ---
 
-## What's Missing ❌ (Priority Order)
+## المنطق الأساسي (Business Logic)
 
-### 1. Role System Fix (HIGH)
+### RiskFlag::triggerAlert()
 ```php
-// Current: only 'advisor' and 'registrar' (registrar not in docs)
-// Needed:
-- Add 'chair' Spatie role
-- Add 'dean' Spatie role
-- Remove or repurpose 'registrar' role
-- Use faculty_role column in role assignment
-- Add role middleware to routes
+// يُشغَّل من flags.scan
+if ($gpa < 2.0)          → Low_GPA   (High severity)
+if (totalAbsences >= 4)  → High_Absence (High severity)
 ```
 
-### 2. Department Chair Dashboard (HIGH)
-- View all advisors in department with their student counts
-- List all students in department (not just one advisor's)
-- View all advising notes across department
-- See department-wide risk flag summary
-- Generate PDF/CSV reports filtered by: semester, advisor, major
+### DropAction::validatePolicy()
+```php
+// الحد الأقصى 3 حذف مكتمل لكل طالب
+$completedDrops = DropAction::where('student_id', $id)
+    ->where('status', 'Completed')->count();
+if ($completedDrops >= 3) → رفض
+```
 
-### 3. College Dean Dashboard (MEDIUM)
-- College-wide stats (all departments)
-- GPA distribution charts
-- Risk indicators summary per department
-- Advising activity compliance report
-- View-only — no editing capabilities
-
-### 4. Reporting System (MEDIUM) — FR7
-- PDF report: student list with GPA, attendance, risk flags
-- CSV export: advising activity log
-- Filters: by semester, major, advisor, department
-- Already partially done in `Student/print.blade.php` — needs expansion
-
-### 5. Appointment Management (LOW) — FR6
-- Advisor schedules advising appointments
-- Student can view upcoming appointments
-- Conflict check (no double-booking)
-- Not in current DB schema — needs new `appointments` table
-
-### 6. Notifications & Alerts (MEDIUM) — FR5
-- In-platform notifications (already partially done via RiskFlags)
-- Email notifications for risk alerts
-- Notification when follow-up is added
-
-### 7. Registrar Role Cleanup
-- Either: rename `registrar` → `chair` and build Chair features on top
-- Or: remove registrar entirely if not in scope
+### absencesFromGpa() في StudentCourseSeeder
+```php
+if ($gpa >= 2.0) return 0;   // منتظم → لا إنذار غياب
+if ($gpa >= 1.7) return 2;   // متعثر متوسط
+return 4;                     // متعثر شديد → يُطلق High_Absence
+```
 
 ---
 
-## Routes Reference
+## الملفات الرئيسية
+
+### Controllers
+```
+app/Http/Controllers/
+├── HomeController.php               ← الصفحة الرئيسية (يوجّه بحسب الدور)
+├── Advisor/
+│   ├── StudentsController.php       ← index, show, print
+│   ├── AdvisingNoteController.php   ← store, markFollowUpDone
+│   ├── DropActionController.php     ← check, store
+│   └── RiskFlagController.php       ← index, resolve, scan
+├── Chair/
+│   ├── DashboardController.php      ← لوحة رئيس القسم
+│   └── ReportController.php         ← print, exportCsv
+└── Dean/
+    └── DashboardController.php      ← لوحة العميد
+```
+
+### Views
+```
+resources/views/
+├── home.blade.php                   ← لوحة المرشد
+├── Student/
+│   ├── index.blade.php              ← قائمة الطلاب (accordion، فلاتر، toggle أعمدة)
+│   ├── show.blade.php               ← ملف الطالب الكامل
+│   └── print.blade.php              ← صفحة طباعة مستقلة
+├── chair/
+│   ├── dashboard.blade.php          ← لوحة رئيس القسم
+│   └── report-print.blade.php       ← طباعة تقرير القسم
+├── dean/
+│   └── dashboard.blade.php          ← لوحة العميد
+└── layouts/app.blade.php
+```
+
+### Routes
 ```php
+// مشترك
+GET  /home                               → home (يوجّه بحسب الدور)
+
 // Advisor (auth + role:advisor)
-GET  /home                              → home (dashboard)
-GET  /students                          → students.index
-GET  /students/{student}               → students.show
-GET  /students/{student}/print         → students.print
-POST /notes                            → notes.store
-POST /notes/{note}/follow-up-done      → notes.followup.done
+GET  /students                           → students.index
+GET  /students/{student}                 → students.show
+GET  /students/{student}/print           → students.print
+POST /notes                              → notes.store
+POST /notes/{note}/follow-up-done        → notes.followup.done
 GET  /students/{student}/drop/{course}/check → drop.check
-POST /students/{student}/drop          → drop.store
-GET  /students/{student}/flags         → flags.index
-POST /flags/{riskFlag}/resolve         → flags.resolve
-POST /flags/scan                       → flags.scan
+POST /students/{student}/drop            → drop.store
+GET  /students/{student}/flags           → flags.index
+POST /flags/{riskFlag}/resolve           → flags.resolve
+POST /flags/scan                         → flags.scan
 
-// Registrar (needs review)
-GET  /registrar/dashboard
-GET  /registrar/students
-GET  /registrar/students/{student}/enroll
-POST /registrar/students/{student}/enroll
+// Chair (auth + role:chair) — prefix: /chair
+GET  /chair/dashboard                    → chair.dashboard
+GET  /chair/report/print                 → chair.report.print
+GET  /chair/report/csv                   → chair.report.csv
+
+// Dean (auth + role:dean) — prefix: /dean
+GET  /dean/dashboard                     → dean.dashboard
 ```
 
 ---
 
-## Functional Requirements from Documentation
+## المتطلبات الوظيفية (Functional Requirements)
 
-| FR | Feature | Priority | Status |
-|----|---------|----------|--------|
-| FR1 | Unified Advisor Dashboard | High | ✅ Done |
-| FR2 | Student Search & Quick Access | High | ✅ Done |
-| FR3 | Inline Policy Validation (drop eligibility) | High | ✅ Done |
-| FR4 | Advising Notes & Case History | Medium | ✅ Done |
-| FR5 | Notifications & Alerts | Medium | ⚠️ Partial (RiskFlags only) |
-| FR6 | Appointment Management | Low | ❌ Missing |
-| FR7 | Reporting & Analytics | Medium | ⚠️ Partial (print only) |
-| FR8 | SIS Data Integration | High | ⚠️ Simulated with seeders |
-| FR9 | Role-Based Access Control | Medium | ⚠️ Partial (advisor only) |
-
----
-
-## Immediate Next Steps (Suggested Order)
-
-1. **Fix roles:** Add `chair` and `dean` Spatie roles, update seeders and middleware
-2. **Chair dashboard:** Department overview, all advisors, reports
-3. **Dean dashboard:** College-wide view-only dashboard
-4. **Reports:** PDF/CSV export for chair and dean
-5. **Notifications:** Email alerts for risk flags
+| FR | الميزة | الأولوية | الحالة |
+|----|--------|----------|--------|
+| FR1 | لوحة تحكم المرشد الموحدة | عالية | ✅ مكتمل |
+| FR2 | بحث الطلاب والوصول السريع | عالية | ✅ مكتمل |
+| FR3 | التحقق الآني من شروط الحذف | عالية | ✅ مكتمل |
+| FR4 | الملاحظات الإرشادية وسجل الحالات | متوسطة | ✅ مكتمل |
+| FR5 | التنبيهات والإشعارات | متوسطة | ⚠️ جزئي (RiskFlags فقط، لا إيميل) |
+| FR6 | إدارة المواعيد | منخفضة | ❌ غير مطبق |
+| FR7 | التقارير والتحليلات | متوسطة | ✅ HTML print + CSV |
+| FR8 | تكامل بيانات SIS | عالية | ⚠️ محاكى بـ Seeders |
+| FR9 | التحكم بالوصول (RBAC) | متوسطة | ✅ مكتمل (advisor, chair, dean) |
 
 ---
 
-## Code Conventions
-- Controllers live in `app/Http/Controllers/Advisor/` or `app/Http/Controllers/Registrar/`
-- Views in `resources/views/Student/`, `resources/views/registrar/`, `resources/views/home.blade.php`
-- All Arabic strings wrapped with `__()`
-- Translation file: `lang/en.json`
-- Authorization: always check `auth()->user()->department_id === $student->department_id`
-- Colors: `kku-primary` (green), `kku-dark` (dark green), `kku-accent` (gold) — defined in tailwind config
+## ما تبقى (اختياري)
+
+### FR5 — إشعارات البريد الإلكتروني
+- إرسال إيميل للمرشد عند توليد تنبيه جديد
+- يتطلب: `php artisan make:notification RiskFlagAlert`
+- يتطلب: إعداد SMTP في `.env`
+
+### FR6 — إدارة المواعيد
+- يتطلب جدول جديد `appointments`
+- المرشد يجدول موعداً، الطالب يرى مواعيده
+- التحقق من تعارض المواعيد
+
+---
+
+## اتفاقيات الكود
+
+- Controllers في `app/Http/Controllers/{Role}/`
+- Views في `resources/views/{role}/`
+- جميع النصوص العربية مغلفة بـ `__()`
+- ملف الترجمة: `lang/en.json`
+- التحقق من الصلاحية: `auth()->user()->department_id === $student->department_id`
+- الألوان: `kku-primary` (أخضر)، `kku-dark` (أخضر داكن)، `kku-accent` (ذهبي) — في `tailwind.config.js`
+- لا PDF بـ dompdf — يُستخدم HTML print فقط (`window.print()`)
